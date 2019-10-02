@@ -1,0 +1,31 @@
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>[%date] %level - %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <property name="DEV_HOME" value="./logs" />
+  
+     <appender name="FILE-AUDIT"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/chatlog.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                <pattern>[%date] %level - %msg%n</pattern>
+            </Pattern>
+        </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${DEV_HOME}/archived/chatlog.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <maxFileSize>450kb</maxFileSize>
+    </rollingPolicy>
+
+    </appender>
+  
+  
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE-AUDIT" />
+  </root>
+</configuration> 

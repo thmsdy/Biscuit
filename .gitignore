@@ -1,0 +1,5 @@
+target/
+Bot/
+logs/
+bin/
+testconfig.properties
