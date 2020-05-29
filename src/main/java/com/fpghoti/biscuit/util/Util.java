@@ -28,4 +28,36 @@ public class Util {
 		return a;
 	}
 	
+	public static boolean isDigit(String s){
+		return s.matches("[0-9]+");
+	}
+	
+	public static boolean isDeciDigit(String s){
+		int i = 0;
+		String s2 = "";
+		for(Character c : s.toCharArray()) {
+			if(!(i == 0 && c == '-')) {
+				s2 = s2 + c;
+			}
+			i++;
+		}
+		return s2.replace(".", "").matches("[0-9]+");
+	}
+	
+	private static String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+	public static String randomString(int size) {
+		Random rand = new Random();
+		if (size <= 0) {
+			return "";
+		}
+		String str = "";
+		for (int i = 0; i < size; i++) {
+			int ind = rand.nextInt(chars.length());
+			char rchar = chars.charAt(ind);
+			str = str + rchar;
+		}
+		return str;
+	}
+	
 }

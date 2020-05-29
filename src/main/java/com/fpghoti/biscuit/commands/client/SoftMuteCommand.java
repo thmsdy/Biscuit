@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.global.SpamRecords;
 import com.fpghoti.biscuit.util.PermUtil;
 
@@ -15,7 +16,7 @@ public class SoftMuteCommand extends ClientCommand{
     public SoftMuteCommand() {
         name = "Soft Mute";
         description = "Soft mutes a user. In this state, they will only be able to send a message every two minutes.";
-        usage = "-softmute @<mention-user>";
+        usage = PropertiesRetrieval.getCommandSignifier() + "softmute @<mention-user>";
         minArgs = 1;
         maxArgs = 1;
         identifiers.add("softmute");

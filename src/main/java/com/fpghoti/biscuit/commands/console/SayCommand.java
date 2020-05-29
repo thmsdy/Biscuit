@@ -1,6 +1,7 @@
 package com.fpghoti.biscuit.commands.console;
 
 import com.fpghoti.biscuit.Biscuit;
+import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ConsoleCommand;
 
@@ -9,14 +10,17 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class SayCommand extends ConsoleCommand{
 
-    public SayCommand() {
-        name = "Say";
-        description = "Makes bot send message on specified channel.";
-        usage = "say <channel-name> <message>";
-        minArgs = 2;
-        maxArgs = 2000;
-        identifiers.add("say");
-    }
+	public SayCommand() {
+		name = "Say (Console)";
+		description = "Makes bot send message on specified channel.";
+		usage = "[CONSOLE] say <channel-name> <message>";
+		minArgs = 2;
+		maxArgs = 2000;
+		if(!Main.isPlugin) {
+			identifiers.add("say");
+		}
+		identifiers.add("bsay");
+	}
 
 	public void execute(String[] args) {
 		Biscuit b = API.getBiscuit();

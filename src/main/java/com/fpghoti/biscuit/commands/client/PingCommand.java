@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.config.PropertiesRetrieval;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -11,7 +12,7 @@ public class PingCommand extends ClientCommand{
     public PingCommand() {
         name = "Ping";
         description = "Pings the bot.";
-        usage = "-ping";
+        usage = PropertiesRetrieval.getCommandSignifier() + "ping";
         minArgs = 0;
         maxArgs = 0;
         identifiers.add("ping");

@@ -1,60 +1,54 @@
 package com.fpghoti.biscuit.config;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import com.fpghoti.biscuit.util.Util;
 
 public class PropertiesRetrieval {
 
 	public static String getToken(){
-		String token = "";
-
-		Properties prop = new Properties();
-		InputStream input = null;
-
-		try {
-			input = new FileInputStream("config.properties");
-			prop.load(input);
-			token = prop.getProperty("Bot-Token");
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		return token;
+		return ConfigRetrieval.getFromConfig("Bot-Token");
 	}
 	
 	public static String getCommandSignifier(){
-		String signifier = "";
-
-		Properties prop = new Properties();
-		InputStream input = null;
-
-		try {
-			input = new FileInputStream("config.properties");
-			prop.load(input);
-			signifier =  signifier + prop.getProperty("Command-Signifier").charAt(0);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		return ConfigRetrieval.getFromConfig("Command-Signifier");
+	}
+	
+	public static String getDoneEmote(){
+		return ConfigRetrieval.getFromConfig("Done-Emote");
+	}
+	
+	public static String getDontNotify(){
+		return ConfigRetrieval.getFromConfig("Dont-Notify-Role");
+	}
+	
+	public static boolean captchaEnabled(){
+		String value = ConfigRetrieval.getFromConfig("Captcha");
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public static String getCaptchaReward(){
+		return ConfigRetrieval.getFromConfig("Captcha-Reward-Role");
+	}
+	
+	public static String getDefaultRole(){
+		return ConfigRetrieval.getFromConfig("DefaultRoleName");
+	}
+	
+	public static boolean noCaptchaKick(){
+		String value = ConfigRetrieval.getFromConfig("No-Captcha-Kick");
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public static Integer noCaptchaKickTime(){
+		String value = ConfigRetrieval.getFromConfig("No-Captcha-Kick-Time");
+		if(!Util.isDigit(value)) {
+			return 0;
 		}
-
-		return signifier;
+		return Integer.parseInt(value);
+	}
+	
+	public static boolean logChat(){
+		String value = ConfigRetrieval.getFromConfig("ChatLog");
+		return value.equalsIgnoreCase("true");
 	}
 
 }

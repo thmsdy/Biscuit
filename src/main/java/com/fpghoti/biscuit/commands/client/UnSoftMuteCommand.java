@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.global.SpamRecords;
 import com.fpghoti.biscuit.util.PermUtil;
 
@@ -15,7 +16,7 @@ public class UnSoftMuteCommand extends ClientCommand{
     public UnSoftMuteCommand() {
         name = "Un Soft Mute";
         description = "Removes a soft mute from a user.";
-        usage = "-unsoftmute @<mention-user>";
+        usage = PropertiesRetrieval.getCommandSignifier() + "unsoftmute @<mention-user>";
         minArgs = 1;
         maxArgs = 1;
         identifiers.add("unsoftmute");

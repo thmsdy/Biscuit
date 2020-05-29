@@ -21,7 +21,7 @@ public class CommandListener extends ListenerAdapter implements Runnable {
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event){
 		if(!event.getAuthor().isBot() && event.getMessage().getContentDisplay().startsWith(PropertiesRetrieval.getCommandSignifier()) && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()){
-			log.info("True");
+			//log.info("True");
 			API.getBiscuit().getCommandManager().parse(event.getMessage().getContentRaw().toLowerCase(), event);
 		}
 	}

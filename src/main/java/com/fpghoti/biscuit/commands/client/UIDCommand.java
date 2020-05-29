@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Member;
@@ -14,7 +15,7 @@ public class UIDCommand extends ClientCommand{
     public UIDCommand() {
         name = "User ID";
         description = "Retrieves a user's ID.";
-        usage = "-uid @<mention-user>";
+        usage = PropertiesRetrieval.getCommandSignifier() + "uid @<mention-user>";
         minArgs = 1;
         maxArgs = 1;
         identifiers.add("uid");

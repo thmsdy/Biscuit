@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.global.SpamRecords;
 import com.fpghoti.biscuit.util.PermUtil;
 
@@ -15,7 +16,7 @@ public class NotSpammerCommand extends ClientCommand{
     public NotSpammerCommand() {
         name = "Not Spammer";
         description = "Delists user as spammer.";
-        usage = "-notspammer @<mention-user>";
+        usage = PropertiesRetrieval.getCommandSignifier() + "notspammer @<mention-user>";
         minArgs = 1;
         maxArgs = 1;
         identifiers.add("notspammer");

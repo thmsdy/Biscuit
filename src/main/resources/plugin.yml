@@ -1,0 +1,9 @@
+name: Biscuit
+author: Ghoti_Mayo
+version: ${project.version}
+main: com.fpghoti.biscuit.PluginCore
+description: Discord bot. Also runs as a Spigot plugin.
+commands:
+  bsay:
+    description: Send a message to a channel as a bot. Perm biscuit.admin
+    usage: /bsay <channel-name-without-#> <message>

@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.global.SpamRecords;
 
 import net.dv8tion.jda.api.entities.User;
@@ -13,7 +14,7 @@ public class RecentSpammersCommand extends ClientCommand{
     public RecentSpammersCommand() {
         name = "Recent Spammers";
         description = "Retrieves a list of recent spammers.";
-        usage = "-recentspammers";
+        usage = PropertiesRetrieval.getCommandSignifier() + "recentspammers";
         minArgs = 0;
         maxArgs = 0;
         identifiers.add("recentspammers");

@@ -7,4 +7,5 @@ public abstract class ConsoleCommand extends BaseCommand{
 	public CommandType getType() {
 		return CommandType.CONSOLE;
 	}
+
 }

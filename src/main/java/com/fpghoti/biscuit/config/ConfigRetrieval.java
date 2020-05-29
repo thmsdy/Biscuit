@@ -1,54 +1,41 @@
 package com.fpghoti.biscuit.config;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 
 import com.fpghoti.biscuit.Main;
+import com.fpghoti.biscuit.PluginCore;
 
 public class ConfigRetrieval {
 	
 	static Logger log = Main.log;
 	
-	public static void generateConfig(){
-		Properties prop = new Properties();
-		OutputStream output = null;
-
-		try {
-			FileInputStream inputStream = 
-					new FileInputStream("config.properties");
-			inputStream.close();        
-
-		}
-		catch(FileNotFoundException ex) {
-			log.info("config.ini missing...\nCreating file...");  
-
-			try {
-				output = new FileOutputStream("config.properties");
-				prop.setProperty("Bot-Token", "");
-				prop.setProperty("AllowSpamPunish", "true");
-				prop.store(output, null);
-
-			} catch (IOException io) {
-				io.printStackTrace();
-			} finally {
-				if (output != null) {
-					try {
-						output.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+	public static void generateConfig() {
+		File config;
+		if(Main.isPlugin) {
+			config = new File(PluginCore.plugin.getDataFolder(), "config.properties");
+			if(!config.exists()) {
+				config.getParentFile().mkdir();
 			}
+		}else {
+			config = new File("config.properties");
 		}
-		catch(IOException ex) {
-			log.info("CANNOT READ CONFIG!");                  
+		if (!config.exists()) {
+			try {
+				Path path = config.toPath();
+				InputStream is = ConfigRetrieval.class.getClassLoader().getResourceAsStream("config.properties");
+				Files.copy( is, path);
+				is.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -57,9 +44,17 @@ public class ConfigRetrieval {
 
 				Properties prop = new Properties();
 				InputStream input = null;
+				
+				File config;
+				
+				if(Main.isPlugin) {
+					config = new File(PluginCore.plugin.getDataFolder(), "config.properties");
+				}else {
+					config = new File("config.properties");
+				}
 
 				try {
-					input = new FileInputStream("config.properties");
+					input = new FileInputStream(config);
 					prop.load(input);
 					setting = prop.getProperty(property);
 				} catch (IOException ex) {

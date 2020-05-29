@@ -3,9 +3,12 @@ package com.fpghoti.biscuit.listener;
 import org.slf4j.Logger;
 
 import com.fpghoti.biscuit.Main;
+import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.global.Properties;
+import com.fpghoti.biscuit.user.PreUser;
 
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -15,7 +18,8 @@ public class JoinListener extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-		log.info("MEMBER JOINED: " + event.getMember().getUser().getName());
+		User user = event.getMember().getUser();
+		log.info("MEMBER JOINED: " + user.getName() + " " + user.getAsMention());
 		if(Properties.customdefaultrole) {
 			if(!event.getMember().getUser().isBot()) {
 				log.info("Issuing a role..");
@@ -28,6 +32,10 @@ public class JoinListener extends ListenerAdapter {
 				if(role == null) {
 					log.error("Cannot find role!");
 					return;
+				}
+				
+				if(PropertiesRetrieval.captchaEnabled()) {
+					new PreUser(event.getMember().getUser());
 				}
 				
 				event.getGuild().addRoleToMember(event.getMember(), role).queue();
