@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
-import com.fpghoti.biscuit.global.Properties;
 import com.fpghoti.biscuit.user.PreUser;
 
 import net.dv8tion.jda.api.entities.Role;
@@ -20,12 +19,12 @@ public class JoinListener extends ListenerAdapter {
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
 		User user = event.getMember().getUser();
 		log.info("MEMBER JOINED: " + user.getName() + " " + user.getAsMention());
-		if(Properties.customdefaultrole) {
+		if(PropertiesRetrieval.customDefaultRole()) {
 			if(!event.getMember().getUser().isBot()) {
 				log.info("Issuing a role..");
 				Role role = null;
 				for(Role r : event.getGuild().getRoles()) {
-					if(r.getName().contains(Properties.roleName)) {
+					if(r.getName().equals(PropertiesRetrieval.getDefaultRole())) {
 						role = r;
 					}
 				}

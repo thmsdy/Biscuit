@@ -25,6 +25,11 @@ public class PropertiesRetrieval {
 		return value.equalsIgnoreCase("true");
 	}
 	
+	public static boolean customDefaultRole(){
+		String value = ConfigRetrieval.getFromConfig("UseCustomDefaultRole");
+		return value.equalsIgnoreCase("true");
+	}
+	
 	public static String getCaptchaReward(){
 		return ConfigRetrieval.getFromConfig("Captcha-Reward-Role");
 	}
@@ -49,6 +54,23 @@ public class PropertiesRetrieval {
 	public static boolean logChat(){
 		String value = ConfigRetrieval.getFromConfig("ChatLog");
 		return value.equalsIgnoreCase("true");
+	}
+	
+	public static String[] getNaughtyWords(){
+		return ConfigRetrieval.getFromConfig("NaughtyList").replace(" ", "").split(",");
+	}
+	
+	public static boolean restrictCmdChannels(){
+		String value = ConfigRetrieval.getFromConfig("Restrict-Cmd-Channels");
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public static String[] getCmdChannels(){
+		return ConfigRetrieval.getFromConfig("CmdChannels").replace(" ", "").split(",");
+	}
+	
+	public static String[] getToggleRoles(){
+		return ConfigRetrieval.getFromConfig("ToggleRoles").replace(" ", "").split(",");
 	}
 
 }

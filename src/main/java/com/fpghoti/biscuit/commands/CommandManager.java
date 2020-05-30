@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fpghoti.biscuit.Biscuit;
-import com.fpghoti.biscuit.api.API;
+import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -73,7 +73,7 @@ public class CommandManager {
 	}
 
 	public void commandReply(MessageReceivedEvent e, String msg) {
-		Biscuit b = API.getBiscuit();
+		Biscuit b = Main.getBiscuit();
 		if(e != null) {
 			b.say(e.getTextChannel(), msg);
 		}else {

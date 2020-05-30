@@ -1,7 +1,7 @@
 package com.fpghoti.biscuit.commands.client;
 
 import com.fpghoti.biscuit.Biscuit;
-import com.fpghoti.biscuit.api.API;
+import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.commands.ClientCommand;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
 
@@ -20,7 +20,7 @@ public class PingCommand extends ClientCommand{
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		Biscuit b = API.getBiscuit();
+		Biscuit b = Main.getBiscuit();
 		b.log(event.getAuthor().getName() + " issued a command: -ping");
 		event.getTextChannel().sendMessage("Pong!").queue();	
 	}

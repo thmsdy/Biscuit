@@ -2,7 +2,6 @@ package com.fpghoti.biscuit.commands.console;
 
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.api.API;
 import com.fpghoti.biscuit.commands.ConsoleCommand;
 
 public class ShutdownConsoleCommand extends ConsoleCommand{
@@ -17,7 +16,7 @@ public class ShutdownConsoleCommand extends ConsoleCommand{
     }
 
 	public void execute(String[] args) {
-		Biscuit b = API.getBiscuit();
+		Biscuit b = Main.getBiscuit();
 		if(args.length == 0) {
 			Main.shutdown();
 		}else{

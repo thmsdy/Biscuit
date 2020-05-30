@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 
 public class PermUtil {
-	
+
 	public static boolean isAdmin(Member member){
 		if(member.hasPermission(Permission.ADMINISTRATOR)){
 			return true;
@@ -21,6 +21,16 @@ public class PermUtil {
 				if(role.getName().equalsIgnoreCase("bouncerkey")){
 					return true;
 				}
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean hasRole(Member member, Role role){
+		for(Role r : member.getRoles()){
+			if(r.getName().equals(role.getName())){
+				return true;
 			}
 		}
 

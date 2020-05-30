@@ -12,11 +12,10 @@ import com.fpghoti.biscuit.commands.client.AddCommand;
 import com.fpghoti.biscuit.commands.client.ChanIDCommand;
 import com.fpghoti.biscuit.commands.client.ChnameCommand;
 import com.fpghoti.biscuit.commands.client.DivideCommand;
-import com.fpghoti.biscuit.commands.client.DontNotifyCommand;
+import com.fpghoti.biscuit.commands.client.ToggleRoleCommand;
 import com.fpghoti.biscuit.commands.client.HelpCommand;
 import com.fpghoti.biscuit.commands.client.MultiplyCommand;
 import com.fpghoti.biscuit.commands.client.NotSpammerCommand;
-import com.fpghoti.biscuit.commands.client.NotifyCommand;
 import com.fpghoti.biscuit.commands.client.PingCommand;
 import com.fpghoti.biscuit.commands.client.PowerCommand;
 import com.fpghoti.biscuit.commands.client.RecentSpammersCommand;
@@ -29,7 +28,6 @@ import com.fpghoti.biscuit.commands.console.SayCommand;
 import com.fpghoti.biscuit.commands.console.ShutdownConsoleCommand;
 import com.fpghoti.biscuit.config.ConfigRetrieval;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
-import com.fpghoti.biscuit.global.Properties;
 import com.fpghoti.biscuit.listener.DMListener;
 import com.fpghoti.biscuit.listener.JoinListener;
 import com.fpghoti.biscuit.listener.MessageDeleteListener;
@@ -77,9 +75,9 @@ public class Main {
 		jda.addEventListener(new DMListener());
 
 		String link = "NULL";
-		Properties.naughtyList = ConfigRetrieval.getFromConfig("NaughtyList");
-		Properties.customdefaultrole = ConfigRetrieval.getFromConfig("UseCustomDefaultRole").equalsIgnoreCase("true");
-		Properties.roleName = ConfigRetrieval.getFromConfig("DefaultRoleName");
+//		Properties.naughtyList = ConfigRetrieval.getFromConfig("NaughtyList");
+//		Properties.customdefaultrole = ConfigRetrieval.getFromConfig("UseCustomDefaultRole").equalsIgnoreCase("true");
+//		Properties.roleName = ConfigRetrieval.getFromConfig("DefaultRoleName");
 
 		biscuit.addTimer(new ChatCountTimer());
 		biscuit.addTimer(new BotMsgRemoveTimer());
@@ -103,8 +101,7 @@ public class Main {
 		commands.add(new ChanIDCommand());
 		commands.add(new UIDCommand());
 		commands.add(new ChnameCommand());
-		commands.add(new NotifyCommand());
-		commands.add(new DontNotifyCommand());
+		commands.add(new ToggleRoleCommand());
 		commands.add(new SquareRootCommand());
 		commands.add(new AddCommand());
 		commands.add(new SubtractCommand());
