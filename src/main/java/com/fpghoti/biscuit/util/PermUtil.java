@@ -18,7 +18,7 @@ public class PermUtil {
 			return true;
 		}else{
 			for(Role role : member.getRoles()){
-				if(role.getName().equalsIgnoreCase("bouncerkey")){
+				if(role.getName().equalsIgnoreCase("biscuit-key")){
 					return true;
 				}
 			}
@@ -42,7 +42,7 @@ public class PermUtil {
 			return true;
 		}else{
 			for(Role role : member.getRoles()){
-				if(role.getName().equalsIgnoreCase("bouncerkey")){
+				if(role.getName().equalsIgnoreCase("biscuit-key")){
 					return true;
 				}
 			}
