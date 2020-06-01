@@ -179,8 +179,6 @@ public class DMListener extends ListenerAdapter{
 	}
 	
 	private String leeway(String s) {
-		s = s.replace("l", "1");
-		s = s.replace("g", "9");
 		s = s.replace("0", "O");
 		return s;
 	}
