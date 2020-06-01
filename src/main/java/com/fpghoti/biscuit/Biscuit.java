@@ -7,12 +7,12 @@ import java.util.Timer;
 
 import org.slf4j.Logger;
 
+import com.fpghoti.biscuit.captcha.BCage;
 import com.fpghoti.biscuit.commands.CommandManager;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.timer.BiscuitTimer;
 import com.fpghoti.biscuit.user.PreUser;
 import com.github.cage.Cage;
-import com.github.cage.GCage;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -45,7 +45,7 @@ public class Biscuit {
 			captchaDir = new File(PluginCore.plugin.getDataFolder(), "captcha");
 		}
 		captchaDir.mkdir();
-		cage = new GCage();
+		cage = new BCage();
 		wipeCaptchaDir();
 		loadPreUsers();
 	}

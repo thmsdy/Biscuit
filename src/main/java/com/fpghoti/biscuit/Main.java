@@ -75,9 +75,6 @@ public class Main {
 		jda.addEventListener(new DMListener());
 
 		String link = "NULL";
-//		Properties.naughtyList = ConfigRetrieval.getFromConfig("NaughtyList");
-//		Properties.customdefaultrole = ConfigRetrieval.getFromConfig("UseCustomDefaultRole").equalsIgnoreCase("true");
-//		Properties.roleName = ConfigRetrieval.getFromConfig("DefaultRoleName");
 
 		biscuit.addTimer(new ChatCountTimer());
 		biscuit.addTimer(new BotMsgRemoveTimer());
