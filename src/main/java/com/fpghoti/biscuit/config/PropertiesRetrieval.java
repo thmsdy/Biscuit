@@ -72,5 +72,24 @@ public class PropertiesRetrieval {
 	public static String[] getToggleRoles(){
 		return ConfigRetrieval.getFromConfig("ToggleRoles").replace(" ", "").split(",");
 	}
+	
+	public static String[] blockedUnicodeEmotes(){
+		return ConfigRetrieval.getFromConfig("Block-Unicode-Emotes").replace(" ", "").split(",");
+	}
 
+	public static String[] blockedCustomEmotes(){
+		return ConfigRetrieval.getFromConfig("Block-Custom-Emotes").replace(" ", "").split(",");
+	}
+	
+	public static String[] getCustomCmds(){
+		return ConfigRetrieval.getFromConfig("Custom-Command-Names").replace(" ", "").split(",");
+	}
+	
+	public static String[] disabledCommands(){
+		return ConfigRetrieval.getFromConfig("DisabledCommands").replace(" ", "").split(",");
+	}
+	
+	public static String[] disabledUserCommands(){
+		return ConfigRetrieval.getFromConfig("DisabledUserCommands").replace(" ", "").split(",");
+	}
 }

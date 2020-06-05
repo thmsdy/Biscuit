@@ -90,6 +90,11 @@ public class ConfigRetrieval {
 		added = addProperty("Captcha-Reward-Role", "cleared", prop, added);
 		added = addProperty("No-Captcha-Kick", "false", prop, added);
 		added = addProperty("No-Captcha-Kick-Time", "10", prop, added);
+		added = addProperty("Block-Unicode-Emotes", "baby,snake,squid", prop, added);
+		added = addProperty("Block-Custom-Emotes", "badfish,fix,bigleaf", prop, added);
+		added = addProperty("Custom-Command-Names", "", prop, added);
+		added = addProperty("DisabledCommands", "cmd1,cmd2,cmd3", prop, added);
+		added = addProperty("DisabledUserCommands", "cmd4,cmd5,cmd6", prop, added);
 
 		return added;
 	}

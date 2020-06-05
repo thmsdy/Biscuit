@@ -13,6 +13,12 @@ public abstract class BaseCommand{
     protected List<String> identifiers;
     protected List<String> notes;
 
+    public BaseCommand(String name, String description, String usage) {
+    	this.name = name;
+    	this.description = description;
+    	this.usage = usage;
+    }
+    
     public BaseCommand() {
         this.identifiers = new ArrayList<String>();
         this.notes = new ArrayList<String>();

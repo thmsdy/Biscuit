@@ -31,6 +31,15 @@ public class Util {
 	public static boolean isDigit(String s){
 		return s.matches("[0-9]+");
 	}
+	
+	public static boolean contains(String[] list, String s) {
+		for(String l : list) {
+			if(s.equals(l)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static boolean isDeciDigit(String s){
 		int i = 0;

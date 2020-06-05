@@ -1,11 +1,13 @@
 package com.fpghoti.biscuit.commands.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.commands.BaseCommand;
 import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.commands.CustomCommand;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.util.Util;
 
@@ -14,17 +16,17 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class HelpCommand extends ClientCommand {
 
 	public HelpCommand() {
-        name = "Help";
-        description = "Pulls up help menu";
-        usage = PropertiesRetrieval.getCommandSignifier() + "help [Page #]";
-        minArgs = 0;
-        maxArgs = 1;
-        identifiers.add("help");
-    }
+		name = "Help";
+		description = "Pulls up help menu";
+		usage = PropertiesRetrieval.getCommandSignifier() + "help [Page #]";
+		minArgs = 0;
+		maxArgs = 1;
+		identifiers.add("help");
+	}
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		
+
 		Biscuit biscuit = Main.getBiscuit();
 
 		int pg = 1;
@@ -36,13 +38,27 @@ public class HelpCommand extends ClientCommand {
 			}
 		}
 
-		List<BaseCommand> commands = biscuit.getCommandManager().getCommands();
+		List<BaseCommand> commands = new ArrayList<BaseCommand>();
+		String[] ccs = PropertiesRetrieval.getCustomCmds();
+		for(String s : ccs) {
+			if(!Util.contains(PropertiesRetrieval.disabledCommands(), s)) {
+				CustomCommand cc = new CustomCommand(s);
+				commands.add(cc);
+			}
+		}
+		for(BaseCommand bc : biscuit.getCommandManager().getCommands()) {
+			String bclabel = bc.getUsage().split(" ")[0];
+			if(!Util.contains(PropertiesRetrieval.disabledCommands(), bclabel.replace(PropertiesRetrieval.getCommandSignifier(), ""))) {
+				commands.add(bc);
+			}
+		}
 
 		int pageCount = (int) Math.ceil((double) commands.size() / 8);
 		if (pg > pageCount) {
 			pg = pageCount;
 		}
-		
+
+		event.getTextChannel().sendMessage("**Use " + PropertiesRetrieval.getCommandSignifier() + "help [Page #] to navigate the different pages.**").queue();
 		event.getTextChannel().sendMessage("[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] **Bot Commands:**").queue();
 		String msg = "";
 		for (int i = 0; i < 8; i++) {

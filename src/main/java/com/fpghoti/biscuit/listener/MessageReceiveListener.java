@@ -31,14 +31,12 @@ public class MessageReceiveListener extends ListenerAdapter{
 				}
 			}
 
-			if(event.getAuthor().isBot() && event.getMessage().getContentRaw().contains("This message contains words not appropriate for this channel.") || (ChatFilter.isNaughty(event.getMessage().getContentDisplay()))){
+			if(event.getAuthor().isBot() && event.getMessage().getContentRaw().contains("This message contains words not appropriate for this channel.") || (ChatFilter.filter(event))){
 				MessageQueue.removemessages.put(event.getMessage().getId(), event.getTextChannel());
 			}
 
 			//staff channels do not need filtering, as the filter could actually be a hinderance
-			if(!event.getChannel().getName().toLowerCase().contains("staff") && ChatFilter.isNaughty(event.getMessage().getContentDisplay())){
-				String text = event.getMessage().getContentDisplay();
-				log.info("Removed Msg - REASON NAUGHTY WORD(S) - by " + event.getAuthor().getName() + ": " + text);
+			if(!event.getChannel().getName().toLowerCase().contains("staff") && ChatFilter.filter(event, false)){
 				event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " This message contains words not appropriate for this channel.").complete();
 				MessageQueue.fastremovemessages.put(event.getMessage().getId(), event.getTextChannel());
 			}

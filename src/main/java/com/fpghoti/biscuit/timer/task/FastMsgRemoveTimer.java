@@ -9,7 +9,8 @@ public class FastMsgRemoveTimer extends BiscuitTimer{
 	
 	public FastMsgRemoveTimer(){
 		delay = (long) 0;
-		period = (long) 1*1000;
+		//period = (long) 1*1000;
+		period = (long) 250;
 	}
 
 	public void run() {

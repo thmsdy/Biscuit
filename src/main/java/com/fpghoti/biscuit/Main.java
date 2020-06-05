@@ -10,7 +10,6 @@ import com.fpghoti.biscuit.commands.BaseCommand;
 import com.fpghoti.biscuit.commands.CommandListener;
 import com.fpghoti.biscuit.commands.client.AddCommand;
 import com.fpghoti.biscuit.commands.client.ChanIDCommand;
-import com.fpghoti.biscuit.commands.client.ChnameCommand;
 import com.fpghoti.biscuit.commands.client.DivideCommand;
 import com.fpghoti.biscuit.commands.client.ToggleRoleCommand;
 import com.fpghoti.biscuit.commands.client.HelpCommand;
@@ -97,7 +96,6 @@ public class Main {
 		commands.add(new RecentSpammersCommand());
 		commands.add(new ChanIDCommand());
 		commands.add(new UIDCommand());
-		commands.add(new ChnameCommand());
 		commands.add(new ToggleRoleCommand());
 		commands.add(new SquareRootCommand());
 		commands.add(new AddCommand());

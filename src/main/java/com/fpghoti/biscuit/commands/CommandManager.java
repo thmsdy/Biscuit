@@ -6,6 +6,8 @@ import java.util.List;
 import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.util.PermUtil;
+import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -33,6 +35,18 @@ public class CommandManager {
 	}
 
 	public boolean dispatch(MessageReceivedEvent e, String label, String[] args) {
+
+		if(e != null) {
+
+			if(Util.contains(PropertiesRetrieval.disabledCommands(), label)) {
+				return false;
+			}
+			if(!PermUtil.isAdmin(e.getMember()) && Util.contains(PropertiesRetrieval.disabledUserCommands(), label)) {
+				return false;
+			}
+
+		}
+
 		String input = label + " ";
 		for (String s : args) {
 			input += s + " ";
@@ -66,6 +80,17 @@ public class CommandManager {
 					((ClientCommand)match).execute(trimmedArgs, e);
 				}else if(match instanceof ConsoleCommand && e == null) {
 					((ConsoleCommand)match).execute(trimmedArgs);
+				}
+			}
+		}else {
+			if(Util.contains(PropertiesRetrieval.getCustomCmds(), label)) {
+				CustomCommand cc = new CustomCommand(label);
+				if(args.length >= 1) {
+					commandReply(e, "``Command:" + " " + cc.getName() + "``");
+					commandReply(e, "``Description:" + " " + cc.getDescription() + "``");
+					commandReply(e, "``Usage:" + " " +  cc.getUsage() + "``");
+				}else {
+					commandReply(e, CustomCommand.fixPlaceholders(e, cc.getMessage()));
 				}
 			}
 		}
