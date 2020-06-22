@@ -7,7 +7,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.PluginCore;
 import com.fpghoti.biscuit.config.PropertiesRetrieval;
-import com.fpghoti.biscuit.util.Util;
 import com.github.cage.Cage;
 
 import net.dv8tion.jda.api.JDA;

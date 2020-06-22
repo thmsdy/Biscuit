@@ -38,6 +38,14 @@ public class PropertiesRetrieval {
 		return ConfigRetrieval.getFromConfig("DefaultRoleName");
 	}
 	
+	public static String getModRole(){
+		return ConfigRetrieval.getFromConfig("ModRole");
+	}
+	
+	public static String getAdminRole(){
+		return ConfigRetrieval.getFromConfig("AdminRole");
+	}
+	
 	public static boolean noCaptchaKick(){
 		String value = ConfigRetrieval.getFromConfig("No-Captcha-Kick");
 		return value.equalsIgnoreCase("true");
@@ -57,7 +65,12 @@ public class PropertiesRetrieval {
 	}
 	
 	public static String[] getNaughtyWords(){
-		return ConfigRetrieval.getFromConfig("NaughtyList").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("NaughtyList").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 	
 	public static boolean restrictCmdChannels(){
@@ -66,30 +79,92 @@ public class PropertiesRetrieval {
 	}
 	
 	public static String[] getCmdChannels(){
-		return ConfigRetrieval.getFromConfig("CmdChannels").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("CmdChannels").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 	
 	public static String[] getToggleRoles(){
-		return ConfigRetrieval.getFromConfig("ToggleRoles").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("ToggleRoles").replace(" , ", ",").replace(", ", ",").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public static String[] getBoostExclusiveRoles(){
+		String [] list = ConfigRetrieval.getFromConfig("Boost-Exclusive-Roles").replace(" , ", ",").replace(", ", ",").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public static String[] getBoosterRoles(){
+		String [] list = ConfigRetrieval.getFromConfig("Treat-Like-Booster").replace(" , ", ",").replace(", ", ",").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 	
 	public static String[] blockedUnicodeEmotes(){
-		return ConfigRetrieval.getFromConfig("Block-Unicode-Emotes").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("Block-Unicode-Emotes").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 
 	public static String[] blockedCustomEmotes(){
-		return ConfigRetrieval.getFromConfig("Block-Custom-Emotes").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("Block-Custom-Emotes").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 	
 	public static String[] getCustomCmds(){
-		return ConfigRetrieval.getFromConfig("Custom-Command-Names").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("Custom-Command-Names").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 	
 	public static String[] disabledCommands(){
-		return ConfigRetrieval.getFromConfig("DisabledCommands").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("DisabledCommands").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 	
 	public static String[] disabledUserCommands(){
-		return ConfigRetrieval.getFromConfig("DisabledUserCommands").replace(" ", "").split(",");
+		String [] list = ConfigRetrieval.getFromConfig("DisabledUserCommands").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public static String[] getToggleChannels(){
+		String [] list = ConfigRetrieval.getFromConfig("Toggle-Role-React-Channels").replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
 	}
 }

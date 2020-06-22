@@ -2,15 +2,10 @@ package com.fpghoti.biscuit.config;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
@@ -95,7 +90,12 @@ public class ConfigRetrieval {
 		added = addProperty("Custom-Command-Names", "", prop, added);
 		added = addProperty("DisabledCommands", "cmd1,cmd2,cmd3", prop, added);
 		added = addProperty("DisabledUserCommands", "cmd4,cmd5,cmd6", prop, added);
-
+		added = addProperty("ModRole", "biscuit-key", prop, added);
+		added = addProperty("AdminRole", "biscuit-admin", prop, added);
+		added = addProperty("Toggle-Role-React-Channels", "toggleroles1,toggleroles2,toggleroles3", prop, added);
+		added = addProperty("Boost-Exclusive-Roles", "role2,role3", prop, added);
+		added = addProperty("Treat-Like-Booster", "Nitro Booster,silver,gold", prop, added);
+		
 		return added;
 	}
 

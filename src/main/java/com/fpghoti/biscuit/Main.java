@@ -32,6 +32,8 @@ import com.fpghoti.biscuit.listener.JoinListener;
 import com.fpghoti.biscuit.listener.MessageDeleteListener;
 import com.fpghoti.biscuit.listener.MessageEditListener;
 import com.fpghoti.biscuit.listener.MessageReceiveListener;
+import com.fpghoti.biscuit.listener.ReactionListener;
+import com.fpghoti.biscuit.listener.RoleListener;
 import com.fpghoti.biscuit.timer.task.BotMsgRemoveTimer;
 import com.fpghoti.biscuit.timer.task.ChatCountTimer;
 import com.fpghoti.biscuit.timer.task.DecrementTimer;
@@ -72,6 +74,8 @@ public class Main {
 		jda.addEventListener(new MessageDeleteListener());
 		jda.addEventListener(new JoinListener());
 		jda.addEventListener(new DMListener());
+		jda.addEventListener(new ReactionListener());
+		jda.addEventListener(new RoleListener());
 
 		String link = "NULL";
 
@@ -119,6 +123,7 @@ public class Main {
 		ready = true;
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void startJDA() {
 		String token = PropertiesRetrieval.getToken();
 		log.info("Connecting bot to Discord.");

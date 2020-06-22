@@ -8,6 +8,7 @@ import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.global.MessageQueue;
 import com.fpghoti.biscuit.global.SpamRecords;
 import com.fpghoti.biscuit.util.ChatFilter;
+import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.Permission;
@@ -25,6 +26,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event){
 		if (event.isFromType(ChannelType.TEXT)) {
+			PermUtil.clearUndeservedRoles(event.getMember());
 			if(Util.isLoggable(event.getTextChannel())) {
 				if(PropertiesRetrieval.logChat()) {
 					log.info( "NEW MSG - MSGID: " + event.getMessageId() + "- @" + event.getAuthor().getName() + " " + event.getAuthor().getAsMention() +  " - CHANNEL: #" + event.getChannel().getName() + " - " + event.getMessage().getContentDisplay());

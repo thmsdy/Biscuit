@@ -29,7 +29,7 @@ public class NotSpammerCommand extends ClientCommand{
 		for(Member m : event.getMessage().getMentionedMembers()){
 			User u = m.getUser();
 			String s = u.getAsMention();
-			if(event.getChannel().getName().equals("public-spam-test") || (PermUtil.isMod(event.getMember()) || PermUtil.canMute(event.getMember()))) {
+			if(event.getChannel().getName().equals("public-spam-test") || (PermUtil.isMod(event.getMember()))) {
 				SpamRecords.spammers.remove(u);
 				event.getTextChannel().sendMessage(s+ " is no longer flagged as spam.").queue();
 			}

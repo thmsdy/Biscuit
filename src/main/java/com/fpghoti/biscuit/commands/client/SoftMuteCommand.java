@@ -29,7 +29,7 @@ public class SoftMuteCommand extends ClientCommand{
 		for(Member m : event.getMessage().getMentionedMembers()){
 			User u = m.getUser();
 			String s = u.getAsMention();
-			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()) || PermUtil.canMute(event.getMember()))) {
+			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()))) {
 				SpamRecords.softmute.add(u);
 				u.openPrivateChannel().queue();
 				event.getTextChannel().sendMessage(s+ " is now soft-muted. They will now be only able to send one message every two minutes.").queue();

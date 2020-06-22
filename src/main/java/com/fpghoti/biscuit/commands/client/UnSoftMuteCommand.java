@@ -29,7 +29,7 @@ public class UnSoftMuteCommand extends ClientCommand{
 		for(Member m : event.getMessage().getMentionedMembers()){
 			User u = m.getUser();
 			String s = u.getAsMention();
-			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()) || PermUtil.canMute(event.getMember()))) { 
+			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()))) { 
 				SpamRecords.softmute.remove(u);
 				event.getTextChannel().sendMessage(s+ " is no longer soft-muted.").queue();
 			}

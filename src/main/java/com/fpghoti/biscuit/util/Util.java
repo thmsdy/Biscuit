@@ -40,6 +40,15 @@ public class Util {
 		}
 		return false;
 	}
+	
+	public static boolean containsIgnoreCase(String[] list, String s) {
+		for(String l : list) {
+			if(s.equalsIgnoreCase(l)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static boolean isDeciDigit(String s){
 		int i = 0;
