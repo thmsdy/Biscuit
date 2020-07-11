@@ -15,6 +15,7 @@ import com.fpghoti.biscuit.commands.client.ToggleRoleCommand;
 import com.fpghoti.biscuit.commands.client.HelpCommand;
 import com.fpghoti.biscuit.commands.client.MultiplyCommand;
 import com.fpghoti.biscuit.commands.client.NotSpammerCommand;
+import com.fpghoti.biscuit.commands.client.MakeInviteCommand;
 import com.fpghoti.biscuit.commands.client.PingCommand;
 import com.fpghoti.biscuit.commands.client.PowerCommand;
 import com.fpghoti.biscuit.commands.client.RecentSpammersCommand;
@@ -107,6 +108,7 @@ public class Main {
 		commands.add(new MultiplyCommand());
 		commands.add(new DivideCommand());
 		commands.add(new PowerCommand());
+		commands.add(new MakeInviteCommand());
 
 		//Console
 

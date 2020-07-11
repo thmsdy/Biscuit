@@ -46,6 +46,20 @@ public class PropertiesRetrieval {
 		return ConfigRetrieval.getFromConfig("AdminRole");
 	}
 	
+	public static String getCaptchaLogChannel(){
+		return ConfigRetrieval.getFromConfig("Captcha-Log-Channel");
+	}
+	
+	public static boolean logCaptcha(){
+		String value = ConfigRetrieval.getFromConfig("LogCaptcha");
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public static boolean checkJoinInvite(){
+		String value = ConfigRetrieval.getFromConfig("Check-Join-Invite");
+		return value.equalsIgnoreCase("true");
+	}
+	
 	public static boolean noCaptchaKick(){
 		String value = ConfigRetrieval.getFromConfig("No-Captcha-Kick");
 		return value.equalsIgnoreCase("true");

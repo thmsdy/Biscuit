@@ -139,6 +139,7 @@ public class DMListener extends ListenerAdapter{
 				}
 				preu.setDone();
 				Main.log.info(tlabel + author.getName() + " successfully completed a captcha challenge. Granting role.");
+				Main.getBiscuit().captchaLog("" + tlabel + " ``" + author.getName() +"`` " + author.getAsMention() + " successfully completed a captcha challenge. Granting role.");
 
 				Role newrole = null;
 				Role defaultrole = null;

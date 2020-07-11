@@ -2,6 +2,7 @@ package com.fpghoti.biscuit;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 
@@ -15,7 +16,9 @@ import com.fpghoti.biscuit.user.PreUser;
 import com.github.cage.Cage;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -30,7 +33,7 @@ public class Biscuit {
 	private List<BiscuitTimer> timers;
 	private File captchaDir;
 	private Cage cage;
-
+	private HashMap<String, Integer> inviteUses;
 
 	public Biscuit(JDA jda, Logger log) {
 		this.jda = jda;
@@ -48,6 +51,23 @@ public class Biscuit {
 		cage = new BCage();
 		wipeCaptchaDir();
 		loadPreUsers();
+		inviteUses = new HashMap<String, Integer>();
+		if(canManageServer() && PropertiesRetrieval.checkJoinInvite()) {
+			for(Guild g : jda.getGuilds()) {
+				g.retrieveInvites().queue((invs) -> {
+					indexInvites(invs);
+				});
+			}
+		}
+	}
+
+	public boolean canManageServer() {
+		for(Guild g : jda.getGuilds()) {
+			if(g.getSelfMember().hasPermission(Permission.MANAGE_SERVER)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void log(String message) {
@@ -73,7 +93,6 @@ public class Biscuit {
 	public void say(TextChannel channel, String message) {
 		channel.sendMessage(message).queue();
 	}
-
 
 	public void loadTimers() {
 		timer.cancel();
@@ -111,6 +130,26 @@ public class Biscuit {
 	public Cage getCage() {
 		return this.cage;
 	}
+	
+	public ArrayList<TextChannel> getCaptchaLogChannels() {
+		ArrayList<TextChannel> ch = new ArrayList<TextChannel>();
+		for(Guild g : jda.getGuilds()) {
+			for(TextChannel t : g.getTextChannels()) {
+				if(t.getName().equalsIgnoreCase(PropertiesRetrieval.getCaptchaLogChannel())) {
+					ch.add(t);
+				}
+			}
+		}
+		return ch;
+	}
+	
+	public void captchaLog(String msg) {
+		if(PropertiesRetrieval.logCaptcha()) {
+			for(TextChannel t : getCaptchaLogChannels()) {
+				t.sendMessage(msg).queue();
+			}
+		}
+	}
 
 	private void loadPreUsers() {
 		for(Guild g : jda.getGuilds()) {
@@ -130,5 +169,24 @@ public class Biscuit {
 	}
 
 
+	private void indexInvites(List<Invite> invs) {
+		for(Invite i : invs) {
+			String code = i.getCode();
+			int uses = i.getUses();
+			inviteUses.put(code, uses);
+		}
+	}
+
+	public HashMap<String, Integer> getInviteUses(){
+		return inviteUses;
+	}
+
+	public void setInviteUses(HashMap<String, Integer> c) {
+		inviteUses = c;
+	}
+
+	public void clearInviteUses() {
+		inviteUses.clear();
+	}
 
 }

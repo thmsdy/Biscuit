@@ -93,7 +93,8 @@ public class PreUser {
 				timeLeft = timeLeft - 1;
 				if(timeLeft <= 0) {
 					for(Guild g : getGuilds()) {
-						Main.log.info(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
+						Main.log.info(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha. Kicking...");
+						Main.getBiscuit().captchaLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
 						g.kick(user.getId()).queue();
 						remove();
 					}

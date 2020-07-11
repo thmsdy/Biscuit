@@ -95,6 +95,9 @@ public class ConfigRetrieval {
 		added = addProperty("Toggle-Role-React-Channels", "toggleroles1,toggleroles2,toggleroles3", prop, added);
 		added = addProperty("Boost-Exclusive-Roles", "role2,role3", prop, added);
 		added = addProperty("Treat-Like-Booster", "Nitro Booster,silver,gold", prop, added);
+		added = addProperty("LogCaptcha", "false", prop, added);
+		added = addProperty("Captcha-Log-Channel", "verify-log", prop, added);
+		added = addProperty("Check-Join-Invite", "false", prop, added);
 		
 		return added;
 	}
