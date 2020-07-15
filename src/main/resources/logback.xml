@@ -1,31 +1,43 @@
 <configuration>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>[%date] %level - %msg%n</pattern>
-    </encoder>
-  </appender>
-  
-  <property name="DEV_HOME" value="./logs" />
-  
-     <appender name="FILE-AUDIT"
-        class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${DEV_HOME}/chatlog.log</file>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>
-                <pattern>[%date] %level - %msg%n</pattern>
-            </Pattern>
-        </encoder>
+	<property scope="context" name="COLORIZER_COLORS"
+		value="boldred@,boldyellow@,boldcyan@,boldmagenta@,boldwhite@" />
+	<conversionRule conversionWord="colorize"
+		converterClass="org.tuxdude.logback.extensions.LogColorizer" />
 
-    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>${DEV_HOME}/archived/chatlog.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-      <maxFileSize>450kb</maxFileSize>
-    </rollingPolicy>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%colorize([%date{MM/dd/yyyy HH:mm:ss}] %level) - %msg%n</pattern>
+		</encoder>
+	</appender>
 
-    </appender>
-  
-  
-  <root level="INFO">
-    <appender-ref ref="STDOUT" />
-    <appender-ref ref="FILE-AUDIT" />
-  </root>
+	<property name="DEV_HOME" value="./logs" />
+
+	<appender name="FILE-AUDIT"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${DEV_HOME}/chatlog.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				<pattern>[%date{MM/dd/yyyy HH:mm:ss}] %level - %msg%n</pattern>
+			</Pattern>
+		</encoder>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${DEV_HOME}/archived/chatlog.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<maxFileSize>450kb</maxFileSize>
+		</rollingPolicy>
+
+	</appender>
+	
+	<logger level="INFO" name="Biscuit">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<logger level="INFO" name="B-File">
+		<appender-ref ref="FILE-AUDIT" />
+	</logger>
+	
 </configuration> 

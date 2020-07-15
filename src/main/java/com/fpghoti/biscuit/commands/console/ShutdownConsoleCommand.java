@@ -1,6 +1,5 @@
 package com.fpghoti.biscuit.commands.console;
 
-import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.commands.ConsoleCommand;
 
@@ -16,11 +15,10 @@ public class ShutdownConsoleCommand extends ConsoleCommand{
     }
 
 	public void execute(String[] args) {
-		Biscuit b = Main.getBiscuit();
 		if(args.length == 0) {
 			Main.shutdown();
 		}else{
-			b.log("INCORRECT USAGE! TRY: say <channel-name> <message>");
+			Main.getLogger().info("INCORRECT USAGE! TRY: say <channel-name> <message>");
 		}
 	}
 

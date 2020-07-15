@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fpghoti</groupId>
 	<artifactId>Biscuit</artifactId>
-	<version>1.5</version>
+	<version>1.6</version>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
@@ -40,7 +40,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.4</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -50,6 +50,14 @@
 						<configuration>
 							<encoding>UTF-8</encoding>
 							<minimizeJar>true</minimizeJar>
+							<filters>
+								<filter>
+									<artifact>org.tuxdude.logback.extensions:logback-colorizer</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+							</filters>
 						</configuration>
 					</execution>
 				</executions>
@@ -91,6 +99,17 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>org.fusesource.jansi</groupId>
+			<artifactId>jansi</artifactId>
+			<version>1.18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.tuxdude.logback.extensions</groupId>
+			<artifactId>logback-colorizer</artifactId>
+			<version>1.0.1</version>
+
+		</dependency>
 		<dependency>
 			<groupId>com.github.CrabMustard</groupId>
 			<artifactId>emoji-java</artifactId>
@@ -148,7 +167,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>4.1.1_155</version>
+			<version>4.2.0_177</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.cage</groupId>

@@ -1,9 +1,7 @@
 package com.fpghoti.biscuit.listener;
 
-import org.slf4j.Logger;
-
-import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
@@ -17,32 +15,33 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class ReactionListener extends ListenerAdapter{
 
-	Logger log = Main.log;
-
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event){
+		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		if(event.getGuild() == null) {
 			return;
 		}
-		if(Util.contains(PropertiesRetrieval.getToggleChannels(),event.getTextChannel().getName())) {
+		if(Util.contains(biscuit.getProperties().getToggleChannels(),event.getTextChannel().getName())) {
 			handleMessageRole(event, false);
 		}
 	}
 
 	@Override
 	public void onMessageReactionRemove(MessageReactionRemoveEvent event){
+		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		if(event.getGuild() == null) {
 			return;
 		}
-		if(Util.contains(PropertiesRetrieval.getToggleChannels(),event.getTextChannel().getName())) {
+		if(Util.contains(biscuit.getProperties().getToggleChannels(),event.getTextChannel().getName())) {
 			handleMessageRole(event, true);
 		}
 	}
 
 	private void handleMessageRole(GenericMessageReactionEvent event, boolean remove) {
+		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		event.getTextChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
 			String msg = message.getContentDisplay();
-			for(String rolename : PropertiesRetrieval.getToggleRoles()) {
+			for(String rolename : biscuit.getProperties().getToggleRoles()) {
 				for(Role r : event.getGuild().getRoles()) {
 					if(r.getName().toLowerCase().equalsIgnoreCase(rolename)) {
 						if(msg.toLowerCase().contains("[toggle " + rolename.toLowerCase() + "]")) {
@@ -58,6 +57,7 @@ public class ReactionListener extends ListenerAdapter{
 	}
 
 	private void toggleRole(Role role, GenericMessageReactionEvent event, boolean remove) {
+		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		Guild guild = event.getGuild();
 		if(role == null) {
 			return;
@@ -65,7 +65,7 @@ public class ReactionListener extends ListenerAdapter{
 		Member m = event.getMember();
 		if(remove) {
 			if(PermUtil.hasRole(m, role)) {
-				log.info("REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - Removing role " + role.getName() + " from " + m.getUser().getName() + "(" + m.getId() + ")");
+				biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - " + BColor.RESET + "Removing role " + role.getName() + " from " + m.getUser().getName() + "(" + m.getId() + ")");
 				guild.removeRoleFromMember(m, role).queue();
 			}
 		}else {
@@ -80,7 +80,7 @@ public class ReactionListener extends ListenerAdapter{
 					canAdd = true;
 				}
 				if(canAdd) {
-					log.info("REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - Adding role " + role.getName() + " too " + m.getUser().getName() + "(" + m.getId() + ")");
+					biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - " + BColor.RESET + " Adding role " + role.getName() + " too " + m.getUser().getName() + "(" + m.getId() + ")");
 					guild.addRoleToMember(m, role).queue();
 				}
 			}

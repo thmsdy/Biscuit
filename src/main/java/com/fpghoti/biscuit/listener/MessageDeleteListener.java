@@ -1,8 +1,7 @@
 package com.fpghoti.biscuit.listener;
 
-import org.slf4j.Logger;
-
-import com.fpghoti.biscuit.Main;
+import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
@@ -10,12 +9,11 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageDeleteListener extends ListenerAdapter {
 
-	Logger log = Main.log;
-
 	@Override
 	public void onMessageDelete(MessageDeleteEvent event) {
+		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		if(Util.isLoggable(event.getTextChannel())) {
-			log.info("MESSAGE DELETED - MSGID: " + event.getMessageId());
+			biscuit.log(BColor.MAGENTA_BOLD + "Message " + event.getMessageId() + " was deleted.");
 		}
 	}
 

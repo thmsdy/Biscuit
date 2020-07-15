@@ -1,9 +1,8 @@
 package com.fpghoti.biscuit.commands.client;
 
-import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
+import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.ClientCommand;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Emote;
@@ -15,7 +14,7 @@ public class ToggleRoleCommand extends ClientCommand{
 	public ToggleRoleCommand() {
 		name = "ToggleRole";
 		description = "Toggles specified role on/off";
-		usage = PropertiesRetrieval.getCommandSignifier() + "togglerole <role>";
+		usage = Main.getMainBiscuit().getProperties().getCommandSignifier() + "togglerole <role>";
 		minArgs = 1;
 		maxArgs = 1;
 		identifiers.add("togglerole");
@@ -24,13 +23,14 @@ public class ToggleRoleCommand extends ClientCommand{
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		Biscuit b = Main.getBiscuit();
+		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		if(!event.getAuthor().isBot()) {
 			b.log(event.getAuthor().getName() + " issued a command: -togglerole " + args[0]);
+			boolean foundEmote = false;
 
 			String rolename = "";
 
-			for(String s : PropertiesRetrieval.getToggleRoles()) {
+			for(String s : b.getProperties().getToggleRoles()) {
 				if(s.equalsIgnoreCase(args[0])) {
 					rolename = s;
 				}
@@ -54,13 +54,14 @@ public class ToggleRoleCommand extends ClientCommand{
 
 			Emote done = null;
 			for(Emote e : event.getGuild().getEmotes()) {
-				if(e.getName().contains(PropertiesRetrieval.getDoneEmote())) {
+				if(e.getName().contains(b.getProperties().getDoneEmote())) {
 					done = e;
 				}
 			}
-			if(done == null) {
+			if(done != null) {
+				foundEmote = true;
+			}else {	
 				b.error("Cannot find emote!");
-				return;
 			}
 			if(PermUtil.hasRole(event.getMember(), role)){
 				event.getGuild().removeRoleFromMember(event.getMember(),role).queue();
@@ -75,9 +76,13 @@ public class ToggleRoleCommand extends ClientCommand{
 				}
 				if(canAdd) {
 					event.getGuild().addRoleToMember(event.getMember(), role).queue();
+					if(foundEmote) {
+						event.getMessage().addReaction(done).queue();
+					}else {
+						event.getMessage().addReaction("✔").queue();
+					}
 				}
 			}
-			event.getMessage().addReaction(done).queue();
 		}
 
 	}

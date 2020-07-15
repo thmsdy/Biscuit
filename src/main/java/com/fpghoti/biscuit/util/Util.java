@@ -2,7 +2,7 @@ package com.fpghoti.biscuit.util;
 
 import java.util.Random;
 
-import com.fpghoti.biscuit.config.ConfigRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -16,11 +16,9 @@ public class Util {
 	}
 
 	public static Boolean isLoggable(TextChannel c) {
-		if(c == null) {
-			return true;
-		}
+		Biscuit biscuit = Biscuit.getBiscuit(c.getGuild());
 		Boolean a = true;
-		for(String s: ConfigRetrieval.getFromConfig("Channels-To-Not-Chatlog").split(",")) {
+		for(String s: biscuit.getProperties().getDontLogChannels()) {
 			if(c.getName().equalsIgnoreCase(s)) {
 				a = false;
 			}

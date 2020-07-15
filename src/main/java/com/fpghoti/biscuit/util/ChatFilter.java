@@ -1,7 +1,7 @@
 package com.fpghoti.biscuit.util;
 
-import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.logging.BColor;
 import com.vdurmont.emoji.EmojiParser;
 
 import net.dv8tion.jda.api.entities.Emote;
@@ -16,17 +16,18 @@ public class ChatFilter {
 	}
 	
 	public static boolean filter(MessageReceivedEvent event, boolean silent) {
+		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		String msg = event.getMessage().getContentDisplay();
-
+		
 		//Message removal priority occurs in this order
 
 		boolean found = false;
 
 		//Naughty word check
-		boolean filter = (filter(msg));
+		boolean filter = (filter(biscuit, msg));
 		if(filter) {
 			if(!silent) {
-				Main.log.info("Removed Msg - REASON NAUGHTY WORD(S) - by " + event.getAuthor().getName() + ": " + msg);
+				biscuit.log(BColor.MAGENTA_BOLD + "Removed message from " + event.getAuthor().getName() + " for use of disallowed word(s).");
 			}
 			return true;
 		}
@@ -35,7 +36,7 @@ public class ChatFilter {
 		for(Emote e : event.getMessage().getEmotes()) {
 			String name = e.getName();
 
-			for(String s : PropertiesRetrieval.blockedCustomEmotes()) {
+			for(String s : biscuit.getProperties().blockedCustomEmotes()) {
 				if(s.equals(name)) {
 					found = true;
 				}
@@ -44,7 +45,7 @@ public class ChatFilter {
 
 		if(found) {
 			if(!silent) {
-				Main.log.info("Removed Msg - REASON BLOCKED CUSTOM EMOTE(S) - by " + event.getAuthor().getName() + ": " + msg);
+				biscuit.log(BColor.MAGENTA_BOLD + "Removed message from " + event.getAuthor().getName() + " for use of disallowed custom emote(s).");
 			}
 			return true;
 		}
@@ -52,7 +53,7 @@ public class ChatFilter {
 		//Unicode emote check
 		for(String u : EmojiParser.extractEmojis(msg)) {
 			u = EmojiParser.parseToAliases(u).replace(":","");
-			for(String s : PropertiesRetrieval.blockedUnicodeEmotes()) {
+			for(String s : biscuit.getProperties().blockedUnicodeEmotes()) {
 				if(s.equalsIgnoreCase(u)) {
 					found = true;
 				}
@@ -61,7 +62,7 @@ public class ChatFilter {
 
 		if(found) {
 			if(!silent) {
-				Main.log.info("Removed Msg - REASON BLOCKED UNICODE EMOTE(S) - by " + event.getAuthor().getName() + ": " + msg);
+				biscuit.log(BColor.MAGENTA_BOLD + "Removed message from " + event.getAuthor().getName() + " for use of disallowed unicode emote(s).");
 			}
 			return true;
 		}
@@ -69,32 +70,32 @@ public class ChatFilter {
 		return false;
 	}
 
-	public static boolean filter(String sentence){
+	public static boolean filter(Biscuit biscuit, String sentence){
 		for(String s : sentence.split(" ")){
-			if(filterWord(s)){
+			if(filterWord(biscuit, s)){
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static boolean filterWord(String word) {
-		String[] match = findMatchPair(word);
+	public static boolean filterWord(Biscuit biscuit, String word) {
+		String[] match = findMatchPair(biscuit, word);
 		if(match != null) {
 			return true;
 		}
 		return false;
 	}
 
-	public static String findMatch(String word) {
-		String[] match = findMatchPair(word);
+	public static String findMatch(Biscuit biscuit, String word) {
+		String[] match = findMatchPair(biscuit, word);
 		if(match == null || match[0] == null) {
 			return null;
 		}
 		return match[0];
 	}
 
-	public static String[] findMatchPair(String word) {
+	public static String[] findMatchPair(Biscuit biscuit, String word) {
 		String cleaned = "";
 		word = word.toLowerCase();
 		if(word.length() >= 2 && word.charAt(word.length() -1) == '!'){
@@ -117,7 +118,7 @@ public class ChatFilter {
 			return null;
 		}
 		String[] wordSuf = {null,null};
-		for(String item : PropertiesRetrieval.getNaughtyWords()) {
+		for(String item : biscuit.getProperties().getNaughtyWords()) {
 			if(cleaned.equalsIgnoreCase(item)){
 				wordSuf[0] = item;
 				return wordSuf;

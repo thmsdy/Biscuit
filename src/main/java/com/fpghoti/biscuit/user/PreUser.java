@@ -6,38 +6,30 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.PluginCore;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.util.PermUtil;
 import com.github.cage.Cage;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 
 public class PreUser {
 
 	public static CopyOnWriteArrayList<PreUser> testusers = new CopyOnWriteArrayList<PreUser>();
-	public static CopyOnWriteArrayList<PreUser> users = new CopyOnWriteArrayList<PreUser>();
 
-	public static PreUser getTestUser(User user) {
-		for(PreUser u : testusers) {
-			if(u.getUser().getId().equals(user.getId())) {
-				return u;
-			}
-		}
-		return null;
-	}
-	
-	public static PreUser getPreUser(User user) {
-		for(PreUser u : users) {
-			if(u.getUser().getId().equals(user.getId())) {
-				return u;
+	public static PreUser getTestUser(User u) {
+		for(PreUser pu : testusers) {
+			if(pu.getUser().getId().equals(u.getId())) {
+				return pu;
 			}
 		}
 		return null;
 	}
 
-	public static boolean preUserExists(User user) {
-		return getPreUser(user) != null;
+	public static boolean hasTestUser(User u) {
+		return getTestUser(u) != null;
 	}
 
 	private User user;
@@ -45,20 +37,26 @@ public class PreUser {
 	private int timeLeft;
 	private boolean done;
 	private boolean test;
+	private Biscuit biscuit;
 
-	public PreUser(User user) {
-		this(user, false);
+	public PreUser(User user, Biscuit biscuit) {
+		this(user, biscuit, false);
 	}
-	
-	public PreUser(User user, boolean test) {
+
+	public PreUser(User user, Biscuit biscuit, boolean test) {
 		this.test = test;
 		this.user = user;
 		this.token = null;
+		this.biscuit = biscuit;
 		this.done = false;
-		this.timeLeft = PropertiesRetrieval.noCaptchaKickTime() + 1;
+		this.timeLeft = biscuit.getProperties().noCaptchaKickTime() + 1;
 		if(!test) {
-			users.add(this);
+			biscuit.addPreUser(this);
 		}
+	}
+
+	public Biscuit getBiscuit() {
+		return biscuit;
 	}
 
 	public User getUser() {
@@ -70,7 +68,7 @@ public class PreUser {
 	}
 
 	public void genToken() {
-		Cage cage = Main.getBiscuit().getCage();
+		Cage cage = biscuit.getCage();
 		token = cage.getTokenGenerator().next();
 	}
 
@@ -83,21 +81,24 @@ public class PreUser {
 			remove();
 			return;
 		}
-		
+
 		if(test) {
 			return;
 		}
 
 		if(!done) {
-			if(PropertiesRetrieval.noCaptchaKick()) {
+			if(biscuit.getProperties().noCaptchaKick()) {
 				timeLeft = timeLeft - 1;
 				if(timeLeft <= 0) {
-					for(Guild g : getGuilds()) {
-						Main.log.info(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha. Kicking...");
-						Main.getBiscuit().captchaLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
-						g.kick(user.getId()).queue();
-						remove();
+					Member m = biscuit.getGuild().getMember(user);
+					biscuit.log(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha. Kicking...");
+					biscuit.captchaLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
+					
+					if(biscuit.getGuild().getMember(user).getRoles().size() == 1 && PermUtil.hasDefaultRole(m) && !PermUtil.hasRewardRole(m)) {
+						biscuit.getGuild().kick(user.getId()).queue();
 					}
+
+					remove();
 				}
 			}
 		}
@@ -105,7 +106,7 @@ public class PreUser {
 	}
 
 	public boolean shareGuild() {
-		JDA jda = Main.getBiscuit().getJDA();
+		JDA jda = biscuit.getJDA();
 		for(Guild g : jda.getGuilds()) {
 			if(g.isMember(user)){
 				return true;
@@ -116,7 +117,7 @@ public class PreUser {
 
 	public ArrayList<Guild> getGuilds(){
 		ArrayList<Guild> guilds = new ArrayList<Guild>();
-		JDA jda = Main.getBiscuit().getJDA();
+		JDA jda = biscuit.getJDA();
 		for(Guild g : jda.getGuilds()) {
 			if(g.isMember(user)){
 				guilds.add(g);
@@ -127,7 +128,7 @@ public class PreUser {
 
 	public void remove() {
 		setDone();
-		Main.log.info("Removing captcha data for user " + user.getName() + " " + user.getAsMention());
+		biscuit.log("Removing captcha data for user " + user.getName() + " " + user.getAsMention());
 		File captcha;
 		if(!Main.isPlugin) {
 			captcha = new File("captcha/" + user.getId() + ".jpg");
@@ -136,7 +137,7 @@ public class PreUser {
 		}
 		token = null;
 		captcha.delete();
-		users.remove(this);
+		biscuit.removePreUser(this);
 		testusers.remove(this);
 	}
 

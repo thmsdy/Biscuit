@@ -1,0 +1,331 @@
+package com.fpghoti.biscuit.config;
+
+import com.fpghoti.biscuit.Main;
+import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.util.Util;
+
+public class BiscuitProperties {
+	
+	Biscuit biscuit;
+	
+	public BiscuitProperties(Biscuit b) {
+		this.biscuit = b;
+	}
+
+	public String getToken(){
+		String key = "Bot-Token";
+		return Main.getMainBiscuit().getConfig().getFromConfig(key, Main.getMainBiscuit());
+	}
+	
+	public String getCommandSignifier(){
+		String key = "Command-Signifier";
+		return Main.getMainBiscuit().getConfig().getFromConfig(key, Main.getMainBiscuit());
+	}
+	
+	public String getGuildCode(){
+		String key = "Guild-Code";
+		if(biscuit.getGuild() == null) {
+			return "MAIN";
+		}
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return biscuit.getConfig().makeCode(biscuit.getGuild().getName());
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public String getDoneEmote(){
+		String key = "Done-Emote";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getDoneEmote();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public String getDontNotify(){
+		String key = "Dont-Notify-Role";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getDontNotify();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public boolean captchaEnabled(){
+		String key = "Captcha";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().captchaEnabled();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public boolean customDefaultRole(){
+		String key = "UseCustomDefaultRole";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().customDefaultRole();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public String getCaptchaReward(){
+		String key = "Captcha-Reward-Role";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getCaptchaReward();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public String getDefaultRole(){
+		String key = "DefaultRoleName";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getDefaultRole();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public String getModRole(){
+		String key = "ModRole";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getModRole();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public String getAdminRole(){
+		String key = "AdminRole";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getAdminRole();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public String getCaptchaLogChannel(){
+		String key = "Captcha-Log-Channel";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getCaptchaLogChannel();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
+	public boolean logCaptcha(){
+		String key = "LogCaptcha";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().logCaptcha();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public boolean spamPunishAllow(){
+		String key = "AllowSpamPunish";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().spamPunishAllow();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public boolean checkJoinInvite(){
+		String key = "Check-Join-Invite";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().checkJoinInvite();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public boolean noCaptchaKick(){
+		String key = "No-Captcha-Kick";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().noCaptchaKick();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public Integer noCaptchaKickTime(){
+		String key = "No-Captcha-Kick-Time";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().noCaptchaKickTime();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		if(!Util.isDigit(value)) {
+			return 0;
+		}
+		return Integer.parseInt(value);
+	}
+	
+	public boolean logChat(){
+		String key = "ChatLog";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().logChat();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public String[] getNaughtyWords(){
+		String key = "NaughtyList";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getNaughtyWords();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public boolean restrictCmdChannels(){
+		String key = "Restrict-Cmd-Channels";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().restrictCmdChannels();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public String[] getCmdChannels(){
+		String key = "CmdChannels";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getCmdChannels();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] getDontLogChannels(){
+		String key = "Channels-To-Not-Chatlog";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getCmdChannels();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] getToggleRoles(){
+		String key = "ToggleRoles";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getToggleRoles();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" , ", ",").replace(", ", ",").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] getBoostExclusiveRoles(){
+		String key = "Boost-Exclusive-Roles";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getBoostExclusiveRoles();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" , ", ",").replace(", ", ",").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] getBoosterRoles(){
+		String key = "Treat-Like-Booster";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getBoosterRoles();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" , ", ",").replace(", ", ",").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] blockedUnicodeEmotes(){
+		String key = "Block-Unicode-Emotes";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().blockedUnicodeEmotes();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+
+	public String[] blockedCustomEmotes(){
+		String key = "Block-Custom-Emotes";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().blockedCustomEmotes();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] getCustomCmds(){
+		String key = "Custom-Command-Names";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getCustomCmds();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] disabledCommands(){
+		String key = "DisabledCommands";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().disabledCommands();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] disabledUserCommands(){
+		String key = "DisabledUserCommands";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().disabledUserCommands();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] getToggleChannels(){
+		String key = "Toggle-Role-React-Channels";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getToggleChannels();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" ", "").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+}

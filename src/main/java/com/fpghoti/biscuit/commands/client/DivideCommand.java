@@ -1,9 +1,8 @@
 package com.fpghoti.biscuit.commands.client;
 
-import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
+import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.ClientCommand;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -13,7 +12,7 @@ public class DivideCommand extends ClientCommand{
     public DivideCommand() {
         name = "Divide";
         description = "Divides two numbers.";
-        usage = PropertiesRetrieval.getCommandSignifier() + "divide <Num 1> <Num 2>";
+        usage = Main.getMainBiscuit().getProperties().getCommandSignifier() + "divide <Num 1> <Num 2>";
         minArgs = 2;
         maxArgs = 2;
         identifiers.add("divide");
@@ -22,7 +21,7 @@ public class DivideCommand extends ClientCommand{
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		Biscuit b = Main.getBiscuit();
+		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -divide");
 		if(args[0] != null && Util.isDeciDigit(args[0]) && args[1] != null && Util.isDeciDigit(args[1])) {
 			double num = Double.parseDouble(args[0]);

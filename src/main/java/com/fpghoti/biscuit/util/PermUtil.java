@@ -1,7 +1,6 @@
 package com.fpghoti.biscuit.util;
 
-import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.jcabi.aspects.Async;
 
 import net.dv8tion.jda.api.Permission;
@@ -11,11 +10,12 @@ import net.dv8tion.jda.api.entities.Role;
 public class PermUtil {
 
 	public static boolean isAdmin(Member member){
+		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
 		if(member.hasPermission(Permission.ADMINISTRATOR)){
 			return true;
 		}else{
 			for(Role role : member.getRoles()){
-				if(role.getName().equalsIgnoreCase(PropertiesRetrieval.getAdminRole())){
+				if(role.getName().equalsIgnoreCase(biscuit.getProperties().getAdminRole())){
 					return true;
 				}
 			}
@@ -24,11 +24,12 @@ public class PermUtil {
 	}
 
 	public static boolean isMod(Member member){
+		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
 		if(isAdmin(member)){
 			return true;
 		}else{
 			for(Role role : member.getRoles()){
-				if(role.getName().equalsIgnoreCase(PropertiesRetrieval.getModRole())){
+				if(role.getName().equalsIgnoreCase(biscuit.getProperties().getModRole())){
 					return true;
 				}
 			}
@@ -58,10 +59,11 @@ public class PermUtil {
 	}
 	
 	public static boolean isBooster(Member member) {
+		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
 		if(isAdmin(member)) {
 			return true;
 		}
-		for(String r : PropertiesRetrieval.getBoosterRoles()) {
+		for(String r : biscuit.getProperties().getBoosterRoles()) {
 			if(hasRole(member,r)) {
 				return true;
 			}
@@ -70,16 +72,38 @@ public class PermUtil {
 	}
 	
 	public static boolean isBoosterExclusive(Role r) {
-		return Util.containsIgnoreCase(PropertiesRetrieval.getBoostExclusiveRoles(),r.getName());
+		Biscuit biscuit = Biscuit.getBiscuit(r.getGuild());
+		return Util.containsIgnoreCase(biscuit.getProperties().getBoostExclusiveRoles(),r.getName());
+	}
+	
+	public static boolean hasDefaultRole(Member m) {
+		Biscuit biscuit = Biscuit.getBiscuit(m.getGuild());
+		for(Role r : biscuit.getGuild().getRoles()) {
+			if(r.getName().equalsIgnoreCase(biscuit.getProperties().getDefaultRole())){
+				return hasRole(m,r);
+			}
+		}
+		return false;
+	}
+	
+	public static boolean hasRewardRole(Member m) {
+		Biscuit biscuit = Biscuit.getBiscuit(m.getGuild());
+		for(Role r : biscuit.getGuild().getRoles()) {
+			if(r.getName().equalsIgnoreCase(biscuit.getProperties().getCaptchaReward())){
+				return hasRole(m,r);
+			}
+		}
+		return false;
 	}
 	
 	@Async
 	public static void clearUndeservedRoles(Member m) {
 		boolean booster = isBooster(m);
+		Biscuit b = Biscuit.getBiscuit(m.getGuild());
 		for(Role r : m.getRoles()) {
 			if(!booster && isBoosterExclusive(r)) {
 				m.getGuild().removeRoleFromMember(m,r).queue();
-				Main.log.info("BOOST ROLE REMOVED - Member: " + m.getUser().getName() + " (" + m.getId() + ") Role: " + r.getName());
+				b.log("Booster role removed from " + m.getUser().getName() + " (" + m.getId() + ") Role: " + r.getName());
 			}
 		}
 	}

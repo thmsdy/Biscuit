@@ -1,9 +1,8 @@
 package com.fpghoti.biscuit.commands.client;
 
-import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
+import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.ClientCommand;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
@@ -16,7 +15,7 @@ public class MakeInviteCommand extends ClientCommand{
 	public MakeInviteCommand() {
 		name = "Make Invite";
 		description = "Creates an invite in the specified channel";
-		usage = PropertiesRetrieval.getCommandSignifier() + "makeinvite <channel-name> [max-age-hours]";
+		usage = Main.getMainBiscuit().getProperties().getCommandSignifier() + "makeinvite <channel-name> [max-age-hours]";
 		minArgs = 1;
 		maxArgs = 2;
 		identifiers.add("makeinvite");
@@ -29,30 +28,29 @@ public class MakeInviteCommand extends ClientCommand{
 			doubAge = Double.parseDouble(args[1]) * 3600;
 		}
 		int maxAge = (int)Math.round(doubAge);
-		Biscuit b = Main.getBiscuit();
+		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -makeinvite " + args[0]);
 		if((PermUtil.isAdmin(event.getMember()))) {
-			for(Guild g : b.getJDA().getGuilds()) {
-				TextChannel c = null;
-				for(TextChannel t : g.getTextChannels()) {
-					if(t.getName().equalsIgnoreCase(args[0])) {
-						c = t;
+			Guild g = event.getGuild();
+			TextChannel c = null;
+			for(TextChannel t : g.getTextChannels()) {
+				if(t.getName().equalsIgnoreCase(args[0])) {
+					c = t;
+				}
+			}
+			if(doubAge > 86400) {
+				event.getChannel().sendMessage("That length is longer than what Discord allows. Please try again. (Max 24 hours)").queue();
+				return;
+			}
+			final double db = doubAge;
+			if(c != null) {
+				c.createInvite().setMaxAge(maxAge).queue((i) -> {
+					String exp = "Never";
+					if(db > 0) {
+						exp = args[1] + " hour(s)";
 					}
-				}
-				if(doubAge > 86400) {
-					event.getChannel().sendMessage("That length is longer than what Discord allows. Please try again. (Max 24 hours)").queue();
-					return;
-				}
-				final double db = doubAge;
-				if(c != null) {
-					c.createInvite().setMaxAge(maxAge).queue((i) -> {
-						String exp = "Never";
-						if(db > 0) {
-							exp = args[1] + " hour(s)";
-						}
-						event.getChannel().sendMessage("Created invite **" + i.getCode() + "** Expiration: **" + exp + "**.").queue();
-					});
-				}
+					event.getChannel().sendMessage("Created invite **" + i.getCode() + "** Expiration: **" + exp + "**.").queue();
+				});
 			}
 		}
 	}

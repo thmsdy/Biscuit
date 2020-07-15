@@ -2,11 +2,8 @@ package com.fpghoti.biscuit.listener;
 
 import java.util.HashMap;
 
-import org.slf4j.Logger;
-
-import com.fpghoti.biscuit.Biscuit;
-import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.user.PreUser;
 import com.jcabi.aspects.Async;
 
@@ -19,68 +16,65 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class JoinListener extends ListenerAdapter {
 
-	Logger log = Main.log;
-
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-		Biscuit b = Main.getBiscuit();
+		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		User user = event.getMember().getUser();
-		log.info("USER JOINED: " + user.getName() + " " + user.getAsMention());
-		b.captchaLog("**User Joined:** ``" + user.getName() + "`` " + user.getAsMention());
-		if(b.canManageServer() && PropertiesRetrieval.checkJoinInvite()) {
-			logUserInvite(user);
+		biscuit.log(BColor.YELLOW_BOLD + "USER JOINED: " + user.getName() + " " + user.getAsMention());
+		biscuit.captchaLog("**User Joined:** ``" + user.getName() + "`` " + user.getAsMention());
+		if(biscuit.canManageServer() && biscuit.getProperties().checkJoinInvite()) {
+			logUserInvite(user, biscuit);
 		}else {
-			b.clearInviteUses();
+			biscuit.clearInviteUses();
 		}
-		if(PropertiesRetrieval.customDefaultRole()) {
+		if(biscuit.getProperties().customDefaultRole()) {
 			if(!event.getMember().getUser().isBot()) {
-				log.info("Issuing a role..");
+				biscuit.log("Issuing a role..");
 				Role role = null;
 				for(Role r : event.getGuild().getRoles()) {
-					if(r.getName().equals(PropertiesRetrieval.getDefaultRole())) {
+					if(r.getName().equals(biscuit.getProperties().getDefaultRole())) {
 						role = r;
 					}
 				}
 				if(role == null) {
-					log.error("Cannot find role!");
+					biscuit.error("Cannot find role!");
 					return;
 				}
-				
-				if(PropertiesRetrieval.captchaEnabled()) {
-					new PreUser(event.getMember().getUser());
+
+				if(biscuit.getProperties().captchaEnabled()) {
+					biscuit.log(BColor.MAGENTA_BOLD + "Adding pre-join check for user " + user.getName() + " (" + user.getAsMention() + ")...");
+					new PreUser(event.getMember().getUser(), biscuit);
 				}
-				
+
 				event.getGuild().addRoleToMember(event.getMember(), role).queue();
-				
+
 			}
 		}
 	}
-	
+
 	@Async
-	private void logUserInvite(final User user){
-		final Biscuit b = Main.getBiscuit();
-		for(Guild g : b.getJDA().getGuilds()) {
-			g.retrieveInvites().queue((invs) -> {
-				String usedInv = "Other";
-				HashMap<String, Integer> newinv = new HashMap<String, Integer>();
-				boolean empty = b.getInviteUses().isEmpty();
-				for(Invite i : invs) {
-					String code = i.getCode();
-					int uses = i.getUses();
-					newinv.put(code, uses);
-					if(!empty &&(!b.getInviteUses().containsKey(code) || b.getInviteUses().get(code) != uses)) {
-						usedInv = code;
-					}
+	private void logUserInvite(final User user, final Biscuit b){
+		Guild g = b.getGuild();
+		g.retrieveInvites().queue((invs) -> {
+			String usedInv = "Other";
+			HashMap<String, Integer> newinv = new HashMap<String, Integer>();
+			boolean empty = b.getInviteUses().isEmpty();
+			for(Invite i : invs) {
+				String code = i.getCode();
+				int uses = i.getUses();
+				newinv.put(code, uses);
+				if(!empty &&(!b.getInviteUses().containsKey(code) || b.getInviteUses().get(code) != uses)) {
+					usedInv = code;
 				}
-				if(empty) {
-					log.info("The ability for the bot to check the invites has only recently been enabled, so there is not enough data to determine the invite used. This should be fixed by the next time a user joins the server.");
-					usedInv = "Unknown";
-				}
-				b.setInviteUses(newinv);
-				log.info("INVITE INFO: " + user.getName() + " used invite: " + usedInv);
-				b.captchaLog("**Invite Info:** ``" + user.getName() + "`` used invite: ``" + usedInv + "``");
-			});
-		}
+			}
+			if(empty) {
+				b.log("The ability for the bot to check the invites has only recently been enabled, so there is not enough data to determine the invite used. This should be fixed by the next time a user joins the server.");
+				usedInv = "Unknown";
+			}
+			b.setInviteUses(newinv);
+			b.log(BColor.YELLOW_BOLD + "INVITE INFO: " + BColor.WHITE + user.getName() + " used invite: " + BColor.GREEN_BOLD + usedInv);
+			b.captchaLog("**Invite Info:** ``" + user.getName() + "`` used invite: ``" + usedInv + "``");
+		});
 	}
 
 

@@ -1,7 +1,6 @@
 package com.fpghoti.biscuit.commands;
 
-import com.fpghoti.biscuit.config.ConfigRetrieval;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -13,9 +12,11 @@ public class CustomCommand extends BaseCommand {
 	}
 	
 	private String name;
+	private Biscuit biscuit;
 	
-	public CustomCommand(String name) {
+	public CustomCommand(String name, Biscuit biscuit) {
 		this.name = name;
+		this.biscuit = biscuit;
 	}
 	
 	@Override
@@ -25,12 +26,12 @@ public class CustomCommand extends BaseCommand {
 	
 	@Override
 	public String getUsage() {
-		return PropertiesRetrieval.getCommandSignifier() + name;
+		return biscuit.getProperties().getCommandSignifier() + name;
 	}
 	
 	@Override
 	public String getDescription() {
-		String desc = ConfigRetrieval.getFromConfig("cc-" + name + "-description");
+		String desc = biscuit.getConfig().getFromConfig("cc-" + name + "-description", biscuit);
 		if(desc == null) {
 			return "null";
 		}
@@ -43,7 +44,7 @@ public class CustomCommand extends BaseCommand {
 	}
 
 	public String getMessage() {
-		String msg = ConfigRetrieval.getFromConfig("cc-" + name + "-message");
+		String msg = biscuit.getConfig().getFromConfig("cc-" + name + "-message", biscuit);
 		if(msg == null) {
 			return "null";
 		}

@@ -3,9 +3,8 @@ package com.fpghoti.biscuit.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fpghoti.biscuit.Biscuit;
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.config.PropertiesRetrieval;
+import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
@@ -13,11 +12,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandManager {
 
-	private List<BaseCommand> commands = new ArrayList<BaseCommand>();
+	private static List<BaseCommand> commands = new ArrayList<BaseCommand>();
 
-	public void parse(String message, MessageReceivedEvent e){
+	public static void parse(String message, MessageReceivedEvent e){
+		Biscuit b = Biscuit.getBiscuit(e.getGuild());
 		ArrayList<String> split = new ArrayList<String>();
-		String fixed = message.replaceFirst(PropertiesRetrieval.getCommandSignifier(), "");
+		String fixed = message.replaceFirst(b.getProperties().getCommandSignifier(), "");
 		String[] splitMsg = fixed.split(" ");
 		for(String s: splitMsg){
 			split.add(s);
@@ -30,18 +30,20 @@ public class CommandManager {
 	}
 
 
-	public boolean dispatch(String label, String[] args) {
+	public static boolean dispatch(String label, String[] args) {
 		return dispatch(null,label,args);
 	}
 
-	public boolean dispatch(MessageReceivedEvent e, String label, String[] args) {
-
+	public static boolean dispatch(MessageReceivedEvent e, String label, String[] args) {
+		Biscuit b = Main.getMainBiscuit();
+		boolean isMain = true;
 		if(e != null) {
-
-			if(Util.contains(PropertiesRetrieval.disabledCommands(), label)) {
+			b = Biscuit.getBiscuit(e.getGuild());
+			isMain = false;
+			if(Util.contains(b.getProperties().disabledCommands(), label)) {
 				return false;
 			}
-			if(!PermUtil.isAdmin(e.getMember()) && Util.contains(PropertiesRetrieval.disabledUserCommands(), label)) {
+			if(!PermUtil.isAdmin(e.getMember()) && Util.contains(b.getProperties().disabledUserCommands(), label)) {
 				return false;
 			}
 
@@ -83,8 +85,17 @@ public class CommandManager {
 				}
 			}
 		}else {
-			if(Util.contains(PropertiesRetrieval.getCustomCmds(), label)) {
-				CustomCommand cc = new CustomCommand(label);
+			if(Util.contains(Main.getMainBiscuit().getProperties().getCustomCmds(), label)) {
+				CustomCommand cc = new CustomCommand(label, Main.getMainBiscuit());
+				if(args.length >= 1) {
+					commandReply(e, "``Command:" + " " + cc.getName() + "``");
+					commandReply(e, "``Description:" + " " + cc.getDescription() + "``");
+					commandReply(e, "``Usage:" + " " +  cc.getUsage() + "``");
+				}else {
+					commandReply(e, CustomCommand.fixPlaceholders(e, cc.getMessage()));
+				}
+			}else if(!isMain && Util.contains(b.getProperties().getCustomCmds(), label)) {
+				CustomCommand cc = new CustomCommand(label, b);
 				if(args.length >= 1) {
 					commandReply(e, "``Command:" + " " + cc.getName() + "``");
 					commandReply(e, "``Description:" + " " + cc.getDescription() + "``");
@@ -97,25 +108,24 @@ public class CommandManager {
 		return true;
 	}
 
-	public void commandReply(MessageReceivedEvent e, String msg) {
-		Biscuit b = Main.getBiscuit();
+	public static void commandReply(MessageReceivedEvent e, String msg) {
 		if(e != null) {
-			b.say(e.getTextChannel(), msg);
+			e.getTextChannel().sendMessage(msg).queue();
 		}else {
-			b.log(msg);
+			Main.getLogger().info(msg);
 		}
 
 	}
 
-	public void addCommand(BaseCommand command) {
+	public static void addCommand(BaseCommand command) {
 		commands.add(command);
 	}
 
-	public void removeCommand(BaseCommand command) {
+	public static void removeCommand(BaseCommand command) {
 		commands.remove(command);
 	}
 
-	public List<BaseCommand> getCommands() {
+	public static List<BaseCommand> getCommands() {
 		return commands;
 	}
 
