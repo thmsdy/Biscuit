@@ -38,6 +38,7 @@ import com.fpghoti.biscuit.commands.console.ShutdownConsoleCommand;
 import com.fpghoti.biscuit.listener.DMListener;
 import com.fpghoti.biscuit.listener.GuildListener;
 import com.fpghoti.biscuit.listener.JoinListener;
+import com.fpghoti.biscuit.listener.LeaveListener;
 import com.fpghoti.biscuit.listener.MessageDeleteListener;
 import com.fpghoti.biscuit.listener.MessageEditListener;
 import com.fpghoti.biscuit.listener.MessageReceiveListener;
@@ -93,6 +94,7 @@ public class Main {
 		jda.addEventListener(new MessageEditListener());
 		jda.addEventListener(new MessageDeleteListener());
 		jda.addEventListener(new JoinListener());
+		jda.addEventListener(new LeaveListener());
 		jda.addEventListener(new DMListener());
 		jda.addEventListener(new ReactionListener());
 		jda.addEventListener(new RoleListener());

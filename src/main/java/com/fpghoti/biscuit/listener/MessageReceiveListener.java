@@ -11,6 +11,7 @@ import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -56,7 +57,20 @@ public class MessageReceiveListener extends ListenerAdapter{
 				biscuit.log("[" + BColor.CYAN_BOLD + "MSG" + BColor.RESET + "] " + BColor.GREEN + "ID: " + BColor.RESET +
 						event.getMessageId() + BColor.GREEN + " Sender: " + BColor.RESET +  event.getAuthor().getAsMention() +
 						BColor.GREEN + " Channel: " + BColor.RESET + event.getChannel().getName());
-				biscuit.log(BColor.GREEN_BOLD + event.getAuthor().getName() + ": " + BColor.WHITE_BOLD + event.getMessage().getContentDisplay());
+				String msg = event.getMessage().getContentDisplay();
+				
+				if(event.getMessage().getAttachments().size() >= 1) {
+					String tail = BColor.CYAN + "[ATTACHMENT(S)]: ";
+					if(!msg.equals("")) {
+						msg = msg + " ";
+					}
+					for(Attachment a : event.getMessage().getAttachments()) {
+						tail = tail + msg + " " +  a.getUrl();
+					}
+					msg = msg + tail;
+				}
+				
+				biscuit.log(BColor.GREEN_BOLD + event.getAuthor().getName() + ": " + BColor.WHITE_BOLD + msg);
 			}
 		}
 	}

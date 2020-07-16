@@ -75,6 +75,10 @@ public class PreUser {
 	public void setDone() {
 		this.done = true;
 	}
+	
+	public int getTimeLeft() {
+		return timeLeft;
+	}
 
 	public void decrementTime() {
 		if(!shareGuild()) {
@@ -94,7 +98,7 @@ public class PreUser {
 					biscuit.log(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha. Kicking...");
 					biscuit.captchaLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
 					
-					if(biscuit.getGuild().getMember(user).getRoles().size() == 1 && PermUtil.hasDefaultRole(m) && !PermUtil.hasRewardRole(m)) {
+					if(m != null && m.getRoles().size() == 1 && PermUtil.hasDefaultRole(m) && !PermUtil.hasRewardRole(m)) {
 						biscuit.getGuild().kick(user.getId()).queue();
 					}
 
