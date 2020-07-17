@@ -75,7 +75,7 @@ public class PreUser {
 	public void setDone() {
 		this.done = true;
 	}
-	
+
 	public int getTimeLeft() {
 		return timeLeft;
 	}
@@ -97,9 +97,20 @@ public class PreUser {
 					Member m = biscuit.getGuild().getMember(user);
 					biscuit.log(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha. Kicking...");
 					biscuit.captchaLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
-					
+
 					if(m != null && m.getRoles().size() == 1 && PermUtil.hasDefaultRole(m) && !PermUtil.hasRewardRole(m)) {
-						biscuit.getGuild().kick(user.getId()).queue();
+						if(biscuit.getProperties().dmBeforeKick()) {
+							String msg = "You did not complete the captcha in **" 
+									+ " " + biscuit.getGuild().getName() + "**! If you believe this is a mistake, rejoin the server"
+									+ ", complete the captcha, and inform an administrator.";
+							String invite = biscuit.getProperties().getKickDMInvite().replace(" ", "");
+							if(!invite.equals("")) {
+								msg = msg + " " + invite;
+							}
+							final String fmsg = msg;
+							user.openPrivateChannel().flatMap(channel -> channel.sendMessage(fmsg)).complete();
+						}
+						biscuit.getGuild().kick(user.getId()).submit();
 					}
 
 					remove();

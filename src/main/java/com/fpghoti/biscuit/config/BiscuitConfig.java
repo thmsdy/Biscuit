@@ -173,6 +173,8 @@ public class BiscuitConfig {
 		added = addProperty("Captcha-Log-Channel", "verify-log", prop,  added, silent);
 		added = addProperty("Check-Join-Invite", "false", prop,  added, silent);
 		added = addProperty("Custom-Command-Names", "", prop,  added, silent);
+		added = addProperty("DM-Before-Kick", "true", prop,  added, silent);
+		added = addProperty("Kick-DM-Invite", "", prop,  added, silent);
 
 		if(!isMain) {
 			if(code != null) {

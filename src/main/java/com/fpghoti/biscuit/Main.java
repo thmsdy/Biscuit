@@ -46,9 +46,6 @@ import com.fpghoti.biscuit.listener.ReactionListener;
 import com.fpghoti.biscuit.listener.RoleListener;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.logging.BiscuitLog;
-import com.fpghoti.biscuit.timer.task.ChatCountTimer;
-import com.fpghoti.biscuit.timer.task.DecrementTimer;
-import com.fpghoti.biscuit.timer.task.SoftMuteTimer;
 
 import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
@@ -100,13 +97,7 @@ public class Main {
 		jda.addEventListener(new RoleListener());
 		biscuits = new ArrayList<Biscuit>();
 		for(Guild g : jda.getGuilds()) {
-			Biscuit biscuit = new Biscuit(jda, g, log);
-			biscuit.addTimer(new ChatCountTimer(biscuit));
-			biscuit.addTimer(new SoftMuteTimer(biscuit));
-			biscuit.addTimer(new DecrementTimer(biscuit));
-
-			biscuit.loadTimers();
-			biscuits.add(biscuit);
+			Biscuit.loadGuild(g);
 		}
 		startCommandListener();
 

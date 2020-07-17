@@ -55,7 +55,7 @@ public class JoinListener extends ListenerAdapter {
 	@Async
 	private void logUserInvite(final User user, final Biscuit b){
 		Guild g = b.getGuild();
-		g.retrieveInvites().queue((invs) -> {
+		g.retrieveInvites().queue(invs -> {
 			String usedInv = "Other";
 			HashMap<String, Integer> newinv = new HashMap<String, Integer>();
 			boolean empty = b.getInviteUses().isEmpty();

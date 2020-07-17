@@ -49,6 +49,14 @@ public class BiscuitProperties {
 		return biscuit.getConfig().getFromConfig(key, biscuit);
 	}
 	
+	public String getKickDMInvite(){
+		String key = "Kick-DM-Invite";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getKickDMInvite();
+		}
+		return biscuit.getConfig().getFromConfig(key, biscuit);
+	}
+	
 	public boolean captchaEnabled(){
 		String key = "Captcha";
 		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
@@ -62,6 +70,15 @@ public class BiscuitProperties {
 		String key = "UseCustomDefaultRole";
 		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
 			return Main.getMainBiscuit().getProperties().customDefaultRole();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
+	public boolean dmBeforeKick(){
+		String key = "DM-Before-Kick";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().dmBeforeKick();
 		}
 		String value = biscuit.getConfig().getFromConfig(key, biscuit);
 		return value.equalsIgnoreCase("true");

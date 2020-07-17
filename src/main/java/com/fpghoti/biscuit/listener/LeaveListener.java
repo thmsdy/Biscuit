@@ -15,12 +15,16 @@ public class LeaveListener extends ListenerAdapter {
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		User user = event.getMember().getUser();
 		PreUser u = biscuit.getPreUser(user);
-		int time = u.getTimeLeft();
-		u.remove();
+		int time = 1;
+		if(u != null) {
+			time = u.getTimeLeft();
+			u.remove();
+		}
 		if(time > 0) {
 			biscuit.log(BColor.YELLOW + "USER LEFT: " + user.getName() + " " + user.getAsMention());
 			biscuit.captchaLog("**User Left: ** ``" + user.getName() + "`` " + user.getAsMention() + "``");
 		}
+		
 	}
 
 }

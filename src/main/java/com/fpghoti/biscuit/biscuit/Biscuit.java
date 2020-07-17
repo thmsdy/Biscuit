@@ -40,7 +40,7 @@ public class Biscuit {
 		}
 		return null;
 	}
-	
+
 	public static Biscuit getBiscuit(String guildcode) {
 		for(Biscuit b : Main.getBiscuits()) {
 			if(b.getProperties().getGuildCode().equalsIgnoreCase(guildcode)) {
@@ -49,7 +49,7 @@ public class Biscuit {
 		}
 		return null;
 	}
-	
+
 	public static ArrayList<PreUser> getPreUsers(User u) {
 		ArrayList<PreUser> pres = new ArrayList<PreUser>();
 		for(Guild g : Main.getJDA().getGuilds()) {
@@ -62,13 +62,12 @@ public class Biscuit {
 		}
 		return pres;
 	}
-	
+
 	public static Biscuit loadGuild(Guild g) {
 		Biscuit biscuit = new Biscuit(Main.getJDA(), g, Main.getLogger());
 		biscuit.addTimer(new ChatCountTimer(biscuit));
 		biscuit.addTimer(new SoftMuteTimer(biscuit));
 		biscuit.addTimer(new DecrementTimer(biscuit));
-
 		biscuit.loadTimers();
 		Main.registerBiscuit(biscuit);
 		return biscuit;
@@ -88,6 +87,7 @@ public class Biscuit {
 	private BiscuitMessageStore messageStore;
 
 	private CopyOnWriteArrayList<PreUser> users = new CopyOnWriteArrayList<PreUser>();
+	private HashMap<Member, Role> rolequeue;
 
 	public Biscuit(JDA jda, Guild guild, BiscuitLog log) {
 		this.jda = jda;
@@ -98,7 +98,7 @@ public class Biscuit {
 		this.config = new BiscuitConfig(this);
 		config.generateConfig();
 		this.properties = new BiscuitProperties(this);
-
+		this.rolequeue = new HashMap<Member, Role>();
 		timer = new Timer();
 		timers = new ArrayList<BiscuitTimer>();
 		if(!Main.isPlugin) {
@@ -137,7 +137,7 @@ public class Biscuit {
 	public Guild getGuild() {
 		return guild;
 	}
-	
+
 	public boolean canManageServer() {
 		return guild.getSelfMember().hasPermission(Permission.MANAGE_SERVER);
 	}
@@ -314,6 +314,10 @@ public class Biscuit {
 		}
 	}
 	
+	public HashMap<Member, Role> getRoleQueue() {
+		return rolequeue;
+	}
+
 	public void remove() {
 		log("Removing guild biscuit...");
 		for(BiscuitTimer t : timers) {

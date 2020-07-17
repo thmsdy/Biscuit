@@ -65,7 +65,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 						msg = msg + " ";
 					}
 					for(Attachment a : event.getMessage().getAttachments()) {
-						tail = tail + msg + " " +  a.getUrl();
+						tail = tail + " " +  a.getUrl();
 					}
 					msg = msg + tail;
 				}

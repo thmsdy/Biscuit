@@ -176,7 +176,7 @@ public class DMListener extends ListenerAdapter{
 
 						Member member = g.getMemberById(author.getId());
 
-						g.addRoleToMember(member, newrole).queue();
+						g.addRoleToMember(member, newrole).complete();
 						g.removeRoleFromMember(member, defaultrole).complete();
 						p.remove();
 					}
