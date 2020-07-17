@@ -106,6 +106,7 @@ public class Biscuit {
 			captchaDir.mkdir();
 		}else {
 			captchaDir = new File(PluginCore.plugin.getDataFolder(), "captcha");
+			captchaDir.mkdir();
 		}	
 		cage = new BCage();
 		if(isMain) {
@@ -298,6 +299,7 @@ public class Biscuit {
 		boolean isMain = guild == null;
 		if(isMain) {
 			if(Main.isPlugin) {
+				PluginCore.plugin.getDataFolder().mkdir();
 				return PluginCore.plugin.getDataFolder();
 			}else {
 				return new File("").getAbsoluteFile();
