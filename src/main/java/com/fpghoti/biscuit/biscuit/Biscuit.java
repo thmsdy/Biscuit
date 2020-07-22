@@ -9,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.PluginCore;
+import com.fpghoti.biscuit.audio.AudioScheduler;
 import com.fpghoti.biscuit.captcha.BCage;
 import com.fpghoti.biscuit.config.BiscuitConfig;
 import com.fpghoti.biscuit.config.BiscuitProperties;
@@ -20,6 +21,7 @@ import com.fpghoti.biscuit.timer.task.DecrementTimer;
 import com.fpghoti.biscuit.timer.task.SoftMuteTimer;
 import com.fpghoti.biscuit.user.PreUser;
 import com.github.cage.Cage;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -85,6 +87,8 @@ public class Biscuit {
 	private BiscuitConfig config;
 	private BiscuitProperties properties;
 	private BiscuitMessageStore messageStore;
+	private AudioPlayer player;
+	private AudioScheduler scheduler;
 
 	private CopyOnWriteArrayList<PreUser> users = new CopyOnWriteArrayList<PreUser>();
 	private HashMap<Member, Role> rolequeue;
@@ -99,6 +103,11 @@ public class Biscuit {
 		config.generateConfig();
 		this.properties = new BiscuitProperties(this);
 		this.rolequeue = new HashMap<Member, Role>();
+		this.player = Main.getPlayerManager().createPlayer();
+		
+		scheduler = new AudioScheduler(this);
+		player.addListener(scheduler);
+		
 		timer = new Timer();
 		timers = new ArrayList<BiscuitTimer>();
 		if(!Main.isPlugin) {
@@ -143,6 +152,14 @@ public class Biscuit {
 		return guild.getSelfMember().hasPermission(Permission.MANAGE_SERVER);
 	}
 
+	public AudioPlayer getAudioPlayer() {
+		return player;
+	}
+	
+	public AudioScheduler getAudioScheduler() {
+		return scheduler;
+	}
+	
 	public void log(String message) {
 		if(properties == null) {
 			logger.info(message);

@@ -6,9 +6,10 @@ import java.util.List;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.BaseCommand;
-import com.fpghoti.biscuit.commands.ClientCommand;
 import com.fpghoti.biscuit.commands.CommandManager;
-import com.fpghoti.biscuit.commands.CustomCommand;
+import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.commands.base.CustomCommand;
+import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -38,7 +39,7 @@ public class HelpCommand extends ClientCommand {
 			}
 		}
 		List<BaseCommand> commands = new ArrayList<BaseCommand>();
-		
+
 		String[] ccs = biscuit.getProperties().getCustomCmds();
 		for(String s : ccs) {
 			if(!Util.contains(biscuit.getProperties().disabledCommands(), s)) {
@@ -53,11 +54,17 @@ public class HelpCommand extends ClientCommand {
 				commands.add(cc);
 			}
 		}
-		
+
 		for(BaseCommand bc : CommandManager.getCommands()) {
 			String bclabel = bc.getUsage().split(" ")[0];
 			if(!Util.contains(biscuit.getProperties().disabledCommands(), bclabel.replace(Main.getMainBiscuit().getProperties().getCommandSignifier(), ""))) {
-				commands.add(bc);
+				if(bc instanceof MusicClientCommand) {
+					if(biscuit.getProperties().allowMusicBot()) {
+						commands.add(bc);
+					}
+				}else {
+					commands.add(bc);
+				}
 			}
 		}
 		int pageCount = (int) Math.ceil((double) commands.size() / 8);

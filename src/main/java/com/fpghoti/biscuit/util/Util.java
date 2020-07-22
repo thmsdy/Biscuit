@@ -59,5 +59,23 @@ public class Util {
 		}
 		return s2.replace(".", "").matches("[0-9]+");
 	}
+	
+	public static String getTime(long t) {
+		long rawseconds = Math.round(t / 1000);
+		long rawminutes = Math.round(rawseconds/60);
+		long hour = Math.round(rawminutes/60);
+		long minute = rawminutes - (hour * 60);
+		long second = rawseconds - (rawminutes * 60);
+		if(hour < 0) {
+			hour = 0;
+		}
+		if(minute < 0) {
+			minute = 0;
+		}
+		if(second <= 1) {
+			second = 2;
+		}
+		return String.format("%02d:%02d:%02d", hour, minute, second - 1);
+	}
 
 }

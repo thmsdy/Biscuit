@@ -1,8 +1,9 @@
-package com.fpghoti.biscuit.commands;
+package com.fpghoti.biscuit.listener;
 
 import java.util.Scanner;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.commands.CommandManager;
 import com.fpghoti.biscuit.logging.BiscuitLog;
 import com.fpghoti.biscuit.util.PermUtil;
 

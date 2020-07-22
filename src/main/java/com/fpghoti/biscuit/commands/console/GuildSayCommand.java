@@ -2,7 +2,7 @@ package com.fpghoti.biscuit.commands.console;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
-import com.fpghoti.biscuit.commands.ConsoleCommand;
+import com.fpghoti.biscuit.commands.base.ConsoleCommand;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;

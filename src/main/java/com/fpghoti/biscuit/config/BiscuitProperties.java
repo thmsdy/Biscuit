@@ -22,6 +22,28 @@ public class BiscuitProperties {
 		return Main.getMainBiscuit().getConfig().getFromConfig(key, Main.getMainBiscuit());
 	}
 	
+	public boolean musicBotEnabled(){
+		String key = "Enable-Music-Bot";
+		return Main.getMainBiscuit().getConfig().getFromConfig(key, Main.getMainBiscuit()).equalsIgnoreCase("true");
+	}
+	
+	public boolean logMusicPlayer(){
+		String key = "Log-Music-Player";
+		return Main.getMainBiscuit().getConfig().getFromConfig(key, Main.getMainBiscuit()).equalsIgnoreCase("true");
+	}
+	
+	public boolean allowMusicBot(){
+		if(!musicBotEnabled()) {
+			return false;
+		}
+		String key = "Allow-Music-Bot";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().allowMusicBot();
+		}
+		String value = biscuit.getConfig().getFromConfig(key, biscuit);
+		return value.equalsIgnoreCase("true");
+	}
+	
 	public String getGuildCode(){
 		String key = "Guild-Code";
 		if(biscuit.getGuild() == null) {
@@ -259,6 +281,19 @@ public class BiscuitProperties {
 		String key = "Treat-Like-Booster";
 		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
 			return Main.getMainBiscuit().getProperties().getBoosterRoles();
+		}
+		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" , ", ",").replace(", ", ",").split(",");
+		if(list.length == 1 && list[0].equals("")) {
+			String[] blank = {};
+			return blank;
+		}
+		return list;
+	}
+	
+	public String[] getMusicChannels(){
+		String key = "Music-Channels";
+		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+			return Main.getMainBiscuit().getProperties().getMusicChannels();
 		}
 		String [] list = biscuit.getConfig().getFromConfig(key, biscuit).replace(" , ", ",").replace(", ", ",").split(",");
 		if(list.length == 1 && list[0].equals("")) {

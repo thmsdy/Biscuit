@@ -2,7 +2,7 @@ package com.fpghoti.biscuit.commands.client;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
-import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 

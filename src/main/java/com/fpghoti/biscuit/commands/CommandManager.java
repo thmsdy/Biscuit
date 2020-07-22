@@ -5,6 +5,10 @@ import java.util.List;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.commands.base.ConsoleCommand;
+import com.fpghoti.biscuit.commands.base.CustomCommand;
+import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
@@ -69,6 +73,11 @@ public class CommandManager {
 		}
 
 		if(match != null) {
+			
+			if(match instanceof MusicClientCommand && !b.getProperties().allowMusicBot()) {
+				return false;
+			}
+			
 			if (trimmedArgs == null || (trimmedArgs.length > 0 && trimmedArgs[0].equals("?"))) {
 				commandReply(e, "``Command:" + " " + match.getName() + "``");
 				commandReply(e, "``Description:" + " " + match.getDescription() + "``");
@@ -118,6 +127,9 @@ public class CommandManager {
 	}
 
 	public static void addCommand(BaseCommand command) {
+		if(command instanceof MusicClientCommand && !Main.getMainBiscuit().getProperties().musicBotEnabled()) {
+			return;
+		}
 		commands.add(command);
 	}
 

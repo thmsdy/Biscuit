@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
-import com.fpghoti.biscuit.commands.ClientCommand;
+import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.util.PermUtil;
 

@@ -1,7 +1,7 @@
 package com.fpghoti.biscuit.commands.console;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.commands.ConsoleCommand;
+import com.fpghoti.biscuit.commands.base.ConsoleCommand;
 
 public class ShutdownConsoleCommand extends ConsoleCommand{
 

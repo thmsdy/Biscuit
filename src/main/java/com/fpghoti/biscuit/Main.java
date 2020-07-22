@@ -2,39 +2,48 @@ package com.fpghoti.biscuit;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
 import org.fusesource.jansi.AnsiConsole;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
-import com.fpghoti.biscuit.commands.BaseCommand;
-import com.fpghoti.biscuit.commands.CommandListener;
 import com.fpghoti.biscuit.commands.CommandManager;
 import com.fpghoti.biscuit.commands.client.AddCommand;
 import com.fpghoti.biscuit.commands.client.ChanIDCommand;
 import com.fpghoti.biscuit.commands.client.DivideCommand;
+import com.fpghoti.biscuit.commands.client.ForceSkipCommand;
 import com.fpghoti.biscuit.commands.client.GetConfigCommand;
 import com.fpghoti.biscuit.commands.client.GuildIDCommand;
 import com.fpghoti.biscuit.commands.client.ToggleRoleCommand;
 import com.fpghoti.biscuit.commands.client.HelpCommand;
+import com.fpghoti.biscuit.commands.client.LoopMusicCommand;
 import com.fpghoti.biscuit.commands.client.MultiplyCommand;
 import com.fpghoti.biscuit.commands.client.NotSpammerCommand;
+import com.fpghoti.biscuit.commands.client.NowPlayingCommand;
+import com.fpghoti.biscuit.commands.client.PauseCommand;
+import com.fpghoti.biscuit.commands.client.TogglePauseCommand;
 import com.fpghoti.biscuit.commands.client.MakeInviteCommand;
 import com.fpghoti.biscuit.commands.client.PingCommand;
+import com.fpghoti.biscuit.commands.client.PlayCommand;
+import com.fpghoti.biscuit.commands.client.PlayFirstCommand;
 import com.fpghoti.biscuit.commands.client.PowerCommand;
+import com.fpghoti.biscuit.commands.client.QueueCommand;
 import com.fpghoti.biscuit.commands.client.RecentSpammersCommand;
 import com.fpghoti.biscuit.commands.client.SaveConfigCommand;
+import com.fpghoti.biscuit.commands.client.SkipCommand;
 import com.fpghoti.biscuit.commands.client.SoftMuteCommand;
 import com.fpghoti.biscuit.commands.client.SquareRootCommand;
 import com.fpghoti.biscuit.commands.client.SubtractCommand;
 import com.fpghoti.biscuit.commands.client.UIDCommand;
 import com.fpghoti.biscuit.commands.client.UnSoftMuteCommand;
+import com.fpghoti.biscuit.commands.client.UnpauseCommand;
 import com.fpghoti.biscuit.commands.client.WikiCommand;
+import com.fpghoti.biscuit.commands.client.WipeQueueCommand;
 import com.fpghoti.biscuit.commands.console.GuildSayCommand;
 import com.fpghoti.biscuit.commands.console.SayCommand;
 import com.fpghoti.biscuit.commands.console.ShutdownConsoleCommand;
+import com.fpghoti.biscuit.listener.CommandListener;
 import com.fpghoti.biscuit.listener.DMListener;
 import com.fpghoti.biscuit.listener.GuildListener;
 import com.fpghoti.biscuit.listener.JoinListener;
@@ -46,19 +55,24 @@ import com.fpghoti.biscuit.listener.ReactionListener;
 import com.fpghoti.biscuit.listener.RoleListener;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
 import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 public class Main {
 
 	private static JDA jda;
+	private static ShardManager shardm;
 
 	public RollingFileAppender<String> we;
 	public SizeAndTimeBasedRollingPolicy<String> wes;
@@ -72,6 +86,8 @@ public class Main {
 	public static boolean isPlugin =  false;
 	public static boolean shutdownStarted = false;
 
+	private static AudioPlayerManager playerManager;
+
 	public static void main(String[] args){
 		final Properties properties = new Properties();
 		try {
@@ -84,8 +100,13 @@ public class Main {
 		AnsiConsole.systemInstall();
 		log.info(BColor.CYAN_BOLD + "========================= WELCOME TO BISCUIT =========================");
 		log.info("Running version: " + BColor.MAGENTA_BOLD + version);
+
+		playerManager = new DefaultAudioPlayerManager();
+		AudioSourceManagers.registerRemoteSources(playerManager);
+
 		mainBiscuit = new Biscuit(null, null, log);
 		startJDA();
+
 		jda.addEventListener(new GuildListener());
 		jda.addEventListener(new MessageReceiveListener());
 		jda.addEventListener(new MessageEditListener());
@@ -103,36 +124,45 @@ public class Main {
 
 		String link = "NULL";
 
-		List<BaseCommand> commands = CommandManager.getCommands();
-
 		//Client
 
-		commands.add(new HelpCommand());
-		commands.add(new PingCommand());
-		commands.add(new SoftMuteCommand());
-		commands.add(new UnSoftMuteCommand());
-		commands.add(new NotSpammerCommand());
-		commands.add(new RecentSpammersCommand());
-		commands.add(new ChanIDCommand());
-		commands.add(new UIDCommand());
-		commands.add(new ToggleRoleCommand());
-		commands.add(new SquareRootCommand());
-		commands.add(new AddCommand());
-		commands.add(new SubtractCommand());
-		commands.add(new MultiplyCommand());
-		commands.add(new DivideCommand());
-		commands.add(new PowerCommand());
-		commands.add(new MakeInviteCommand());
-		commands.add(new GetConfigCommand());
-		commands.add(new SaveConfigCommand());
-		commands.add(new GuildIDCommand());
-		commands.add(new WikiCommand());
-		
+		CommandManager.addCommand(new HelpCommand());
+		CommandManager.addCommand(new PingCommand());
+		CommandManager.addCommand(new SoftMuteCommand());
+		CommandManager.addCommand(new UnSoftMuteCommand());
+		CommandManager.addCommand(new NotSpammerCommand());
+		CommandManager.addCommand(new RecentSpammersCommand());
+		CommandManager.addCommand(new ChanIDCommand());
+		CommandManager.addCommand(new UIDCommand());
+		CommandManager.addCommand(new ToggleRoleCommand());
+		CommandManager.addCommand(new SquareRootCommand());
+		CommandManager.addCommand(new AddCommand());
+		CommandManager.addCommand(new SubtractCommand());
+		CommandManager.addCommand(new MultiplyCommand());
+		CommandManager.addCommand(new DivideCommand());
+		CommandManager.addCommand(new PowerCommand());
+		CommandManager.addCommand(new MakeInviteCommand());
+		CommandManager.addCommand(new GetConfigCommand());
+		CommandManager.addCommand(new SaveConfigCommand());
+		CommandManager.addCommand(new GuildIDCommand());
+		CommandManager.addCommand(new WikiCommand());
+		CommandManager.addCommand(new PlayCommand());
+		CommandManager.addCommand(new PlayFirstCommand());
+		CommandManager.addCommand(new ForceSkipCommand());
+		CommandManager.addCommand(new PauseCommand());
+		CommandManager.addCommand(new UnpauseCommand());
+		CommandManager.addCommand(new TogglePauseCommand());
+		CommandManager.addCommand(new QueueCommand());
+		CommandManager.addCommand(new SkipCommand());
+		CommandManager.addCommand(new NowPlayingCommand());
+		CommandManager.addCommand(new WipeQueueCommand());
+		CommandManager.addCommand(new LoopMusicCommand());
+
 		//Console
 
-		commands.add(new SayCommand());
-		commands.add(new GuildSayCommand());
-		commands.add(new ShutdownConsoleCommand());
+		CommandManager.addCommand(new SayCommand());
+		CommandManager.addCommand(new GuildSayCommand());
+		CommandManager.addCommand(new ShutdownConsoleCommand());
 
 		link = "https://discord.com/oauth2/authorize?&client_id=" + jda.getSelfUser().getId() + "&permissions=8&scope=bot";
 		log.info("Connection successful!");
@@ -148,12 +178,13 @@ public class Main {
 		String token = mainBiscuit.getProperties().getToken();
 		log.info("Connecting bot to Discord.");
 		try{
-			jda = JDABuilder.createDefault(token)
+			shardm = DefaultShardManagerBuilder.createDefault(token)
 					.setChunkingFilter(ChunkingFilter.ALL)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
 					.enableIntents(GatewayIntent.getIntents(GatewayIntent.DEFAULT))
 					.enableIntents(GatewayIntent.GUILD_MEMBERS)
 					.build();
+			jda = shardm.getShardById(0);
 			try {
 				jda.awaitReady();
 			} catch (InterruptedException e) {
@@ -186,7 +217,11 @@ public class Main {
 	public static ArrayList<Biscuit> getBiscuits() {
 		return biscuits;
 	}
-	
+
+	public static AudioPlayerManager getPlayerManager() {
+		return playerManager;
+	}
+
 	public static void shutdown() {
 		if(!shutdownStarted) {
 			shutdownStarted = true;
@@ -213,11 +248,11 @@ public class Main {
 	public static BiscuitLog getLogger() {
 		return log;
 	}
-	
+
 	public static void registerBiscuit(Biscuit b) {
 		biscuits.add(b);
 	}
-	
+
 	public static void unregisterBiscuit(Biscuit b) {
 		biscuits.remove(b);
 	}

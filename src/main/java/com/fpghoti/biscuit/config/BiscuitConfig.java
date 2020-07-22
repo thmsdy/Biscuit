@@ -132,6 +132,8 @@ public class BiscuitConfig {
 		if(isMain) {
 			added = addProperty("Command-Signifier", "-", prop, added, silent);
 			added = addProperty("Bot-Token", "", prop,  added, silent);
+			added = addProperty("Enable-Music-Bot", "true", prop,  added, silent);
+			added = addProperty("Log-Music-Player", "true", prop,  added, silent);
 		}
 
 		added = addProperty("Guild-Identifier", name, prop, added, silent);
@@ -175,6 +177,8 @@ public class BiscuitConfig {
 		added = addProperty("Custom-Command-Names", "", prop,  added, silent);
 		added = addProperty("DM-Before-Kick", "true", prop,  added, silent);
 		added = addProperty("Kick-DM-Invite", "", prop,  added, silent);
+		added = addProperty("Allow-Music-Bot", "true", prop,  added, silent);
+		added = addProperty("Music-Channels", "", prop,  added, silent);
 
 		if(!isMain) {
 			if(code != null) {
