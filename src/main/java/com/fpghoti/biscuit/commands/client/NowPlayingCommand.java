@@ -3,9 +3,9 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class NowPlayingCommand extends MusicClientCommand{
 	
@@ -19,12 +19,12 @@ public class NowPlayingCommand extends MusicClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, MessageReceivedEvent event) {
+	public void execute(String[] args, GuildMessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -nowplaying");
-		if(b.getAudioPlayer().getPlayingTrack() != null) {
-			AudioTrack track = b.getAudioPlayer().getPlayingTrack();
-			event.getChannel().sendMessage(b.getAudioScheduler().getMessage(track, true)).queue();
+		if(b.getAudioScheduler().getQueue().getLastTrack() != null ) {
+			MessageEmbed next = b.getAudioScheduler().getQueue().getLastTrack().getEmbedMessage("Now Playing:", true);
+			event.getChannel().sendMessage(next).queue();
 		}else {
 			event.getChannel().sendMessage("No song is currently playing.").queue();
 		}

@@ -4,7 +4,8 @@ import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class SkipCommand extends MusicClientCommand{
 
@@ -18,7 +19,10 @@ public class SkipCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, MessageReceivedEvent event) {
+	public void execute(String[] args, GuildMessageReceivedEvent event) {
+		
+		//TODO Redo vote skipping. It does not function correctly.
+		
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -skip");
 
@@ -26,7 +30,7 @@ public class SkipCommand extends MusicClientCommand{
 			event.getChannel().sendMessage("There is not a song playing for you to skip!").queue();
 			return;
 		}
-		
+
 		if(!event.getGuild().getAudioManager().getConnectedChannel().getMembers().contains(event.getMember())) {
 			event.getChannel().sendMessage("You need to be in the same voice channel in order to skip!").queue();
 			return;
@@ -36,8 +40,9 @@ public class SkipCommand extends MusicClientCommand{
 			event.getChannel().sendMessage("Skip vote status: **[" + ( b.getAudioScheduler().getVotes() + 1) + "/" 
 					+ (event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() - 1) + "]**"
 					+ "\nSkipping current track.").queue();
-			if(b.getAudioScheduler().getNextMessage() != null ) {
-				event.getChannel().sendMessage(b.getAudioScheduler().getNextMessage()).queue();
+			if(b.getAudioScheduler().getQueue().getNext() != null ) {
+				MessageEmbed next = b.getAudioScheduler().getQueue().getNext().getEmbedMessage("Now Playing:");
+				event.getChannel().sendMessage(next).queue();
 			}
 			b.getAudioScheduler().skip();
 			return;
@@ -54,8 +59,9 @@ public class SkipCommand extends MusicClientCommand{
 			event.getChannel().sendMessage("Skip vote status: **[" + b.getAudioScheduler().getVotes() + "/" 
 					+ event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() + "]**"
 					+ "\nSkipping current track.").queue();
-			if(b.getAudioScheduler().getNextMessage() != null ) {
-				event.getChannel().sendMessage(b.getAudioScheduler().getNextMessage()).queue();
+			if(b.getAudioScheduler().getQueue().getNext() != null ) {
+				MessageEmbed next = b.getAudioScheduler().getQueue().getNext().getEmbedMessage("Now Playing:");
+				event.getChannel().sendMessage(next).queue();
 			}
 			b.getAudioScheduler().skip();
 		}

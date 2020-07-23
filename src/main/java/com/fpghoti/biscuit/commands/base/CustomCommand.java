@@ -4,11 +4,11 @@ import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.BaseCommand;
 import com.fpghoti.biscuit.commands.CommandType;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CustomCommand extends BaseCommand {
 	
-	public static String fixPlaceholders(MessageReceivedEvent event, String msg) {
+	public static String fixPlaceholders(GuildMessageReceivedEvent event, String msg) {
 		msg = msg.replace("<user>", event.getAuthor().getAsMention());
 		return msg;
 	}

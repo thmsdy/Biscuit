@@ -2,10 +2,10 @@ package com.fpghoti.biscuit.audio;
 
 import java.util.ArrayList;
 
+import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.queue.AudioQueue;
 import com.fpghoti.biscuit.audio.queue.QueuedTrack;
 import com.fpghoti.biscuit.biscuit.Biscuit;
-import com.fpghoti.biscuit.util.Util;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -52,9 +52,15 @@ public class AudioScheduler extends AudioEventAdapter {
 		switch(endReason) {
 
 		case LOAD_FAILED:
-			warn("Something went wrong while trying to load the current track. The next track will be played instead if available.");
-			if(qt != null && qt.getCommandChannel() != null)
-				qt.getCommandChannel().sendMessage("There was an error loading **" + title + "**.").queue();
+			warn("Something went wrong while trying to load the current track. Trying alternate track.");
+			if(!qt.triedAlternative()) {
+				qt.useAttempt();
+				TextChannel channel = qt.getCommandChannel();
+				channel.sendMessage("The video selected cannot be played through the music player. An alternate track will be played if available.").queue();
+				title = title.toLowerCase().replace("vevo", "") + " lyrics";
+				Main.getPlayerManager().loadItemOrdered(biscuit.getGuild(),"ytsearch:" + title, new AudioResultHandler(qt.getUserId(), channel, true, title, true, !queue.isEmpty()));
+				return;
+			}
 			break;
 		case CLEANUP:
 			log("A track stopped playing due to audio player cleanup.");
@@ -77,7 +83,7 @@ public class AudioScheduler extends AudioEventAdapter {
 
 		if (endReason.mayStartNext) {
 			if(loop) {
-				queueFirst(track.makeClone(), qt.getUserId(), qt.getCommandChannel());
+				queue(track.makeClone(), qt.getUserId(), qt.getCommandChannel(), 1);
 			}
 			startPlaying();
 		}
@@ -85,12 +91,11 @@ public class AudioScheduler extends AudioEventAdapter {
 
 	@Override
 	public void onTrackException(AudioPlayer player, AudioTrack track, FriendlyException exception) {
-		//TODO fix vevo
-		if(track.getInfo().title.toLowerCase().contains("vevo") || track.getInfo().author.toLowerCase().contains("vevo")) {
-			QueuedTrack qt = queue.getPreviousTrack(track);
-			qt.getCommandChannel().sendMessage("**" + track.getInfo().title + "** could not be loaded, because it is a Vevo video.").queue();
+		QueuedTrack qt = queue.getPreviousTrack(track);
+		if(!qt.triedAlternative()) {
+			return;
 		}
-		biscuit.error("An exception occurred while trying to play a certain track. The next track will be played instead if available.");
+		warn("No alternative track found. This means the video is most likely unavailable. The next track will be played instead if available.");
 		startPlaying();
 	}
 
@@ -102,25 +107,22 @@ public class AudioScheduler extends AudioEventAdapter {
 		}
 	}
 
-	public void queue(AudioTrack track, String uid) {
-		queue(track, uid, null);
+	public void queue(AudioTrack track, String uid, TextChannel channel) {
+		queue(track, uid, channel, null);
 	}
 
-	public void queue(AudioTrack track, String uid, TextChannel channel) {
+	public void queue(AudioTrack track, String uid, TextChannel channel, Integer place) {
 		if(queue.isEmpty() && biscuit.getAudioPlayer().getPlayingTrack() == null) {
-			queue.addPreviousTrack(new QueuedTrack(biscuit, track, uid, channel));
+			QueuedTrack qt = new QueuedTrack(biscuit, track, uid, channel);
+			queue.sendQueueMessage(qt);
+			queue.addPreviousTrack(qt);
 			biscuit.getAudioPlayer().playTrack(track);
 		}else {
-			queue.add(new QueuedTrack(biscuit, track, uid, channel));
-		}
-	}
-	
-	public void queueFirst(AudioTrack track, String uid, TextChannel channel) {
-		if(queue.isEmpty() && biscuit.getAudioPlayer().getPlayingTrack() == null) {
-			queue.addPreviousTrack(new QueuedTrack(biscuit, track, uid, channel));
-			biscuit.getAudioPlayer().playTrack(track);
-		}else {
-			queue.addAtPlace(new QueuedTrack(biscuit, track, uid, channel), 1);
+			if(place != null) {
+				queue.addAtPlace(new QueuedTrack(biscuit, track, uid, channel), place);
+			}else {
+				queue.add(new QueuedTrack(biscuit, track, uid, channel));
+			}
 		}
 	}
 
@@ -128,7 +130,7 @@ public class AudioScheduler extends AudioEventAdapter {
 		if(queue.isEmpty()) {
 			if(loop) {
 				return;
-			}
+			}			
 			biscuit.getGuild().getAudioManager().closeAudioConnection();
 			skips.clear();
 			return;
@@ -136,11 +138,11 @@ public class AudioScheduler extends AudioEventAdapter {
 		queue.playNext();
 		skips.clear();
 	}
-	
+
 	public void setLooping(boolean b) {
 		loop = b;
 	}
-	
+
 	public boolean isLooping() {
 		return loop;
 	}
@@ -168,29 +170,6 @@ public class AudioScheduler extends AudioEventAdapter {
 	public void skip() {
 		biscuit.getAudioPlayer().stopTrack();
 		startPlaying();
-	}
-
-	public String getNextMessage() {
-		if(queue.isEmpty()) {
-			return null;
-		}
-		AudioTrack track = queue.getNext().getTrack();
-		return getMessage(track);
-	}
-
-	public String getMessage(AudioTrack track) {
-		return getMessage(track, false);
-	}
-
-	public String getMessage(AudioTrack track, Boolean showRemaining) {
-		String msg ="**Now Playing: **\n" + track.getInfo().uri + "\n```" +  track.getInfo().title + "\nBy: "
-				+ track.getInfo().author + "\nLength: " + Util.getTime(track.getDuration());
-		if(showRemaining) {
-			msg = msg + "\nTime Remaining: " + Util.getTime(track.getDuration() - track.getPosition()) + "```";
-		}else {
-			msg = msg + "```";
-		}
-		return msg;
 	}
 
 	public void wipeQueue() {

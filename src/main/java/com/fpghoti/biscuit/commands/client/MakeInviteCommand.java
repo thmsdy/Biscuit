@@ -8,7 +8,7 @@ import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class MakeInviteCommand extends ClientCommand{
 
@@ -22,7 +22,7 @@ public class MakeInviteCommand extends ClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, MessageReceivedEvent event) {
+	public void execute(String[] args, GuildMessageReceivedEvent event) {
 		double doubAge = 0;
 		if(args.length == 2 && Util.isDeciDigit(args[1])) {
 			doubAge = Double.parseDouble(args[1]) * 3600;

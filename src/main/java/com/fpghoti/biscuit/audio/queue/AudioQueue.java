@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
+
 public class AudioQueue {
 
 	private ArrayList<QueuedTrack> tracks;
@@ -77,18 +80,31 @@ public class AudioQueue {
 	}
 
 	public void add(QueuedTrack track) {
+		sendQueueMessage(track);
 		tracks.add(track);
 	}
 
 	//Goes by viewable place rather than index for
 	//easy implementation into command.
 	public boolean addAtPlace(QueuedTrack track, int place) {
-		if(place < 1 || place > tracks.size()) {
+		if(place < 1) {
 			return false;
 		}
 		int index = place - 1;
+		if(index > tracks.size()) {
+			index = tracks.size();
+		}
+		sendQueueMessage(track);
 		tracks.add(index, track);
 		return true;
+	}
+	
+	public void sendQueueMessage(QueuedTrack track) {
+		if(track.getCommandChannel() != null) {
+			TextChannel c = track.getCommandChannel();
+			MessageEmbed m = track.getEmbedMessage("Queued:");
+			c.sendMessage(m).queue();
+		}
 	}
 
 	//Goes by viewable place rather than index for
@@ -114,6 +130,9 @@ public class AudioQueue {
 	}
 
 	public QueuedTrack getNext() {
+		if(isEmpty()) {
+			return null;
+		}
 		return tracks.get(0);
 	}
 

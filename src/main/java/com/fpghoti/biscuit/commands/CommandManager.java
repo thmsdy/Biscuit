@@ -12,14 +12,14 @@ import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CommandManager {
 
 	private static List<BaseCommand> commands = new ArrayList<BaseCommand>();
 
-	public static void parse(String message, MessageReceivedEvent e){
-		Biscuit b = Biscuit.getBiscuit(e.getGuild());
+	public static void parse(String message, GuildMessageReceivedEvent event){
+		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		ArrayList<String> split = new ArrayList<String>();
 		String fixed = message.replaceFirst(b.getProperties().getCommandSignifier(), "");
 		String[] splitMsg = fixed.split(" ");
@@ -30,7 +30,7 @@ public class CommandManager {
 		String[] args = new String[split.size() - 1];
 		split.subList(1, split.size()).toArray(args);
 
-		dispatch(e, label, args);
+		dispatch(event, label, args);
 	}
 
 
@@ -38,16 +38,16 @@ public class CommandManager {
 		return dispatch(null,label,args);
 	}
 
-	public static boolean dispatch(MessageReceivedEvent e, String label, String[] args) {
+	public static boolean dispatch(GuildMessageReceivedEvent event, String label, String[] args) {
 		Biscuit b = Main.getMainBiscuit();
 		boolean isMain = true;
-		if(e != null) {
-			b = Biscuit.getBiscuit(e.getGuild());
+		if(event != null) {
+			b = Biscuit.getBiscuit(event.getGuild());
 			isMain = false;
 			if(Util.contains(b.getProperties().disabledCommands(), label)) {
 				return false;
 			}
-			if(!PermUtil.isAdmin(e.getMember()) && Util.contains(b.getProperties().disabledUserCommands(), label)) {
+			if(!PermUtil.isAdmin(event.getMember()) && Util.contains(b.getProperties().disabledUserCommands(), label)) {
 				return false;
 			}
 
@@ -79,17 +79,17 @@ public class CommandManager {
 			}
 			
 			if (trimmedArgs == null || (trimmedArgs.length > 0 && trimmedArgs[0].equals("?"))) {
-				commandReply(e, "``Command:" + " " + match.getName() + "``");
-				commandReply(e, "``Description:" + " " + match.getDescription() + "``");
-				commandReply(e, "``Usage:" + " " +  match.getUsage() + "``");
+				commandReply(event, "``Command:" + " " + match.getName() + "``");
+				commandReply(event, "``Description:" + " " + match.getDescription() + "``");
+				commandReply(event, "``Usage:" + " " +  match.getUsage() + "``");
 				List<String> notes = match.getNotes();
 				for (String note : notes) {
-					commandReply(e, note);
+					commandReply(event, note);
 				}
 			} else {
-				if(match instanceof ClientCommand && e != null) {
-					((ClientCommand)match).execute(trimmedArgs, e);
-				}else if(match instanceof ConsoleCommand && e == null) {
+				if(match instanceof ClientCommand && event != null) {
+					((ClientCommand)match).execute(trimmedArgs, event);
+				}else if(match instanceof ConsoleCommand && event == null) {
 					((ConsoleCommand)match).execute(trimmedArgs);
 				}
 			}
@@ -97,29 +97,29 @@ public class CommandManager {
 			if(Util.contains(Main.getMainBiscuit().getProperties().getCustomCmds(), label)) {
 				CustomCommand cc = new CustomCommand(label, Main.getMainBiscuit());
 				if(args.length >= 1) {
-					commandReply(e, "``Command:" + " " + cc.getName() + "``");
-					commandReply(e, "``Description:" + " " + cc.getDescription() + "``");
-					commandReply(e, "``Usage:" + " " +  cc.getUsage() + "``");
+					commandReply(event, "``Command:" + " " + cc.getName() + "``");
+					commandReply(event, "``Description:" + " " + cc.getDescription() + "``");
+					commandReply(event, "``Usage:" + " " +  cc.getUsage() + "``");
 				}else {
-					commandReply(e, CustomCommand.fixPlaceholders(e, cc.getMessage()));
+					commandReply(event, CustomCommand.fixPlaceholders(event, cc.getMessage()));
 				}
 			}else if(!isMain && Util.contains(b.getProperties().getCustomCmds(), label)) {
 				CustomCommand cc = new CustomCommand(label, b);
 				if(args.length >= 1) {
-					commandReply(e, "``Command:" + " " + cc.getName() + "``");
-					commandReply(e, "``Description:" + " " + cc.getDescription() + "``");
-					commandReply(e, "``Usage:" + " " +  cc.getUsage() + "``");
+					commandReply(event, "``Command:" + " " + cc.getName() + "``");
+					commandReply(event, "``Description:" + " " + cc.getDescription() + "``");
+					commandReply(event, "``Usage:" + " " +  cc.getUsage() + "``");
 				}else {
-					commandReply(e, CustomCommand.fixPlaceholders(e, cc.getMessage()));
+					commandReply(event, CustomCommand.fixPlaceholders(event, cc.getMessage()));
 				}
 			}
 		}
 		return true;
 	}
 
-	public static void commandReply(MessageReceivedEvent e, String msg) {
-		if(e != null) {
-			e.getTextChannel().sendMessage(msg).queue();
+	public static void commandReply(GuildMessageReceivedEvent event, String msg) {
+		if(event != null) {
+			event.getChannel().sendMessage(msg).queue();
 		}else {
 			Main.getLogger().info(msg);
 		}

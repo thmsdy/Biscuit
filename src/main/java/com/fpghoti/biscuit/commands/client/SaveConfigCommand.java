@@ -12,7 +12,7 @@ import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.Attachment;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class SaveConfigCommand extends ClientCommand{
 
@@ -26,7 +26,7 @@ public class SaveConfigCommand extends ClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, MessageReceivedEvent event) {
+	public void execute(String[] args, GuildMessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -saveconfig");
 		List<Attachment> attch = event.getMessage().getAttachments();
@@ -34,12 +34,12 @@ public class SaveConfigCommand extends ClientCommand{
 			if(!attch.isEmpty()) {
 				if(attch.size() == 1) {
 					for(Attachment a : attch) {
-						b.getConfig().replaceConfig(a, event.getTextChannel());
+						b.getConfig().replaceConfig(a, event.getChannel());
 						b.remove();
 						b = Biscuit.loadGuild(event.getGuild());
 					}
 				}else {
-					event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " Too many attachments added! "
+					event.getChannel().sendMessage(event.getAuthor().getAsMention() + " Too many attachments added! "
 							+ "Please only include the config file you want to save.").queue(new Consumer<Message>()
 							{
 								@Override
@@ -49,7 +49,7 @@ public class SaveConfigCommand extends ClientCommand{
 							});
 				}
 			}else {
-				event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " You need to send "
+				event.getChannel().sendMessage(event.getAuthor().getAsMention() + " You need to send "
 						+ "a file in order to save the config.").queue(new Consumer<Message>()
 						{
 							@Override
@@ -60,7 +60,7 @@ public class SaveConfigCommand extends ClientCommand{
 			}
 		}else {
 			b.log(BColor.MAGENTA_BOLD + event.getAuthor().getName() + " lacks permission to save the config!");
-			event.getTextChannel().sendMessage(event.getAuthor().getAsMention() + " You do not have "
+			event.getChannel().sendMessage(event.getAuthor().getAsMention() + " You do not have "
 					+ "permission to save the config.").queue(new Consumer<Message>()
 					{
 						@Override

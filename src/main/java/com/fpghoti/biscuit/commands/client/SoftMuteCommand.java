@@ -11,7 +11,7 @@ import com.fpghoti.biscuit.util.PermUtil;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class SoftMuteCommand extends ClientCommand{
 
@@ -25,14 +25,14 @@ public class SoftMuteCommand extends ClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, MessageReceivedEvent event) {
+	public void execute(String[] args, GuildMessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -softmute " + args[0]);
 		for(Member m : event.getMessage().getMentionedMembers()){
 			User u = m.getUser();
 			String s = u.getAsMention();
 			if(b.getMessageStore().isSoftmuted(u)) {
-				event.getTextChannel().sendMessage(s+ " is already softmuted.").queue(new Consumer<Message>()
+				event.getChannel().sendMessage(s+ " is already softmuted.").queue(new Consumer<Message>()
 				{
 					@Override
 					public void accept(Message msg){
@@ -44,7 +44,7 @@ public class SoftMuteCommand extends ClientCommand{
 			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()))) {
 				b.getMessageStore().addSoftmuted(u);
 				u.openPrivateChannel().queue();
-				event.getTextChannel().sendMessage(s+ " is now soft-muted. They will now be only able to send one message every two minutes.").queue();
+				event.getChannel().sendMessage(s+ " is now soft-muted. They will now be only able to send one message every two minutes.").queue();
 			}
 		}
 	}

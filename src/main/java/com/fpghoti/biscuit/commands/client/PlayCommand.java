@@ -10,7 +10,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 public class PlayCommand extends MusicClientCommand{
@@ -25,10 +25,10 @@ public class PlayCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, MessageReceivedEvent event) {
+	public void execute(String[] args, GuildMessageReceivedEvent event) {
 		Guild guild = event.getGuild();
 		Biscuit b = Biscuit.getBiscuit(guild);
-		TextChannel tchannel = event.getTextChannel();
+		TextChannel tchannel = event.getChannel();
 
 		String searchPhrase = args[0];
 		if(args.length > 1) {
@@ -75,7 +75,7 @@ public class PlayCommand extends MusicClientCommand{
 		AudioPlayerManager playerManager = Main.getPlayerManager();
 		String vidid = getID(event.getMessage().getContentRaw().split(" ")[1]);
 
-		playerManager.loadItemOrdered(guild, vidid, new AudioResultHandler(b,event.getAuthor().getId(), tchannel, false, searchPhrase));
+		playerManager.loadItemOrdered(guild, vidid, new AudioResultHandler(event.getAuthor().getId(), tchannel, false, searchPhrase, false, false));
 	}
 
 	private String getID(String url) {

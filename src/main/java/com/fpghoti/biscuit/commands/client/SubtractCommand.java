@@ -5,7 +5,7 @@ import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class SubtractCommand extends ClientCommand{
 	
@@ -20,7 +20,7 @@ public class SubtractCommand extends ClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, MessageReceivedEvent event) {
+	public void execute(String[] args, GuildMessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -subtract");
 		if(args[0] != null && Util.isDeciDigit(args[0]) && args[1] != null && Util.isDeciDigit(args[1])) {
@@ -31,7 +31,7 @@ public class SubtractCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				sub = sub.replace(".0","");
 			}
-			event.getTextChannel().sendMessage(args[0] + " - " + args[1] + " is **" + sub + "**.").queue();
+			event.getChannel().sendMessage(args[0] + " - " + args[1] + " is **" + sub + "**.").queue();
 		}
 	}
 
