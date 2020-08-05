@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -27,41 +28,41 @@ public class SkipCommand extends MusicClientCommand{
 		b.log(event.getAuthor().getName() + " issued a command: -skip");
 
 		if(b.getAudioPlayer().getPlayingTrack() == null) {
-			event.getChannel().sendMessage("There is not a song playing for you to skip!").queue();
+			MessageText.send(event.getChannel(), "There is not a song playing for you to skip!");
 			return;
 		}
 
 		if(!event.getGuild().getAudioManager().getConnectedChannel().getMembers().contains(event.getMember())) {
-			event.getChannel().sendMessage("You need to be in the same voice channel in order to skip!").queue();
+			MessageText.send(event.getChannel(), "You need to be in the same voice channel in order to skip!");
 			return;
 		}
 
 		if(b.getAudioScheduler().getVotes() >= (event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() - 1) / 2) {
-			event.getChannel().sendMessage("Skip vote status: **[" + ( b.getAudioScheduler().getVotes() + 1) + "/" 
+			MessageText.send(event.getChannel(), "Skip vote status: **[" + ( b.getAudioScheduler().getVotes() + 1) + "/" 
 					+ (event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() - 1) + "]**"
-					+ "\nSkipping current track.").queue();
+					+ "\nSkipping current track.");
 			if(b.getAudioScheduler().getQueue().getNext() != null ) {
 				MessageEmbed next = b.getAudioScheduler().getQueue().getNext().getEmbedMessage("Now Playing:");
-				event.getChannel().sendMessage(next).queue();
+				MessageText.send(event.getChannel(), next);
 			}
 			b.getAudioScheduler().skip();
 			return;
 		}
 		if(b.getAudioScheduler().voteSkip(event.getAuthor().getId())) {
-			event.getChannel().sendMessage("You voted to skip the current track.").queue();
+			MessageText.send(event.getChannel(), "You voted to skip the current track.");
 		}else {
-			event.getChannel().sendMessage("You cannot vote to skip this track again."
+			MessageText.send(event.getChannel(), "You cannot vote to skip this track again."
 					+ "\nSkip vote status: **[" + b.getAudioScheduler().getVotes() + "/" 
-					+ (event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() - 1) + "]**").queue();
+					+ (event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() - 1) + "]**");
 		}
 
 		if(b.getAudioScheduler().getVotes() >= (event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() - 1) / 2) {
-			event.getChannel().sendMessage("Skip vote status: **[" + b.getAudioScheduler().getVotes() + "/" 
+			MessageText.send(event.getChannel(), "Skip vote status: **[" + b.getAudioScheduler().getVotes() + "/" 
 					+ event.getGuild().getAudioManager().getConnectedChannel().getMembers().size() + "]**"
-					+ "\nSkipping current track.").queue();
+					+ "\nSkipping current track.");
 			if(b.getAudioScheduler().getQueue().getNext() != null ) {
 				MessageEmbed next = b.getAudioScheduler().getQueue().getNext().getEmbedMessage("Now Playing:");
-				event.getChannel().sendMessage(next).queue();
+				MessageText.send(event.getChannel(), next);
 			}
 			b.getAudioScheduler().skip();
 		}

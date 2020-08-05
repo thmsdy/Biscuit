@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.fusesource.jansi.AnsiConsole;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.captcha.BCage;
 import com.fpghoti.biscuit.commands.CommandManager;
 import com.fpghoti.biscuit.commands.client.AddCommand;
 import com.fpghoti.biscuit.commands.client.ChanIDCommand;
@@ -55,6 +56,7 @@ import com.fpghoti.biscuit.listener.ReactionListener;
 import com.fpghoti.biscuit.listener.RoleListener;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.github.cage.Cage;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
@@ -85,6 +87,7 @@ public class Main {
 	public static boolean ready = false;
 	public static boolean isPlugin =  false;
 	public static boolean shutdownStarted = false;
+	private static Cage cage;
 
 	private static AudioPlayerManager playerManager;
 
@@ -106,6 +109,8 @@ public class Main {
 
 		mainBiscuit = new Biscuit(null, null, log);
 		startJDA();
+		
+		cage = new BCage();
 
 		jda.addEventListener(new GuildListener());
 		jda.addEventListener(new MessageReceiveListener());
@@ -243,6 +248,10 @@ public class Main {
 
 	public static JDA getJDA() {
 		return jda;
+	}
+	
+	public static Cage getCage() {
+		return cage;
 	}
 
 	public static BiscuitLog getLogger() {

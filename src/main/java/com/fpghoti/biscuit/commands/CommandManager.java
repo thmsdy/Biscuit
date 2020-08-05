@@ -9,6 +9,7 @@ import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.commands.base.ConsoleCommand;
 import com.fpghoti.biscuit.commands.base.CustomCommand;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
@@ -119,7 +120,7 @@ public class CommandManager {
 
 	public static void commandReply(GuildMessageReceivedEvent event, String msg) {
 		if(event != null) {
-			event.getChannel().sendMessage(msg).queue();
+			MessageText.send(event.getChannel(), msg);
 		}else {
 			Main.getLogger().info(msg);
 		}

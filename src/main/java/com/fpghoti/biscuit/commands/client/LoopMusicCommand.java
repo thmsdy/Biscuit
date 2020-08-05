@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -24,10 +25,10 @@ public class LoopMusicCommand extends MusicClientCommand{
 		b.log(event.getAuthor().getName() + " issued a command: -loopmusic");
 		if(PermUtil.isMod(event.getMember())) {
 			if(!b.getAudioScheduler().isLooping()) {
-				event.getChannel().sendMessage("Setting all music to loop.").queue();
+				MessageText.send(event.getChannel(), "Setting all music to loop.");
 				b.getAudioScheduler().setLooping(true);
 			}else {
-				event.getChannel().sendMessage("Disabling music looping.").queue();
+				MessageText.send(event.getChannel(), "Disabling music looping.");
 				b.getAudioScheduler().setLooping(false);
 			}
 

@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -26,10 +27,10 @@ public class TogglePauseCommand extends MusicClientCommand{
 		if(PermUtil.isMod(event.getMember())) {
 			if(b.getAudioPlayer().isPaused()) {
 				b.getAudioPlayer().setPaused(false);
-				event.getChannel().sendMessage("Unpaused the current track.").queue();
+				MessageText.send(event.getChannel(), "Unpaused the current track.");
 			}else {
 				b.getAudioPlayer().setPaused(true);
-				event.getChannel().sendMessage("Paused the current track.").queue();
+				MessageText.send(event.getChannel(), "Paused the current track.");
 			}
 		}
 	}

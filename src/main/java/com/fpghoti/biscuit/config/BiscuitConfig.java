@@ -15,6 +15,7 @@ import org.apache.commons.configuration2.PropertiesConfigurationLayout;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.jcabi.aspects.Async;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -69,16 +70,16 @@ public class BiscuitConfig {
 		}
 		String name = guild.getId() + ".properties";
 		if(a.getSize() > 51200) {
-			c.sendMessage("**The file is too big!**").queue();
+			MessageText.send(c, "**The file is too big!**");
 			return;
 		}
 		File config = new File(biscuit.getConfigDir(), name);
 		a.downloadToFile(config).thenAccept(file -> {
 			updateConfig(file, true, code);
-			c.sendMessage("**The config was successfully updated.**").queue();
+			MessageText.send(c, "**The config was successfully updated.**");
 		}).exceptionally(t -> { 
 			biscuit.error("Could not accept config file.");
-			c.sendMessage("**An Exception occurred while trying to read the file.**").queue();
+			MessageText.send(c, "**An Exception occurred while trying to read the file.**");
 			return null;
 		});
 

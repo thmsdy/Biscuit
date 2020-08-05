@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -30,7 +31,7 @@ public class SquareRootCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				root = root.replace(".0","");
 			}
-			event.getChannel().sendMessage("The sqaure root of " + args[0] + " is **" + root + "**.").queue();
+			MessageText.send(event.getChannel(), "The sqaure root of " + args[0] + " is **" + root + "**.");
 		}
 	}
 

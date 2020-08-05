@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -31,7 +32,7 @@ public class MultiplyCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				prod = prod.replace(".0","");
 			}
-			event.getChannel().sendMessage(args[0] + " x " + args[1] + " is **" + prod + "**.").queue();
+			MessageText.send(event.getChannel(), args[0] + " x " + args[1] + " is **" + prod + "**.");
 		}
 	}
 

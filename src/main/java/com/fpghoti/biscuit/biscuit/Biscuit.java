@@ -10,17 +10,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.PluginCore;
 import com.fpghoti.biscuit.audio.AudioScheduler;
-import com.fpghoti.biscuit.captcha.BCage;
 import com.fpghoti.biscuit.config.BiscuitConfig;
 import com.fpghoti.biscuit.config.BiscuitProperties;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.timer.BiscuitTimer;
 import com.fpghoti.biscuit.timer.task.ChatCountTimer;
 import com.fpghoti.biscuit.timer.task.DecrementTimer;
 import com.fpghoti.biscuit.timer.task.SoftMuteTimer;
+import com.fpghoti.biscuit.user.CaptchaUser;
 import com.fpghoti.biscuit.user.PreUser;
-import com.github.cage.Cage;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 
 import net.dv8tion.jda.api.JDA;
@@ -81,7 +81,7 @@ public class Biscuit {
 	private Timer timer;
 	private List<BiscuitTimer> timers;
 	private File captchaDir;
-	private Cage cage;
+	//private Cage cage;
 	private Guild guild;
 	private HashMap<String, Integer> inviteUses;
 	private BiscuitConfig config;
@@ -104,10 +104,10 @@ public class Biscuit {
 		this.properties = new BiscuitProperties(this);
 		this.rolequeue = new HashMap<Member, Role>();
 		this.player = Main.getPlayerManager().createPlayer();
-		
+
 		scheduler = new AudioScheduler(this);
 		player.addListener(scheduler);
-		
+
 		timer = new Timer();
 		timers = new ArrayList<BiscuitTimer>();
 		if(!Main.isPlugin) {
@@ -117,7 +117,6 @@ public class Biscuit {
 			captchaDir = new File(PluginCore.plugin.getDataFolder(), "captcha");
 			captchaDir.mkdir();
 		}	
-		cage = new BCage();
 		if(isMain) {
 			wipeCaptchaDir();
 		}
@@ -155,11 +154,11 @@ public class Biscuit {
 	public AudioPlayer getAudioPlayer() {
 		return player;
 	}
-	
+
 	public AudioScheduler getAudioScheduler() {
 		return scheduler;
 	}
-	
+
 	public void log(String message) {
 		if(properties == null) {
 			logger.info(message);
@@ -189,7 +188,7 @@ public class Biscuit {
 	}
 
 	public void say(TextChannel channel, String message) {
-		channel.sendMessage(message).queue();
+		MessageText.send(channel, message);
 	}
 
 	public void loadTimers() {
@@ -225,10 +224,6 @@ public class Biscuit {
 		}
 	}
 
-	public Cage getCage() {
-		return this.cage;
-	}
-
 	public ArrayList<TextChannel> getCaptchaLogChannels() {
 		ArrayList<TextChannel> ch = new ArrayList<TextChannel>();
 		for(TextChannel t : guild.getTextChannels()) {
@@ -242,9 +237,27 @@ public class Biscuit {
 	public void captchaLog(String msg) {
 		if(properties.logCaptcha()) {
 			for(TextChannel t : getCaptchaLogChannels()) {
-				t.sendMessage(msg).queue();
+				MessageText.send(t, msg);
 			}
 		}
+	}
+
+	public Role getDefaultRole() {
+		for(Role r : guild.getRoles()) {
+			if(r.getName().toLowerCase().contains(properties.getDefaultRole().toLowerCase())) {
+				return r;
+			}
+		}
+		return null;
+	}
+
+	public Role getCaptchaRewardRole() {
+		for(Role r : guild.getRoles()) {
+			if(r.getName().toLowerCase().contains(properties.getCaptchaReward().toLowerCase())) {
+				return r;
+			}
+		}
+		return null;
 	}
 
 	private void loadPreUsers() {
@@ -258,7 +271,7 @@ public class Biscuit {
 					for(Role role : m.getRoles()){
 						if(role.getName().equalsIgnoreCase(properties.getDefaultRole())){
 							log(BColor.MAGENTA_BOLD + "Adding pre-join check for user " + u.getName() + " (" + u.getAsMention() + ")...");
-							users.add(new PreUser(u,this));
+							users.add(PreUser.getPreUser(CaptchaUser.getCaptchaUser(u), this));
 						}
 					}
 				}
@@ -288,11 +301,21 @@ public class Biscuit {
 	}
 
 	public void addPreUser(PreUser user) {
-		users.add(user);
+		if(!users.contains(user)) {
+			users.add(user);
+		}else {
+			error("CAPTCHA ERROR: Tried to add PreUser when one already exists");
+		}
 	}
 
 	public void removePreUser(PreUser user) {
-		users.remove(user);
+		ArrayList<PreUser> temp = new ArrayList<PreUser>(users);
+		for(PreUser u : temp) {
+			if(u.getUser().getId().equals(user.getUser().getId())) {
+				user.setDone();
+				users.remove(u);
+			}
+		}
 	}
 
 	public CopyOnWriteArrayList<PreUser> getPreUsers(){
@@ -332,7 +355,7 @@ public class Biscuit {
 			return dir;
 		}
 	}
-	
+
 	public HashMap<Member, Role> getRoleQueue() {
 		return rolequeue;
 	}

@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -25,9 +26,9 @@ public class PauseCommand extends MusicClientCommand{
 		if(PermUtil.isMod(event.getMember())) {
 			if(!b.getAudioPlayer().isPaused()) {
 				b.getAudioPlayer().setPaused(true);
-				event.getChannel().sendMessage("Paused the current track.").queue();
+				MessageText.send(event.getChannel(), "Paused the current track.");
 			}else {
-				event.getChannel().sendMessage("The music player is already paused.").queue();
+				MessageText.send(event.getChannel(), "The music player is already paused.");
 			}
 		}
 	}

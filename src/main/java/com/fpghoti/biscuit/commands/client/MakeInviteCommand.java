@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
@@ -39,7 +40,7 @@ public class MakeInviteCommand extends ClientCommand{
 				}
 			}
 			if(doubAge > 86400) {
-				event.getChannel().sendMessage("That length is longer than what Discord allows. Please try again. (Max 24 hours)").queue();
+				MessageText.send(event.getChannel(), "That length is longer than what Discord allows. Please try again. (Max 24 hours)");
 				return;
 			}
 			final double db = doubAge;
@@ -49,7 +50,7 @@ public class MakeInviteCommand extends ClientCommand{
 					if(db > 0) {
 						exp = args[1] + " hour(s)";
 					}
-					event.getChannel().sendMessage("Created invite **" + i.getCode() + "** Expiration: **" + exp + "**.").queue();
+					MessageText.send(event.getChannel(), "Created invite **" + i.getCode() + "** Expiration: **" + exp + "**.");
 				});
 			}
 		}

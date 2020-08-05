@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Member;
@@ -29,7 +30,7 @@ public class NotSpammerCommand extends ClientCommand{
 			String s = u.getAsMention();
 			if(event.getChannel().getName().equals("public-spam-test") || (PermUtil.isMod(event.getMember()))) {
 				b.getMessageStore().removeSpammer(u);
-				event.getChannel().sendMessage(s+ " is no longer flagged as spam.").queue();
+				MessageText.send(event.getChannel(), s + " is no longer flagged as spam.");
 			}
 		}
 	}

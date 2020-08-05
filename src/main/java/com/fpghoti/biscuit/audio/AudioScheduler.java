@@ -6,6 +6,7 @@ import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.queue.AudioQueue;
 import com.fpghoti.biscuit.audio.queue.QueuedTrack;
 import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -56,7 +57,7 @@ public class AudioScheduler extends AudioEventAdapter {
 			if(!qt.triedAlternative()) {
 				qt.useAttempt();
 				TextChannel channel = qt.getCommandChannel();
-				channel.sendMessage("The video selected cannot be played through the music player. An alternate track will be played if available.").queue();
+				MessageText.send(channel, "The video selected cannot be played through the music player. An alternate track will be played if available.");
 				title = title.toLowerCase().replace("vevo", "") + " lyrics";
 				Main.getPlayerManager().loadItemOrdered(biscuit.getGuild(),"ytsearch:" + title, new AudioResultHandler(qt.getUserId(), channel, true, title, true, !queue.isEmpty()));
 				return;
@@ -65,7 +66,7 @@ public class AudioScheduler extends AudioEventAdapter {
 		case CLEANUP:
 			log("A track stopped playing due to audio player cleanup.");
 			if(qt != null && qt.getCommandChannel() != null)
-				qt.getCommandChannel().sendMessage("Track **" + track.getInfo().title + "** stopped playing due to audio player cleanup.").queue();
+				MessageText.send(qt.getCommandChannel(), "Track **" + track.getInfo().title + "** stopped playing due to audio player cleanup.");
 			break;
 		case FINISHED:
 			log("Finished playing track " + title + ".");
@@ -103,7 +104,7 @@ public class AudioScheduler extends AudioEventAdapter {
 	public void onTrackStuck(AudioPlayer player, AudioTrack track, long thresholdMs) {
 		QueuedTrack qt = queue.getPreviousTrack(track);
 		if(qt != null && qt.getCommandChannel() != null) {
-			qt.getCommandChannel().sendMessage("The current track has become stuck and will be skipped.").queue();
+			MessageText.send(qt.getCommandChannel(), "The current track has become stuck and will be skipped.");
 		}
 	}
 

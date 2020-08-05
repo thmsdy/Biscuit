@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Member;
@@ -27,7 +28,7 @@ public class UIDCommand extends ClientCommand{
 		for(Member m : event.getMessage().getMentionedMembers()){
 			User u = m.getUser();
 			if(PermUtil.isMod(event.getMember())) {
-				event.getChannel().sendMessage(u.getId()).queue();
+				MessageText.send(event.getChannel(), u.getId());
 			}
 		}
 	}

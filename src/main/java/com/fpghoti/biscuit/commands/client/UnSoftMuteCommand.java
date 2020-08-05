@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Member;
@@ -29,7 +30,7 @@ public class UnSoftMuteCommand extends ClientCommand{
 			String s = u.getAsMention();
 			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()))) { 
 				b.getMessageStore().removeSoftmuted(u);
-				event.getChannel().sendMessage(s+ " is no longer soft-muted.").queue();
+				MessageText.send(event.getChannel(), s + " is no longer soft-muted.");
 			}
 		}
 	}

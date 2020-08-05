@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -24,9 +25,9 @@ public class NowPlayingCommand extends MusicClientCommand{
 		b.log(event.getAuthor().getName() + " issued a command: -nowplaying");
 		if(b.getAudioScheduler().getQueue().getLastTrack() != null ) {
 			MessageEmbed next = b.getAudioScheduler().getQueue().getLastTrack().getEmbedMessage("Now Playing:", true);
-			event.getChannel().sendMessage(next).queue();
+			MessageText.send(event.getChannel(), next);
 		}else {
-			event.getChannel().sendMessage("No song is currently playing.").queue();
+			MessageText.send(event.getChannel(), "No song is currently playing.");
 		}
 	}
 

@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -25,7 +26,7 @@ public class WipeQueueCommand extends MusicClientCommand{
 		b.log(event.getAuthor().getName() + " issued a command: -wipequeue");
 		if(PermUtil.isMod(event.getMember())) {
 			b.getAudioScheduler().wipeQueue();
-			event.getChannel().sendMessage("Removed upcoming songs from the music queue.").queue();
+			MessageText.send(event.getChannel(), "Removed upcoming songs from the music queue.");
 		}
 	}
 

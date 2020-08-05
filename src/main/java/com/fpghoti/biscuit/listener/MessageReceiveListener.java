@@ -1,20 +1,22 @@
 package com.fpghoti.biscuit.listener;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.biscuit.BiscuitMessageStore;
 import com.fpghoti.biscuit.logging.BColor;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.ChatFilter;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageReceiveListener extends ListenerAdapter{
+	
+	/**TODO create new user class
+	 * for keeping track of spammers
+	 * and softmutes.
+	 */
 
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event){
@@ -75,13 +77,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 	private boolean isNaughty(GuildMessageReceivedEvent event) {
 		// TODO make staff filter configurable
 		if(!event.getChannel().getName().toLowerCase().contains("staff") && ChatFilter.filter(event, false)){
-			event.getChannel().sendMessage(event.getAuthor().getAsMention() + " This message contains words not appropriate for this channel.").queue(new Consumer<Message>()
-			{
-				@Override
-				public void accept(Message msg){
-					msg.delete().submitAfter(3, TimeUnit.SECONDS);
-				}
-			});
+			MessageText.sendTimed(event.getChannel(), event.getAuthor().getAsMention() + " This message contains words not appropriate for this channel.", 3);
 			event.getMessage().delete().submit();
 			return true;
 		}
@@ -149,26 +145,14 @@ public class MessageReceiveListener extends ListenerAdapter{
 				store.addSpammer(event.getAuthor());
 				store.removeSpamWarned(event.getAuthor());
 				event.getMessage().delete().submit();
-				event.getChannel().sendMessage("*Flagging " + mention + " as spam!*").queue(new Consumer<Message>()
-				{
-					@Override
-					public void accept(Message msg){
-						msg.delete().reason("Automatic bot message removal").submitAfter(3, TimeUnit.SECONDS);
-					}
-				});
+				MessageText.sendTimed(event.getChannel(), "*Flagging " + mention + " as spam!*", 3);
 				biscuit.log(BColor.MAGENTA_BOLD + "User " + event.getAuthor().getName() + " has been flagged as spam!");
 				event.getMessage().delete().reason("Spam removal activated for " + mention).submit();
 				//User is spamming and has not been warned. Apply warning.
 			}else if(!store.isSpammer(event.getAuthor()) && !store.isSpamWarned(event.getAuthor())){
 				store.removeMessageCount(event.getAuthor());
 				store.addSpamWarned(event.getAuthor());
-				event.getChannel().sendMessage("**STOP spamming, " + mention + "! You have been warned!**").queue(new Consumer<Message>()
-				{
-					@Override
-					public void accept(Message msg){
-						msg.delete().reason("Automatic bot message removal").submitAfter(3, TimeUnit.SECONDS);
-					}
-				});
+				MessageText.sendTimed(event.getChannel(), "**STOP spamming, " + mention + "! You have been warned!**", 3);
 				biscuit.log(BColor.MAGENTA_BOLD + "User " + event.getAuthor().getName() + " has been warned for spam!");
 			}
 		}

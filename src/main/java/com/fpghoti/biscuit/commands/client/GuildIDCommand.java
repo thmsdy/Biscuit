@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -24,7 +25,7 @@ public class GuildIDCommand extends ClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -guildid");
 		if(PermUtil.isMod(event.getMember())) {
-			event.getChannel().sendMessage(event.getGuild().getId()).queue();
+			MessageText.send(event.getChannel(), event.getGuild().getId());
 		}
 	}
 

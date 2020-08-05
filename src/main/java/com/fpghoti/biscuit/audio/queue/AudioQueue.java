@@ -2,6 +2,7 @@ package com.fpghoti.biscuit.audio.queue;
 
 import java.util.ArrayList;
 
+import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -103,7 +104,7 @@ public class AudioQueue {
 		if(track.getCommandChannel() != null) {
 			TextChannel c = track.getCommandChannel();
 			MessageEmbed m = track.getEmbedMessage("Queued:");
-			c.sendMessage(m).queue();
+			MessageText.send(c, m);
 		}
 	}
 

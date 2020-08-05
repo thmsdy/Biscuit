@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.commands.client;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Emote;
@@ -37,7 +38,7 @@ public class ToggleRoleCommand extends ClientCommand{
 			}
 
 			if(rolename.equals("")) {
-				event.getChannel().sendMessage("Sorry! This role either cannot be toggled or does not exist!").queue();
+				MessageText.send(event.getChannel(), "Sorry! This role either cannot be toggled or does not exist!");
 				return;
 			}
 

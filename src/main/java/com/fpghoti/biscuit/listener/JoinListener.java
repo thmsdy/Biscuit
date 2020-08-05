@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.logging.BColor;
+import com.fpghoti.biscuit.user.CaptchaUser;
 import com.fpghoti.biscuit.user.PreUser;
 import com.jcabi.aspects.Async;
 
@@ -43,7 +44,7 @@ public class JoinListener extends ListenerAdapter {
 
 				if(biscuit.getProperties().captchaEnabled()) {
 					biscuit.log(BColor.MAGENTA_BOLD + "Adding pre-join check for user " + user.getName() + " (" + user.getAsMention() + ")...");
-					new PreUser(event.getMember().getUser(), biscuit);
+					PreUser.getPreUser(CaptchaUser.getCaptchaUser(user), biscuit);
 				}
 
 				event.getGuild().addRoleToMember(event.getMember(), role).queue();

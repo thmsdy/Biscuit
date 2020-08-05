@@ -2,6 +2,7 @@ package com.fpghoti.biscuit.audio;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -60,16 +61,16 @@ public class AudioResultHandler implements AudioLoadResultHandler {
 			biscuit.log("Exact match not found. Searching instead...");
 			Main.getPlayerManager().loadItemOrdered(biscuit.getGuild(),"ytsearch:" + searchPhrase, new AudioResultHandler(uid, channel, true, searchPhrase, first, false));
 		}else {
-			channel.sendMessage("Song match not found.").queue();
+			MessageText.send(channel, "Song match not found.");
 		}
 	}
 
 	@Override
 	public void loadFailed(FriendlyException exception) {
 		exception.printStackTrace();
-		channel.sendMessage("An error was encountered while attempting to load audio.").queue();
+		MessageText.send(channel, "An error was encountered while attempting to load audio.");
 	}
-	
-	
+
+
 
 }

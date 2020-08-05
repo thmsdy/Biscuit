@@ -5,6 +5,7 @@ import com.fpghoti.biscuit.audio.AudioHandler;
 import com.fpghoti.biscuit.audio.AudioResultHandler;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -41,7 +42,7 @@ public class PlayCommand extends MusicClientCommand{
 
 		String vcname = "";
 		if(!event.getMember().getVoiceState().inVoiceChannel()) {
-			tchannel.sendMessage("You must be in a voice channel to do this!").queue();
+			MessageText.send(tchannel, "You must be in a voice channel to do this!");
 			return;
 		}
 		vcname = event.getMember().getVoiceState().getChannel().getName();
@@ -55,14 +56,14 @@ public class PlayCommand extends MusicClientCommand{
 				}
 			}
 			if(found == false) {
-				tchannel.sendMessage("You are not in a channel that is authorized to use the music player.").queue();
+				MessageText.send(tchannel, "You are not in a channel that is authorized to use the music player.");
 				return;
 			}
 		}
 
 		if(b.getAudioPlayer().getPlayingTrack() != null && guild.getAudioManager().isConnected() && !guild.getAudioManager().getConnectedChannel().getMembers().contains(event.getMember())) {
-			tchannel.sendMessage("Music is already playing in a voice channel. Connect to "
-					+ "that channel, then queue your song.").queue();
+			MessageText.send(tchannel, "Music is already playing in a voice channel. Connect to "
+					+ "that channel, then queue your song.");
 			return;
 		}
 
