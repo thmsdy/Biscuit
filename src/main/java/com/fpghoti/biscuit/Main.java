@@ -48,7 +48,6 @@ import com.fpghoti.biscuit.commands.client.music.SkipCommand;
 import com.fpghoti.biscuit.commands.client.music.TogglePauseCommand;
 import com.fpghoti.biscuit.commands.client.music.UnpauseCommand;
 import com.fpghoti.biscuit.commands.client.music.VolumeCommand;
-import com.fpghoti.biscuit.commands.client.music.WipeQueueCommand;
 import com.fpghoti.biscuit.commands.console.GuildSayCommand;
 import com.fpghoti.biscuit.commands.console.SayCommand;
 import com.fpghoti.biscuit.commands.console.ShutdownConsoleCommand;
@@ -171,7 +170,6 @@ public class Main {
 		CommandManager.addCommand(new QueueCommand());
 		CommandManager.addCommand(new SkipCommand());
 		CommandManager.addCommand(new NowPlayingCommand());
-		CommandManager.addCommand(new WipeQueueCommand());
 		CommandManager.addCommand(new LoopMusicCommand());
 		CommandManager.addCommand(new VolumeCommand());
 		CommandManager.addCommand(new ShuffleCommand());

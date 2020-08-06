@@ -14,7 +14,7 @@ public class MoveToCommand extends MusicClientCommand{
 	public MoveToCommand() {
 		name = "Move To";
 		description = "Moves track to specified position.";
-		usage = Main.getMainBiscuit().getProperties().getCommandSignifier() + "moveto <Track #>";
+		usage = Main.getMainBiscuit().getProperties().getCommandSignifier() + "moveto <CurrentTrack #> <NewTrack #>";
 		minArgs = 2;
 		maxArgs = 2;
 		identifiers.add("moveto");
