@@ -1,4 +1,4 @@
-package com.fpghoti.biscuit.commands.client;
+package com.fpghoti.biscuit.commands.client.music;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
@@ -23,7 +23,7 @@ public class LoopMusicCommand extends MusicClientCommand{
 	public void execute(String[] args, GuildMessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -loopmusic");
-		if(PermUtil.isMod(event.getMember())) {
+		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(!b.getAudioScheduler().isLooping()) {
 				MessageText.send(event.getChannel(), "Setting all music to loop.");
 				b.getAudioScheduler().setLooping(true);

@@ -1,4 +1,4 @@
-package com.fpghoti.biscuit.commands.client;
+package com.fpghoti.biscuit.commands.client.music;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.queue.AudioQueue;

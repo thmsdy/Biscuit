@@ -62,7 +62,15 @@ public class QueuedTrack {
 		embed.setTitle(title, track.getInfo().uri);
 		embed.setColor(Color.CYAN);
 
-		String desc = "Author: " + track.getInfo().author + "\nLength: " + Util.getTime(track.getDuration());
+		long duration = track.getDuration();
+		
+		//Duration seems to change after track begins playing
+		//This is to make the embeds more consistant with each other
+		if(showRemaining) {
+			duration+=1000;
+		}
+		
+		String desc = "Author: " + track.getInfo().author + "\nLength: " + Util.getTime(duration);
 
 		if(showRemaining) {
 			desc = desc + "\nTime Remaining: " + Util.getTime(track.getDuration() - track.getPosition());

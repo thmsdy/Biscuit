@@ -180,6 +180,7 @@ public class BiscuitConfig {
 		added = addProperty("Kick-DM-Invite", "", prop,  added, silent);
 		added = addProperty("Allow-Music-Bot", "true", prop,  added, silent);
 		added = addProperty("Music-Channels", "", prop,  added, silent);
+		added = addProperty("Music-Controller-Role", "music-key", prop,  added, silent);
 
 		if(!isMain) {
 			if(code != null) {

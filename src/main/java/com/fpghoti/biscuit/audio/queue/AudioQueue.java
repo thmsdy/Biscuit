@@ -1,6 +1,7 @@
 package com.fpghoti.biscuit.audio.queue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -19,18 +20,31 @@ public class AudioQueue {
 	}
 
 	public ArrayList<QueuedTrack> getUserTracks(String userId){
-		ArrayList<QueuedTrack> tracks = new ArrayList<QueuedTrack>();
+		ArrayList<QueuedTrack> qts = new ArrayList<QueuedTrack>();
 		for(QueuedTrack qt : tracks) {
 			if(qt.getUserId().equals(userId)) {
-				tracks.add(qt);
+				qts.add(qt);
 			}
 		}
-		return tracks;
+		return qts;
 	}
 
 	public void removeUserTracks(String userId) {
 		for(QueuedTrack qt : getUserTracks(userId)) {
 			tracks.remove(qt);
+		}
+	}
+	
+	public void shuffleUserTracks(String userId) {
+		ArrayList<QueuedTrack> qts = getUserTracks(userId);
+		Collections.shuffle(qts);
+		int index = 0;
+		for(int i = 0; i < tracks.size(); i++) {
+			QueuedTrack track = tracks.get(i);
+			if(track.getUserId().equals(userId)) {
+				tracks.set(i, qts.get(index));
+				index++;
+			}
 		}
 	}
 
@@ -127,6 +141,26 @@ public class AudioQueue {
 			return false;
 		}
 		tracks.remove(track);
+		return true;
+	}
+	
+	//Goes by viewable place rather than index for
+	//easy implementation into command.
+	public boolean removeTracksBefore(int place) {
+		int index = place - 1;
+		if(index < 1) {
+			return false;
+		}
+		ArrayList<QueuedTrack> trs = new ArrayList<QueuedTrack>(tracks);
+		int count = 0;
+		for(QueuedTrack t : trs) {
+			if(count < index) {
+				tracks.remove(t);
+			}else {
+				return true;
+			}
+			count++;
+		}
 		return true;
 	}
 

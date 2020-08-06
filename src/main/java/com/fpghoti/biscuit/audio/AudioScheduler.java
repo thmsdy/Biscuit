@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.queue.AudioQueue;
 import com.fpghoti.biscuit.audio.queue.QueuedTrack;
+import com.fpghoti.biscuit.audio.request.youtube.YTImmediateRequest;
+import com.fpghoti.biscuit.audio.request.youtube.YTRequest;
+import com.fpghoti.biscuit.audio.result.YTResultHandler;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -13,6 +16,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class AudioScheduler extends AudioEventAdapter {
@@ -59,7 +63,8 @@ public class AudioScheduler extends AudioEventAdapter {
 				TextChannel channel = qt.getCommandChannel();
 				MessageText.send(channel, "The video selected cannot be played through the music player. An alternate track will be played if available.");
 				title = title.toLowerCase().replace("vevo", "") + " lyrics";
-				Main.getPlayerManager().loadItemOrdered(biscuit.getGuild(),"ytsearch:" + title, new AudioResultHandler(qt.getUserId(), channel, true, title, true, !queue.isEmpty()));
+				YTRequest request = new YTImmediateRequest(channel, qt.getUserId(), title);
+				Main.getPlayerManager().loadItemOrdered(biscuit.getGuild(),"ytsearch:" + title, new YTResultHandler(request));
 				return;
 			}
 			break;
@@ -133,6 +138,7 @@ public class AudioScheduler extends AudioEventAdapter {
 				return;
 			}			
 			biscuit.getGuild().getAudioManager().closeAudioConnection();
+			biscuit.getAudioPlayer().setVolume(100);
 			skips.clear();
 			return;
 		}
@@ -167,9 +173,17 @@ public class AudioScheduler extends AudioEventAdapter {
 	public AudioQueue getQueue(){
 		return queue;
 	}
-
+	
 	public void skip() {
+		skip(null);
+	}
+
+	public void skip(TextChannel channel) {
 		biscuit.getAudioPlayer().stopTrack();
+		if(channel != null && queue.getNext() != null ) {
+			MessageEmbed next = queue.getNext().getEmbedMessage("Now Playing:");
+			MessageText.send(channel, next);
+		}
 		startPlaying();
 	}
 

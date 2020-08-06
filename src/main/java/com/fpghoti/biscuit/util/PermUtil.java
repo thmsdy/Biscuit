@@ -38,6 +38,21 @@ public class PermUtil {
 		return false;
 	}
 	
+	public static boolean hasMusicControl(Member member){
+		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
+		if(isAdmin(member) || isMod(member)){
+			return true;
+		}else{
+			for(Role role : member.getRoles()){
+				if(role.getName().equalsIgnoreCase(biscuit.getProperties().getMusicControllerRole())){
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	
 	public static boolean hasRole(Member member, String role){
 		for(Role r : member.getRoles()){
 			if(r.getName().equalsIgnoreCase(role)){

@@ -63,10 +63,10 @@ public class BiscuitProperties {
 		return biscuit.getConfig().getFromConfig(key, biscuit);
 	}
 	
-	public String getDontNotify(){
-		String key = "Dont-Notify-Role";
+	public String getMusicControllerRole(){
+		String key = "Music-Controller-Role";
 		if(biscuit.getConfig().getFromConfig(key, biscuit).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
-			return Main.getMainBiscuit().getProperties().getDontNotify();
+			return Main.getMainBiscuit().getProperties().getMusicControllerRole();
 		}
 		return biscuit.getConfig().getFromConfig(key, biscuit);
 	}

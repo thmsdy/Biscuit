@@ -13,34 +13,42 @@ import com.fpghoti.biscuit.commands.CommandManager;
 import com.fpghoti.biscuit.commands.client.AddCommand;
 import com.fpghoti.biscuit.commands.client.ChanIDCommand;
 import com.fpghoti.biscuit.commands.client.DivideCommand;
-import com.fpghoti.biscuit.commands.client.ForceSkipCommand;
 import com.fpghoti.biscuit.commands.client.GetConfigCommand;
 import com.fpghoti.biscuit.commands.client.GuildIDCommand;
 import com.fpghoti.biscuit.commands.client.ToggleRoleCommand;
 import com.fpghoti.biscuit.commands.client.HelpCommand;
-import com.fpghoti.biscuit.commands.client.LoopMusicCommand;
 import com.fpghoti.biscuit.commands.client.MultiplyCommand;
 import com.fpghoti.biscuit.commands.client.NotSpammerCommand;
-import com.fpghoti.biscuit.commands.client.NowPlayingCommand;
-import com.fpghoti.biscuit.commands.client.PauseCommand;
-import com.fpghoti.biscuit.commands.client.TogglePauseCommand;
 import com.fpghoti.biscuit.commands.client.MakeInviteCommand;
 import com.fpghoti.biscuit.commands.client.PingCommand;
-import com.fpghoti.biscuit.commands.client.PlayCommand;
-import com.fpghoti.biscuit.commands.client.PlayFirstCommand;
 import com.fpghoti.biscuit.commands.client.PowerCommand;
-import com.fpghoti.biscuit.commands.client.QueueCommand;
 import com.fpghoti.biscuit.commands.client.RecentSpammersCommand;
 import com.fpghoti.biscuit.commands.client.SaveConfigCommand;
-import com.fpghoti.biscuit.commands.client.SkipCommand;
 import com.fpghoti.biscuit.commands.client.SoftMuteCommand;
 import com.fpghoti.biscuit.commands.client.SquareRootCommand;
 import com.fpghoti.biscuit.commands.client.SubtractCommand;
 import com.fpghoti.biscuit.commands.client.UIDCommand;
 import com.fpghoti.biscuit.commands.client.UnSoftMuteCommand;
-import com.fpghoti.biscuit.commands.client.UnpauseCommand;
 import com.fpghoti.biscuit.commands.client.WikiCommand;
-import com.fpghoti.biscuit.commands.client.WipeQueueCommand;
+import com.fpghoti.biscuit.commands.client.music.ClearCommand;
+import com.fpghoti.biscuit.commands.client.music.ForceSkipCommand;
+import com.fpghoti.biscuit.commands.client.music.ForceSkipToCommand;
+import com.fpghoti.biscuit.commands.client.music.ClearUserSongsCommand;
+import com.fpghoti.biscuit.commands.client.music.LoopMusicCommand;
+import com.fpghoti.biscuit.commands.client.music.MoveToCommand;
+import com.fpghoti.biscuit.commands.client.music.NowPlayingCommand;
+import com.fpghoti.biscuit.commands.client.music.PauseCommand;
+import com.fpghoti.biscuit.commands.client.music.PlayCommand;
+import com.fpghoti.biscuit.commands.client.music.PlayFirstCommand;
+import com.fpghoti.biscuit.commands.client.music.QueueCommand;
+import com.fpghoti.biscuit.commands.client.music.RemoveCommand;
+import com.fpghoti.biscuit.commands.client.music.ShuffleCommand;
+import com.fpghoti.biscuit.commands.client.music.SkipAllCommand;
+import com.fpghoti.biscuit.commands.client.music.SkipCommand;
+import com.fpghoti.biscuit.commands.client.music.TogglePauseCommand;
+import com.fpghoti.biscuit.commands.client.music.UnpauseCommand;
+import com.fpghoti.biscuit.commands.client.music.VolumeCommand;
+import com.fpghoti.biscuit.commands.client.music.WipeQueueCommand;
 import com.fpghoti.biscuit.commands.console.GuildSayCommand;
 import com.fpghoti.biscuit.commands.console.SayCommand;
 import com.fpghoti.biscuit.commands.console.ShutdownConsoleCommand;
@@ -151,6 +159,9 @@ public class Main {
 		CommandManager.addCommand(new SaveConfigCommand());
 		CommandManager.addCommand(new GuildIDCommand());
 		CommandManager.addCommand(new WikiCommand());
+		
+		//Music Client
+		
 		CommandManager.addCommand(new PlayCommand());
 		CommandManager.addCommand(new PlayFirstCommand());
 		CommandManager.addCommand(new ForceSkipCommand());
@@ -162,6 +173,14 @@ public class Main {
 		CommandManager.addCommand(new NowPlayingCommand());
 		CommandManager.addCommand(new WipeQueueCommand());
 		CommandManager.addCommand(new LoopMusicCommand());
+		CommandManager.addCommand(new VolumeCommand());
+		CommandManager.addCommand(new ShuffleCommand());
+		CommandManager.addCommand(new RemoveCommand());
+		CommandManager.addCommand(new ClearCommand());
+		CommandManager.addCommand(new MoveToCommand());
+		CommandManager.addCommand(new ForceSkipToCommand());
+		CommandManager.addCommand(new ClearUserSongsCommand());
+		CommandManager.addCommand(new SkipAllCommand());
 
 		//Console
 
