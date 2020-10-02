@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.queue.AudioQueue;
 import com.fpghoti.biscuit.audio.queue.QueuedTrack;
+import com.fpghoti.biscuit.audio.request.RequestType;
 import com.fpghoti.biscuit.audio.request.youtube.YTImmediateRequest;
 import com.fpghoti.biscuit.audio.request.youtube.YTRequest;
 import com.fpghoti.biscuit.audio.result.YTResultHandler;
@@ -50,7 +51,6 @@ public class AudioScheduler extends AudioEventAdapter {
 
 	@Override
 	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-
 		QueuedTrack qt = queue.getLastTrack();
 		String title = track.getInfo().title;
 
@@ -58,7 +58,7 @@ public class AudioScheduler extends AudioEventAdapter {
 
 		case LOAD_FAILED:
 			warn("Something went wrong while trying to load the current track. Trying alternate track.");
-			if(!qt.triedAlternative()) {
+			if(!qt.triedAlternative() && !queue.isStuckLooping()) {
 				qt.useAttempt();
 				TextChannel channel = qt.getCommandChannel();
 				MessageText.send(channel, "The video selected cannot be played through the music player. An alternate track will be played if available.");
@@ -89,7 +89,7 @@ public class AudioScheduler extends AudioEventAdapter {
 
 		if (endReason.mayStartNext) {
 			if(loop) {
-				queue(track.makeClone(), qt.getUserId(), qt.getCommandChannel(), 1);
+				queue(qt.getType(), track.makeClone(), qt.getUserId(), qt.getCommandChannel(), 1);
 			}
 			startPlaying();
 		}
@@ -113,21 +113,21 @@ public class AudioScheduler extends AudioEventAdapter {
 		}
 	}
 
-	public void queue(AudioTrack track, String uid, TextChannel channel) {
-		queue(track, uid, channel, null);
+	public void queue(RequestType type, AudioTrack track, String uid, TextChannel channel) {
+		queue(type, track, uid, channel, null);
 	}
 
-	public void queue(AudioTrack track, String uid, TextChannel channel, Integer place) {
+	public void queue(RequestType type, AudioTrack track, String uid, TextChannel channel, Integer place) {
 		if(queue.isEmpty() && biscuit.getAudioPlayer().getPlayingTrack() == null) {
-			QueuedTrack qt = new QueuedTrack(biscuit, track, uid, channel);
+			QueuedTrack qt = new QueuedTrack(biscuit, track, uid, channel, type);
 			queue.sendQueueMessage(qt);
 			queue.addPreviousTrack(qt);
 			biscuit.getAudioPlayer().playTrack(track);
 		}else {
 			if(place != null) {
-				queue.addAtPlace(new QueuedTrack(biscuit, track, uid, channel), place);
+				queue.addAtPlace(new QueuedTrack(biscuit, track, uid, channel, type), place);
 			}else {
-				queue.add(new QueuedTrack(biscuit, track, uid, channel));
+				queue.add(new QueuedTrack(biscuit, track, uid, channel, type));
 			}
 		}
 	}

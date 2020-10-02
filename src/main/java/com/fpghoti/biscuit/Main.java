@@ -1,5 +1,6 @@
 package com.fpghoti.biscuit;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -10,47 +11,47 @@ import org.fusesource.jansi.AnsiConsole;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.captcha.BCage;
 import com.fpghoti.biscuit.commands.CommandManager;
-import com.fpghoti.biscuit.commands.client.AddCommand;
-import com.fpghoti.biscuit.commands.client.ChanIDCommand;
-import com.fpghoti.biscuit.commands.client.DivideCommand;
-import com.fpghoti.biscuit.commands.client.GetConfigCommand;
-import com.fpghoti.biscuit.commands.client.GuildIDCommand;
-import com.fpghoti.biscuit.commands.client.ToggleRoleCommand;
-import com.fpghoti.biscuit.commands.client.HelpCommand;
-import com.fpghoti.biscuit.commands.client.MultiplyCommand;
-import com.fpghoti.biscuit.commands.client.NotSpammerCommand;
-import com.fpghoti.biscuit.commands.client.MakeInviteCommand;
-import com.fpghoti.biscuit.commands.client.PingCommand;
-import com.fpghoti.biscuit.commands.client.PowerCommand;
-import com.fpghoti.biscuit.commands.client.RecentSpammersCommand;
-import com.fpghoti.biscuit.commands.client.SaveConfigCommand;
-import com.fpghoti.biscuit.commands.client.SoftMuteCommand;
-import com.fpghoti.biscuit.commands.client.SquareRootCommand;
-import com.fpghoti.biscuit.commands.client.SubtractCommand;
-import com.fpghoti.biscuit.commands.client.UIDCommand;
-import com.fpghoti.biscuit.commands.client.UnSoftMuteCommand;
-import com.fpghoti.biscuit.commands.client.WikiCommand;
-import com.fpghoti.biscuit.commands.client.music.ClearCommand;
-import com.fpghoti.biscuit.commands.client.music.ForceSkipCommand;
-import com.fpghoti.biscuit.commands.client.music.ForceSkipToCommand;
-import com.fpghoti.biscuit.commands.client.music.ClearUserSongsCommand;
-import com.fpghoti.biscuit.commands.client.music.LoopMusicCommand;
-import com.fpghoti.biscuit.commands.client.music.MoveToCommand;
-import com.fpghoti.biscuit.commands.client.music.NowPlayingCommand;
-import com.fpghoti.biscuit.commands.client.music.PauseCommand;
-import com.fpghoti.biscuit.commands.client.music.PlayCommand;
-import com.fpghoti.biscuit.commands.client.music.PlayFirstCommand;
-import com.fpghoti.biscuit.commands.client.music.QueueCommand;
-import com.fpghoti.biscuit.commands.client.music.RemoveCommand;
-import com.fpghoti.biscuit.commands.client.music.ShuffleCommand;
-import com.fpghoti.biscuit.commands.client.music.SkipAllCommand;
-import com.fpghoti.biscuit.commands.client.music.SkipCommand;
-import com.fpghoti.biscuit.commands.client.music.TogglePauseCommand;
-import com.fpghoti.biscuit.commands.client.music.UnpauseCommand;
-import com.fpghoti.biscuit.commands.client.music.VolumeCommand;
 import com.fpghoti.biscuit.commands.console.GuildSayCommand;
 import com.fpghoti.biscuit.commands.console.SayCommand;
 import com.fpghoti.biscuit.commands.console.ShutdownConsoleCommand;
+import com.fpghoti.biscuit.commands.discord.AddCommand;
+import com.fpghoti.biscuit.commands.discord.ChanIDCommand;
+import com.fpghoti.biscuit.commands.discord.DivideCommand;
+import com.fpghoti.biscuit.commands.discord.GetConfigCommand;
+import com.fpghoti.biscuit.commands.discord.GuildIDCommand;
+import com.fpghoti.biscuit.commands.discord.HelpCommand;
+import com.fpghoti.biscuit.commands.discord.MakeInviteCommand;
+import com.fpghoti.biscuit.commands.discord.MultiplyCommand;
+import com.fpghoti.biscuit.commands.discord.NotSpammerCommand;
+import com.fpghoti.biscuit.commands.discord.PingCommand;
+import com.fpghoti.biscuit.commands.discord.PowerCommand;
+import com.fpghoti.biscuit.commands.discord.RecentSpammersCommand;
+import com.fpghoti.biscuit.commands.discord.SaveConfigCommand;
+import com.fpghoti.biscuit.commands.discord.SoftMuteCommand;
+import com.fpghoti.biscuit.commands.discord.SquareRootCommand;
+import com.fpghoti.biscuit.commands.discord.SubtractCommand;
+import com.fpghoti.biscuit.commands.discord.ToggleRoleCommand;
+import com.fpghoti.biscuit.commands.discord.UIDCommand;
+import com.fpghoti.biscuit.commands.discord.UnSoftMuteCommand;
+import com.fpghoti.biscuit.commands.discord.WikiCommand;
+import com.fpghoti.biscuit.commands.discord.music.ClearCommand;
+import com.fpghoti.biscuit.commands.discord.music.ClearUserSongsCommand;
+import com.fpghoti.biscuit.commands.discord.music.ForceSkipCommand;
+import com.fpghoti.biscuit.commands.discord.music.ForceSkipToCommand;
+import com.fpghoti.biscuit.commands.discord.music.LoopMusicCommand;
+import com.fpghoti.biscuit.commands.discord.music.MoveToCommand;
+import com.fpghoti.biscuit.commands.discord.music.NowPlayingCommand;
+import com.fpghoti.biscuit.commands.discord.music.PauseCommand;
+import com.fpghoti.biscuit.commands.discord.music.PlayCommand;
+import com.fpghoti.biscuit.commands.discord.music.PlayFirstCommand;
+import com.fpghoti.biscuit.commands.discord.music.QueueCommand;
+import com.fpghoti.biscuit.commands.discord.music.RemoveCommand;
+import com.fpghoti.biscuit.commands.discord.music.ShuffleCommand;
+import com.fpghoti.biscuit.commands.discord.music.SkipAllCommand;
+import com.fpghoti.biscuit.commands.discord.music.SkipCommand;
+import com.fpghoti.biscuit.commands.discord.music.TogglePauseCommand;
+import com.fpghoti.biscuit.commands.discord.music.UnpauseCommand;
+import com.fpghoti.biscuit.commands.discord.music.VolumeCommand;
 import com.fpghoti.biscuit.listener.CommandListener;
 import com.fpghoti.biscuit.listener.DMListener;
 import com.fpghoti.biscuit.listener.GuildListener;
@@ -63,6 +64,7 @@ import com.fpghoti.biscuit.listener.ReactionListener;
 import com.fpghoti.biscuit.listener.RoleListener;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.fpghoti.biscuit.plugin.PluginController;
 import com.github.cage.Cage;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -95,10 +97,19 @@ public class Main {
 	public static boolean isPlugin =  false;
 	public static boolean shutdownStarted = false;
 	private static Cage cage;
+	private static File pluginsDir;
+	private static PluginController pluginController;
 
 	private static AudioPlayerManager playerManager;
 
 	public static void main(String[] args){
+		if(!isPlugin) {
+			pluginsDir = new File("plugins");
+		}else {
+			pluginsDir = new File(PluginCore.plugin.getDataFolder(), "plugins");
+		}
+		pluginsDir.mkdir();
+		
 		final Properties properties = new Properties();
 		try {
 			properties.load(Main.class.getClassLoader().getResourceAsStream("info.properties"));
@@ -186,6 +197,12 @@ public class Main {
 		CommandManager.addCommand(new GuildSayCommand());
 		CommandManager.addCommand(new ShutdownConsoleCommand());
 
+		//Plugins
+		
+		pluginController = new PluginController();
+	    pluginController.loadPlugins();
+	    pluginController.startPlugins();
+		
 		link = "https://discord.com/oauth2/authorize?&client_id=" + jda.getSelfUser().getId() + "&permissions=8&scope=bot";
 		log.info("Connection successful!");
 		log.info("Startup successful!");
@@ -243,11 +260,16 @@ public class Main {
 	public static AudioPlayerManager getPlayerManager() {
 		return playerManager;
 	}
+	
+	public static File getPluginDirectory() {
+		return pluginsDir;
+	}
 
 	public static void shutdown() {
 		if(!shutdownStarted) {
 			shutdownStarted = true;
 			mainBiscuit.log("Shutting down...");
+			pluginController.shutdownPlugins();
 			ArrayList<Biscuit> list = new ArrayList<Biscuit>(biscuits);
 			for(Biscuit b : list) {
 				b.remove();
@@ -273,6 +295,10 @@ public class Main {
 
 	public static BiscuitLog getLogger() {
 		return log;
+	}
+	
+	public static PluginController getPluginController() {
+		return pluginController;
 	}
 
 	public static void registerBiscuit(Biscuit b) {

@@ -3,6 +3,7 @@ package com.fpghoti.biscuit.audio.queue;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.fpghoti.biscuit.audio.request.RequestType;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
@@ -77,6 +78,17 @@ public class AudioQueue {
 		return null;
 	}
 
+	public QueuedTrack getPreviousTrack(int fromEnd) {
+		if(previousTracks.isEmpty()) {
+			return null;
+		}
+		int index = previousTracks.size() - fromEnd;
+		if(index < 0) {
+			return null;
+		}
+		return previousTracks.get(index);
+	}
+	
 	public QueuedTrack getLastTrack() {
 		if(previousTracks.isEmpty()) {
 			return null;
@@ -181,6 +193,23 @@ public class AudioQueue {
 
 	public int size() {
 		return tracks.size();
+	}
+	
+	public boolean isStuckLooping() {
+		QueuedTrack last = getLastTrack();
+		if(last == null) {
+			return false;
+		}
+		if(last.getType() == RequestType.YOUTUBE_IMMEDIATE) {
+			QueuedTrack beforeLast = getPreviousTrack(2);
+			if(beforeLast == null) {
+				return false;
+			}
+			if(beforeLast.getTrack().getIdentifier().equals(last.getTrack().getIdentifier())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

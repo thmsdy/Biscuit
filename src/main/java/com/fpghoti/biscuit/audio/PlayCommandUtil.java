@@ -52,9 +52,16 @@ public class PlayCommandUtil {
 	}
 	
 	public static String getSearchPhrase(String[] args) {
-		String searchPhrase = args[0];
-		if(args.length > 1) {
-			for(int i = 1; i < args.length; i++) {
+		return getSearchPhrase(args, 0);
+	}
+	
+	public static String getSearchPhrase(String[] args, int startArg) {
+		if(startArg >= args.length) {
+			return "";
+		}
+		String searchPhrase = args[startArg];
+		if(args.length > startArg + 1) {
+			for(int i = startArg + 1; i < args.length; i++) {
 				searchPhrase = searchPhrase + " " + args[i];
 			}
 		}

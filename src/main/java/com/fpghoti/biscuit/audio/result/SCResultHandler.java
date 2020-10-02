@@ -3,20 +3,20 @@ package com.fpghoti.biscuit.audio.result;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.AudioScheduler;
 import com.fpghoti.biscuit.audio.request.PlayRequest;
-import com.fpghoti.biscuit.audio.request.youtube.YTPriorityRequest;
-import com.fpghoti.biscuit.audio.request.youtube.YTRequest;
+import com.fpghoti.biscuit.audio.request.soundcloud.SCPriorityRequest;
+import com.fpghoti.biscuit.audio.request.soundcloud.SCRequest;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-public class YTResultHandler extends ResultHandler {
+public class SCResultHandler extends ResultHandler {
 
 	private Biscuit biscuit;
-	private YTRequest request;
+	private SCRequest request;
 
-	public YTResultHandler(YTRequest request) {
+	public SCResultHandler(SCRequest request) {
 		this.request = request;
 		this.biscuit = request.getBiscuit();
 	}
@@ -30,24 +30,17 @@ public class YTResultHandler extends ResultHandler {
 
 		switch(request.getType()) {
 
-		case YOUTUBE:
+		case SOUNDCLOUD:
 			sched.queue(request.getType(), track, request.getAuthorId(), request.getRequestChannel());
 			break;
 
-		case YOUTUBE_PRIORITY:
-			YTPriorityRequest prq = (YTPriorityRequest) request;
+		case SOUNDCLOUD_PRIORITY:
+			SCPriorityRequest prq = (SCPriorityRequest) request;
 			sched.queue(request.getType(), track, request.getAuthorId(), request.getRequestChannel(), prq.getSlot());
 			break;
 
-		case YOUTUBE_IMMEDIATE:
-			sched.queue(request.getType(), track, request.getAuthorId(), request.getRequestChannel(), 1);
-			if(!sched.getQueue().isEmpty()) {
-				sched.startPlaying();
-			}
-			break;
-
 		default:
-			biscuit.error("YouTube result handler received an incompatible request.");
+			biscuit.error("Soundcloud result handler received an incompatible request.");
 			break;
 
 		}
@@ -69,7 +62,7 @@ public class YTResultHandler extends ResultHandler {
 		if(!request.inSearchMode()) {
 			biscuit.log("Exact match not found. Searching instead...");
 			request.enableSearchMode();
-			Main.getPlayerManager().loadItemOrdered(biscuit.getGuild(),"ytsearch:" + request.getIdentifier(), new YTResultHandler(request));
+			Main.getPlayerManager().loadItemOrdered(biscuit.getGuild(),"scsearch:" + request.getIdentifier(), new SCResultHandler(request));
 		}else {
 			MessageText.send(request.getRequestChannel(), "Song match not found.");
 		}

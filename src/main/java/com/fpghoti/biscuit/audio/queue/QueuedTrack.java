@@ -2,6 +2,7 @@ package com.fpghoti.biscuit.audio.queue;
 
 import java.awt.Color;
 
+import com.fpghoti.biscuit.audio.request.RequestType;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.util.Util;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -17,13 +18,15 @@ public class QueuedTrack {
 	private AudioTrack track;
 	private String userId;
 	private TextChannel channel;
+	private RequestType type;
 	private boolean triedAlternative;
 
-	public QueuedTrack(Biscuit biscuit, AudioTrack track, String userId, TextChannel channel) {
+	public QueuedTrack(Biscuit biscuit, AudioTrack track, String userId, TextChannel channel, RequestType type) {
 		this.biscuit = biscuit;
 		this.track = track;
 		this.userId = userId;
 		this.channel = channel;
+		this.type = type;
 		this.triedAlternative = false;
 	}
 
@@ -70,7 +73,7 @@ public class QueuedTrack {
 			duration+=1000;
 		}
 		
-		String desc = "Author: " + track.getInfo().author + "\nLength: " + Util.getTime(duration);
+		String desc = "Type: " + type.toString() + "\nAuthor: " + track.getInfo().author + "\nLength: " + Util.getTime(duration);
 
 		if(showRemaining) {
 			desc = desc + "\nTime Remaining: " + Util.getTime(track.getDuration() - track.getPosition());
@@ -89,7 +92,7 @@ public class QueuedTrack {
 
 		embed.setAuthor(name, null, avatar);
 
-		if(isYouTube()) {
+		if(type.toString().toLowerCase().contains("youtube")) {
 			embed.setThumbnail("https://img.youtube.com/vi/" + track.getIdentifier() + "/mqdefault.jpg");
 		}
 
@@ -107,8 +110,8 @@ public class QueuedTrack {
 		triedAlternative = true;
 	}
 	
-	public boolean isYouTube() {
-		return track.getInfo().uri.contains("https://www.youtube.com/watch?v=");
+	public RequestType getType() {
+		return type;
 	}
 
 }
