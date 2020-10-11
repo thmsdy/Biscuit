@@ -80,7 +80,7 @@ public class ReactionListener extends ListenerAdapter{
 					canAdd = true;
 				}
 				if(canAdd) {
-					biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - " + BColor.RESET + " Adding role " + role.getName() + " too " + m.getUser().getName() + "(" + m.getId() + ")");
+					biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - " + BColor.RESET + " Adding role " + role.getName() + " to " + m.getUser().getName() + "(" + m.getId() + ")");
 					guild.addRoleToMember(m, role).queue();
 				}
 			}
