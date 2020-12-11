@@ -232,7 +232,7 @@ public class Main {
 			jda.setAutoReconnect(true);
 		}catch(Exception e){
 			e.printStackTrace();
-			log.error("There was an issue connecting to Discord. Bot shutting down!");
+			log.error("There was an issue connecting to Discord. Biscuit shutting down!");
 			shutdown();
 		}
 	}
