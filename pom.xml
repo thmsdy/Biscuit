@@ -116,7 +116,7 @@
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.CrabMustard</groupId>
+			<groupId>com.github.GhotiMayo</groupId>
 			<artifactId>emoji-java</artifactId>
 			<version>v5.1.1-fixed</version>
 		</dependency>
