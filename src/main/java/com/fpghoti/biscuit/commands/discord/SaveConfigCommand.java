@@ -17,7 +17,7 @@ public class SaveConfigCommand extends ClientCommand{
 	public SaveConfigCommand() {
 		name = "Save Config";
 		description = "Saves the config of the current guild.";
-		usage = Main.getMainBiscuit().getProperties().getCommandSignifier() + "getconfig (with file upload)";
+		usage = Main.getMainBiscuit().getProperties().getCommandSignifier() + "saveconfig (with file upload)";
 		minArgs = 0;
 		maxArgs = 0;
 		identifiers.add("saveconfig");

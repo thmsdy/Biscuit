@@ -48,13 +48,6 @@ public class HelpCommand extends ClientCommand {
 				commands.add(cc);
 			}
 		}
-		ccs = Main.getMainBiscuit().getProperties().getCustomCmds();
-		for(String s : ccs) {
-			if(!Util.contains(biscuit.getProperties().disabledCommands(), s)) {
-				CustomCommand cc = new CustomCommand(s, Main.getMainBiscuit());
-				commands.add(cc);
-			}
-		}
 
 		for(BaseCommand bc : CommandManager.getCommands()) {
 			String bclabel = bc.getUsage().split(" ")[0];
