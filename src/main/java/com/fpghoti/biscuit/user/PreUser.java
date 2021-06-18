@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 
 public class PreUser {
-	
+
 	public static PreUser getPreUser(CaptchaUser capUser, Biscuit biscuit) {
 		if(capUser == null) {
 			Main.getMainBiscuit().error("Cannot get PreUser (Invalid Captcha User).");
@@ -52,11 +52,11 @@ public class PreUser {
 	public User getUser() {
 		return this.user;
 	}
-	
+
 	public boolean isTestUser() {
 		return test;
 	}
-	
+
 	public CaptchaUser getCaptchaUser() {
 		return this.capUser;
 	}
@@ -70,24 +70,36 @@ public class PreUser {
 	}
 
 	public void decrementTime() {
+
+		//User is no longer in guild. Remove PreUser data from Biscuit
 		if(!capUser.shareGuild()) {
 			remove();
 			return;
 		}
 
+		//PreUser was created to test PreUser features. Do not proceed with kicking.
 		if(test) {
 			return;
 		}
 
+		//User has not completed captcha. Proceed with kick check.
 		if(!done) {
-			if(biscuit.getProperties().noCaptchaKick()) {
+			if(biscuit.getProperties().noCaptchaKick()) { //Make sure kicking is enabled in config
 				timeLeft = timeLeft - 1;
 				if(timeLeft <= 0) {
 					Member m = biscuit.getGuild().getMember(user);
+
+					if(m == null || PermUtil.hasRewardRole(m) || !PermUtil.hasDefaultRole(m)){ // Do not kick if user has the reward role or does not have the captcha check role.
+						setDone();
+						return;
+					}
+
 					biscuit.log(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha. Kicking...");
 					biscuit.captchaLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
 
-					if(m != null && m.getRoles().size() == 1 && PermUtil.hasDefaultRole(m) && !PermUtil.hasRewardRole(m)) {
+					//While being checked for captcha, a user should only have one role. If they have the captcha role and other roles(s),
+					//do not kick. This is to prevent issues from arising where users are given the captcha role after the check.
+					if(m.getRoles().size() == 1) {
 						if(biscuit.getProperties().dmBeforeKick()) {
 							String msg = "You did not complete the captcha in **" 
 									+ " " + biscuit.getGuild().getName() + "**! If you believe this is a mistake, rejoin the server"
@@ -103,7 +115,7 @@ public class PreUser {
 								}
 								kick();
 							});
-						}else {
+						}else { //If DMing before kicking is not enabled, just kick.
 							kick();
 						}
 					}
@@ -117,7 +129,7 @@ public class PreUser {
 		remove();
 		biscuit.getGuild().kick(user.getId()).submit();
 	}
-	
+
 	public boolean equals(User u) {
 		return user.getId().equals(u.getId());
 	}
