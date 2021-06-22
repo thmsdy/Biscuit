@@ -11,14 +11,14 @@ public class BiscuitLog {
 	private final Logger file = LoggerFactory.getLogger("B-File");
 
 	public void debug(String msg) {
-		console.debug(BColor.MAGENTA_BOLD + msg + BColor.RESET);
+		console.debug("[" + BColor.MAGENTA_BOLD + "DEBUG" + BColor.RESET + "] " + BColor.MAGENTA + msg + BColor.RESET);
 		if(!Main.isPlugin) {
 			file.debug(BColor.clear(msg));
 		}
 	}
 
 	public void error(String msg) {
-		console.error(BColor.RED + msg + BColor.RESET);
+		console.error("[" + BColor.RED_BOLD + "ERROR" + BColor.RESET + "] " + BColor.RED + msg + BColor.RESET);
 		if(!Main.isPlugin) {
 			file.error(BColor.clear(msg));
 		}
@@ -32,14 +32,14 @@ public class BiscuitLog {
 	}
 
 	public void trace(String msg) {
-		console.trace(BColor.WHITE_BOLD + msg + BColor.RESET);
+		console.trace("[" + BColor.CYAN_BOLD + "TRACE" + BColor.RESET + "] " + BColor.CYAN + msg + BColor.RESET);
 		if(!Main.isPlugin) {
 			file.trace(BColor.clear(msg));
 		}
 	}
 
 	public void warn(String msg) {
-		console.warn(BColor.YELLOW + msg + BColor.RESET);
+		console.warn("[" + BColor.YELLOW_BOLD + "WARN" + BColor.RESET + "] " + BColor.YELLOW + msg + BColor.RESET);
 		if(!Main.isPlugin) {
 			file.warn(BColor.clear(msg));
 		}

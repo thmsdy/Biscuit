@@ -60,6 +60,8 @@ import com.fpghoti.biscuit.listener.LeaveListener;
 import com.fpghoti.biscuit.listener.MessageDeleteListener;
 import com.fpghoti.biscuit.listener.MessageEditListener;
 import com.fpghoti.biscuit.listener.MessageReceiveListener;
+import com.fpghoti.biscuit.listener.NameListener;
+import com.fpghoti.biscuit.listener.NicknameListener;
 import com.fpghoti.biscuit.listener.ReactionListener;
 import com.fpghoti.biscuit.listener.RoleListener;
 import com.fpghoti.biscuit.logging.BColor;
@@ -139,6 +141,8 @@ public class Main {
 		jda.addEventListener(new DMListener());
 		jda.addEventListener(new ReactionListener());
 		jda.addEventListener(new RoleListener());
+		jda.addEventListener(new NicknameListener());
+		jda.addEventListener(new NameListener());
 		biscuits = new ArrayList<Biscuit>();
 		for(Guild g : jda.getGuilds()) {
 			Biscuit.loadGuild(g);

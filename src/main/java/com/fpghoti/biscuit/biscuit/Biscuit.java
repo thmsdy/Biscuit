@@ -227,15 +227,15 @@ public class Biscuit {
 	public ArrayList<TextChannel> getCaptchaLogChannels() {
 		ArrayList<TextChannel> ch = new ArrayList<TextChannel>();
 		for(TextChannel t : guild.getTextChannels()) {
-			if(t.getName().equalsIgnoreCase(properties.getCaptchaLogChannel())) {
+			if(t.getName().equalsIgnoreCase(properties.getEventLogChannel())) {
 				ch.add(t);
 			}
 		}
 		return ch;
 	}
 
-	public void captchaLog(String msg) {
-		if(properties.logCaptcha()) {
+	public void eventLog(String msg) {
+		if(properties.logEvents()) {
 			for(TextChannel t : getCaptchaLogChannels()) {
 				MessageText.send(t, msg);
 			}

@@ -197,7 +197,7 @@ public class Captcha {
 			token = null;
 
 			log(BColor.YELLOW_BOLD + author.getName() + " successfully completed a captcha challenge. Granting role.");
-			biscuit.captchaLog(" ``" + author.getName() +"`` " + author.getAsMention() + " successfully completed a captcha challenge. Granting role.");
+			biscuit.eventLog(" ``" + author.getName() +"`` " + author.getAsMention() + " successfully completed a captcha challenge. Granting role.");
 		}
 	}
 

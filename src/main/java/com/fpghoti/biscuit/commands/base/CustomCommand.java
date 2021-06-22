@@ -1,5 +1,6 @@
 package com.fpghoti.biscuit.commands.base;
 
+import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.BaseCommand;
 import com.fpghoti.biscuit.commands.CommandType;
@@ -7,35 +8,38 @@ import com.fpghoti.biscuit.commands.CommandType;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class CustomCommand extends BaseCommand {
-	
+
 	public static String fixPlaceholders(GuildMessageReceivedEvent event, String msg) {
 		msg = msg.replace("<user>", event.getAuthor().getAsMention());
 		return msg;
 	}
-	
+
 	private String name;
 	private Biscuit biscuit;
-	
+
 	public CustomCommand(String name, Biscuit biscuit) {
 		this.name = name;
 		this.biscuit = biscuit;
 	}
-	
+
 	@Override
 	public String getName() {
 		return this.name;
 	}
-	
+
 	@Override
 	public String getUsage() {
 		return biscuit.getProperties().getCommandSignifier() + name;
 	}
-	
+
 	@Override
 	public String getDescription() {
-		String desc = biscuit.getConfig().getFromConfig("cc-" + name + "-description", biscuit);
+		String desc = biscuit.getConfig().getFromConfig("cc-" + name + "-description");
 		if(desc == null) {
-			return "null";
+			desc = Main.getMainBiscuit().getConfig().getFromConfig("cc-" + name + "-description");
+			if(desc == null) {
+				return "null";
+			}
 		}
 		return desc;
 	}
@@ -46,11 +50,14 @@ public class CustomCommand extends BaseCommand {
 	}
 
 	public String getMessage() {
-		String msg = biscuit.getConfig().getFromConfig("cc-" + name + "-message", biscuit);
+		String msg = biscuit.getConfig().getFromConfig("cc-" + name + "-message");
 		if(msg == null) {
-			return "null";
+			msg = Main.getMainBiscuit().getConfig().getFromConfig("cc-" + name + "-message");
+			if(msg == null) {
+				return "null";
+			}
 		}
 		return msg;
 	}
-	
+
 }

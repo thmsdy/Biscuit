@@ -54,8 +54,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 		if(Util.isLoggable(event.getChannel())) {
 			if(biscuit.getProperties().logChat()) {
 				biscuit.log("[" + BColor.CYAN_BOLD + "MSG" + BColor.RESET + "] " + BColor.GREEN + "ID: " + BColor.RESET +
-						event.getMessageId() + BColor.GREEN + " Sender: " + BColor.RESET +  event.getAuthor().getAsMention() +
-						BColor.GREEN + " Channel: " + BColor.RESET + event.getChannel().getName());
+						event.getMessageId() + BColor.GREEN + " Sender: " + BColor.RESET +  event.getAuthor().getAsMention());
 				String msg = event.getMessage().getContentDisplay();
 
 				if(event.getMessage().getAttachments().size() >= 1) {
@@ -69,7 +68,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 					msg = msg + tail;
 				}
 
-				biscuit.log(BColor.GREEN_BOLD + event.getAuthor().getName() + ": " + BColor.WHITE_BOLD + msg);
+				biscuit.log("[" + BColor.CYAN_BOLD + "#" + event.getChannel().getName() + BColor.RESET + "] " + BColor.GREEN_BOLD + event.getAuthor().getName() + ": " + BColor.RESET + msg);
 			}
 		}
 	}

@@ -22,7 +22,7 @@ public class LeaveListener extends ListenerAdapter {
 		}
 		if(time > 0) {
 			biscuit.log(BColor.YELLOW + "USER LEFT: " + user.getName() + " " + user.getAsMention());
-			biscuit.captchaLog("**User Left: ** ``" + user.getName() + "`` " + user.getAsMention());
+			biscuit.eventLog("**User Left: ** ``" + user.getName() + "`` " + user.getAsMention());
 		}
 		
 	}

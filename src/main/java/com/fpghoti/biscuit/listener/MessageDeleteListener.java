@@ -13,7 +13,7 @@ public class MessageDeleteListener extends ListenerAdapter {
 	public void onMessageDelete(MessageDeleteEvent event) {
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		if(Util.isLoggable(event.getTextChannel())) {
-			biscuit.log(BColor.MAGENTA_BOLD + "Message " + event.getMessageId() + " was deleted.");
+			biscuit.log("[" + BColor.MAGENTA + "#" + event.getChannel().getName() + BColor.RESET + "] " + BColor.MAGENTA_BOLD + "Message " + event.getMessageId() + " was deleted.");
 		}
 	}
 

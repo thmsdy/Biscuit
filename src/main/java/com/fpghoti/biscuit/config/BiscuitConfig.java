@@ -61,30 +61,30 @@ public class BiscuitConfig {
 	}
 
 	@Async
-	public void replaceConfig(Attachment a, TextChannel c) {
-		Guild guild = biscuit.getGuild();
-		String code = getFromConfig("Guild-Code", biscuit);
-		if(guild == null) {
-			biscuit.error("Main config replacement is currently not allowed.");
-			return;
-		}
-		String name = guild.getId() + ".properties";
-		if(a.getSize() > 51200) {
-			MessageText.send(c, "**The file is too big!**");
-			return;
-		}
-		File config = new File(biscuit.getConfigDir(), name);
-		a.downloadToFile(config).thenAccept(file -> {
-			updateConfig(file, true, code);
-			MessageText.send(c, "**The config was successfully updated.**");
-		}).exceptionally(t -> { 
-			biscuit.error("Could not accept config file.");
-			MessageText.send(c, "**An Exception occurred while trying to read the file.**");
-			return null;
-		});
+    public void replaceConfig(Attachment a, TextChannel c) {
+        Guild guild = biscuit.getGuild();
+        String code = getFromConfig("Guild-Code");
+        if(guild == null) {
+            biscuit.error("Main config replacement is currently not allowed.");
+            return;
+        }
+        String name = guild.getId() + ".properties";
+        if(a.getSize() > 51200) {
+            MessageText.send(c, "**The file is too big!**");
+            return;
+        }
+        File config = new File(biscuit.getConfigDir(), name);
+        a.downloadToFile(config).thenAccept(file -> {
+            updateConfig(file, true, code);
+            MessageText.send(c, "**The config was successfully updated.**");
+        }).exceptionally(t -> { 
+            biscuit.error("Could not accept config file.");
+            MessageText.send(c, "**An Exception occurred while trying to read the file.**");
+            return null;
+        });
 
-		return;
-	}
+        return;
+    }
 
 	public void updateConfig(File config) {
 		updateConfig(config, false);
@@ -172,8 +172,8 @@ public class BiscuitConfig {
 		added = addProperty("Toggle-Role-React-Channels", "toggleroles1,toggleroles2,toggleroles3", prop,  added, silent);
 		added = addProperty("Boost-Exclusive-Roles", "role2,role3", prop,  added, silent);
 		added = addProperty("Treat-Like-Booster", "Nitro Booster,silver,gold", prop,  added, silent);
-		added = addProperty("LogCaptcha", "false", prop,  added, silent);
-		added = addProperty("Captcha-Log-Channel", "verify-log", prop,  added, silent);
+		added = addProperty("LogEvents", "false", prop,  added, silent);
+		added = addProperty("Event-Log-Channel", "verify-log", prop,  added, silent);
 		added = addProperty("Check-Join-Invite", "false", prop,  added, silent);
 		added = addProperty("Custom-Command-Names", "", prop,  added, silent);
 		added = addProperty("DM-Before-Kick", "true", prop,  added, silent);
@@ -206,44 +206,44 @@ public class BiscuitConfig {
 		return added;
 	}
 
-	public String getFromConfig(String property, Biscuit biscuit){
-		boolean isMain = biscuit.getGuild() == null;
+	public String getFromConfig(String property){
+        boolean isMain = biscuit.getGuild() == null;
 
-		String setting = "";
+        String setting = "";
 
-		Properties prop = new Properties();
-		InputStream input = null;
+        Properties prop = new Properties();
+        InputStream input = null;
 
-		String name = "config.properties";
+        String name = "config.properties";
 
-		if(!isMain) {
-			name = biscuit.getGuild().getId() + ".properties";
-		}
-		File config = new File(biscuit.getConfigDir(), name);
+        if(!isMain) {
+            name = biscuit.getGuild().getId() + ".properties";
+        }
+        File config = new File(biscuit.getConfigDir(), name);
 
-		if(!config.exists()) {
-			return "";
-		}
+        if(!config.exists()) {
+            return "";
+        }
 
-		try {
-			input = new FileInputStream(config);
-			prop.load(input);
-			setting = prop.getProperty(property);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+        try {
+            input = new FileInputStream(config);
+            prop.load(input);
+            setting = prop.getProperty(property);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
-		return setting;
+        return setting;
 
-	}
+    }
 
 	public File getFile() {
 		if(biscuit.getGuild() == null) {

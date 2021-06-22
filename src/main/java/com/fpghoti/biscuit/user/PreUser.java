@@ -95,7 +95,7 @@ public class PreUser {
 					}
 
 					biscuit.log(user.getName() + " " + user.getAsMention() + " waited too long to complete the captcha. Kicking...");
-					biscuit.captchaLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
+					biscuit.eventLog("``" + user.getName() +"`` " + user.getAsMention() + " waited too long to complete the captcha! Kicking...");
 
 					//While being checked for captcha, a user should only have one role. If they have the captcha role and other roles(s),
 					//do not kick. This is to prevent issues from arising where users are given the captcha role after the check.

@@ -22,7 +22,7 @@ public class JoinListener extends ListenerAdapter {
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		User user = event.getMember().getUser();
 		biscuit.log(BColor.YELLOW_BOLD + "USER JOINED: " + user.getName() + " " + user.getAsMention());
-		biscuit.captchaLog("**User Joined:** ``" + user.getName() + "`` " + user.getAsMention());
+		biscuit.eventLog("**User Joined:** ``" + user.getName() + "`` " + user.getAsMention());
 		if(biscuit.canManageServer() && biscuit.getProperties().checkJoinInvite()) {
 			logUserInvite(user, biscuit);
 		}else {
@@ -74,7 +74,7 @@ public class JoinListener extends ListenerAdapter {
 			}
 			b.setInviteUses(newinv);
 			b.log(BColor.YELLOW_BOLD + "INVITE INFO: " + BColor.WHITE + user.getName() + " used invite: " + BColor.GREEN_BOLD + usedInv);
-			b.captchaLog("**Invite Info:** ``" + user.getName() + "`` used invite: ``" + usedInv + "``");
+			b.eventLog("**Invite Info:** ``" + user.getName() + "`` used invite: ``" + usedInv + "``");
 		});
 	}
 
