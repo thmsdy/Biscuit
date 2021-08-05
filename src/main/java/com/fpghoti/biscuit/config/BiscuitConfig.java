@@ -181,7 +181,8 @@ public class BiscuitConfig {
 		added = addProperty("Allow-Music-Bot", "true", prop,  added, silent);
 		added = addProperty("Music-Channels", "", prop,  added, silent);
 		added = addProperty("Music-Controller-Role", "music-key", prop,  added, silent);
-
+		added = addProperty("Captcha-Channels", "captcha,verification", prop,  added, silent);
+		
 		if(!isMain) {
 			if(code != null) {
 				prop.setProperty("Guild-Code", code);

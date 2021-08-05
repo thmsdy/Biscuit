@@ -2,6 +2,7 @@ package com.fpghoti.biscuit.listener;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.captcha.Captcha;
+import com.fpghoti.biscuit.captcha.HandleCaptcha;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.user.CaptchaUser;
 import com.fpghoti.biscuit.util.PermUtil;
@@ -25,23 +26,7 @@ public class DMListener extends ListenerAdapter{
 				Main.getMainBiscuit().log(BColor.YELLOW + event.getAuthor().getName() + ": " + BColor.WHITE_BOLD + event.getMessage().getContentDisplay());
 			}
 
-			String content = event.getMessage().getContentDisplay();
-			Captcha captcha = Captcha.getUpdatedCaptcha(event);
-			CaptchaUser capUser = captcha.getCaptchaUser();
-
-			//User is requesting a captcha test
-			if(content.equalsIgnoreCase("captcha pls") || content.equalsIgnoreCase("cpls")) {
-				JDA jda = Main.getJDA();
-				for(Guild g : jda.getGuilds()) {
-					if(g.isMember(capUser.getUser())) {
-						Member m = g.getMember(capUser.getUser());
-						if(PermUtil.isAdmin(m)) {
-							capUser.enableTestMode();
-						}
-					}
-				}
-			}
-			captcha.handleResponse();
+			HandleCaptcha.handleCaptcha(event.getAuthor(), event.getChannel(), event.getMessage().getContentDisplay());
 		}
 	}
 

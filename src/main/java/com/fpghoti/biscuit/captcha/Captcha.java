@@ -17,54 +17,60 @@ import com.github.cage.Cage;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 
 public class Captcha {
 
-	public static Captcha getUpdatedCaptcha(PrivateMessageReceivedEvent event) {
-		CaptchaUser c = CaptchaUser.getCaptchaUser(event.getAuthor());
+	public static Captcha getUpdatedCaptcha(User user, MessageChannel channel, String response) {
+		CaptchaUser c = CaptchaUser.getCaptchaUser(user);
 		if(c.getCaptcha() == null) {
-			Captcha captcha = new Captcha(event);
+			Captcha captcha = new Captcha(user, channel, response);
 			c.setCaptcha(captcha);
 			return captcha;
 		}else {
 			Captcha captcha = c.getCaptcha();
-			captcha.setEvent(event);
+			captcha.setChannel(channel);
+			captcha.setResponse(response);
 			c.setCaptcha(captcha);
 			return captcha;
 		}
 	}
 
-	private CaptchaUser user;
-	private PrivateMessageReceivedEvent event;
-	private PrivateChannel channel;
-	private User author;
+	private CaptchaUser captchaUser;
+	private MessageChannel channel;
+	private User user;
+	private String response;
 	private String token;
 
-	private Captcha(PrivateMessageReceivedEvent event) {
-		this.user = CaptchaUser.getCaptchaUser(event.getAuthor());
-		this.event = event;
-		this.channel = event.getChannel();
-		this.author = event.getAuthor();
+	private Captcha(User user, MessageChannel channel, String response) {
+		this.captchaUser = CaptchaUser.getCaptchaUser(user);
+		this.channel = channel;
+		this.user = user;
+		this.response = response;
 		this.token = null;
 	}
 
-	public void setEvent(PrivateMessageReceivedEvent event) {
-		this.event = event;
-	}
-
-	public User getAuthor() {
-		return author;
+	private void setChannel(MessageChannel channel) {
+		this.channel = channel;
 	}
 	
-	public CaptchaUser getCaptchaUser() {
+	private void setResponse(String response) {
+		this.response = response;
+	}
+
+	public User getUser() {
 		return user;
 	}
 
-	public PrivateChannel getChannel() {
+	public CaptchaUser getCaptchaUser() {
+		return captchaUser;
+	}
+
+	public MessageChannel getChannel() {
 		return channel;
 	}
 
@@ -78,20 +84,20 @@ public class Captcha {
 	}
 
 	public void handleResponse() {
-		if(user.isEmpty() && !user.inTestMode()) {
+		if(captchaUser.isEmpty() && !captchaUser.inTestMode()) {
 			return;
 		}
 
-		String response = leeway(event.getMessage().getContentDisplay());
-		
-		if(token != null && !response.equalsIgnoreCase(token)) {
+		String captchaString = leeway(response);
+
+		if(token != null && !captchaString.equalsIgnoreCase(token)) {
 			respond("Sorry! That's not quite right! Please try again.");
 			return;
 		}
 
 		if(token == null) {
-			
-			log("Generating captcha challenge for user " + author.getName() + " " + author.getAsMention() + "...");
+
+			log("Generating captcha challenge for user " + user.getName() + " " + user.getAsMention() + "...");
 
 			genToken();
 			generateImage();
@@ -102,14 +108,14 @@ public class Captcha {
 
 		}else {
 			boolean disable = false;
-			if(user.inTestMode()) {
+			if(captchaUser.inTestMode()) {
 				disable = true;
 			}else {
 				doCaptchaReward();
 			}
-			respond("Well done, " + author.getAsMention() + "!");
+			respond("Well done, " + user.getAsMention() + "!");
 			if(disable) {
-				user.disableTestMode();
+				captchaUser.disableTestMode();
 			}
 		}
 	}
@@ -121,10 +127,10 @@ public class Captcha {
 		try {
 			if(!Main.isPlugin) {
 				//If Biscuit is running standalone output to this directory
-				os = new FileOutputStream("captcha/" + author.getId() + ".jpg", false);
+				os = new FileOutputStream("captcha/" + user.getId() + ".jpg", false);
 			}else {
 				//If Biscuit is running as a Spigot plugin output to this directory
-				File c = new File(PluginCore.plugin.getDataFolder(), "captcha/" + author.getId() + ".jpg");
+				File c = new File(PluginCore.plugin.getDataFolder(), "captcha/" + user.getId() + ".jpg");
 				os = new FileOutputStream(c, false);
 			}
 		} catch (FileNotFoundException e) {
@@ -151,14 +157,14 @@ public class Captcha {
 
 	public File getImageFile() {
 		if(!Main.isPlugin) {
-			return new File("captcha/" + author.getId() + ".jpg");
+			return new File("captcha/" + user.getId() + ".jpg");
 		}else {
-			return new File(PluginCore.plugin.getDataFolder(), "captcha/" + author.getId() + ".jpg");
+			return new File(PluginCore.plugin.getDataFolder(), "captcha/" + user.getId() + ".jpg");
 		}
 	}
 
 	public void doCaptchaReward() {
-		for(PreUser p : user) {
+		for(PreUser p : captchaUser) {
 			//mark the PreUser as "done"
 			p.setDone();			
 
@@ -189,15 +195,15 @@ public class Captcha {
 				return;
 			}
 
-			Member member = g.getMemberById(author.getId());
+			Member member = g.getMemberById(user.getId());
 
 			g.addRoleToMember(member, newrole).complete();
 			g.removeRoleFromMember(member, defaultrole).complete();
 			p.remove();
 			token = null;
 
-			log(BColor.YELLOW_BOLD + author.getName() + " successfully completed a captcha challenge. Granting role.");
-			biscuit.eventLog(" ``" + author.getName() +"`` " + author.getAsMention() + " successfully completed a captcha challenge. Granting role.");
+			log(BColor.YELLOW_BOLD + user.getName() + " successfully completed a captcha challenge. Granting role.");
+			biscuit.eventLog(" ``" + user.getName() +"`` " + user.getAsMention() + " successfully completed a captcha challenge. Granting role.");
 		}
 	}
 
@@ -205,10 +211,10 @@ public class Captcha {
 		File captcha;
 		if(!Main.isPlugin) {
 			//Biscuit is running standalone. Remove file from this directory
-			captcha = new File("captcha/" + user.getUser().getId() + ".jpg");
+			captcha = new File("captcha/" + captchaUser.getUser().getId() + ".jpg");
 		}else {
 			//Biscuit is running as Spigot plugin. Remove file from this directory
-			captcha = new File(PluginCore.plugin.getDataFolder(), "captcha/" + user.getUser().getId() + ".jpg");
+			captcha = new File(PluginCore.plugin.getDataFolder(), "captcha/" + captchaUser.getUser().getId() + ".jpg");
 		}
 		captcha.delete();
 	}
@@ -222,7 +228,7 @@ public class Captcha {
 
 	private void log(String msg) {
 		String prefix = "";
-		if(user.inTestMode()) {
+		if(captchaUser.inTestMode()) {
 			prefix = "[TEST] ";
 		}
 		Main.getMainBiscuit().log(prefix + msg);
@@ -230,10 +236,14 @@ public class Captcha {
 
 	private void respond(String msg) {
 		String prefix = "";
-		if(user.inTestMode()) {
+		if(captchaUser.inTestMode()) {
 			prefix = "[TEST] ";
 		}
-		MessageText.send(channel, prefix + msg);
+		if(channel instanceof TextChannel) {
+			MessageText.send((TextChannel)channel, prefix + msg);
+		}else if(channel instanceof PrivateChannel) {
+			MessageText.send((PrivateChannel)channel, prefix + msg);
+		}
 	}
 
 }

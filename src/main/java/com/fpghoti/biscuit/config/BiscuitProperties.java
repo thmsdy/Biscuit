@@ -380,4 +380,17 @@ public class BiscuitProperties {
         }
         return list;
     }
+    
+    public String[] getCaptchaChannels(){
+        String key = "Captcha-Channels";
+        if(biscuit.getConfig().getFromConfig(key).equalsIgnoreCase("[global]") && biscuit.getGuild() != null) {
+            return Main.getMainBiscuit().getProperties().getToggleChannels();
+        }
+        String [] list = biscuit.getConfig().getFromConfig(key).replace(" ", "").split(",");
+        if(list.length == 1 && list[0].equals("")) {
+            String[] blank = {};
+            return blank;
+        }
+        return list;
+    }
 }

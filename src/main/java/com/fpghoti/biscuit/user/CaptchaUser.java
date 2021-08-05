@@ -9,6 +9,7 @@ import com.fpghoti.biscuit.captcha.Captcha;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 
@@ -92,8 +93,8 @@ public class CaptchaUser implements Iterable<PreUser>{
 		return user;
 	}
 
-	public Captcha getCaptcha(PrivateMessageReceivedEvent event) {
-		captcha = Captcha.getUpdatedCaptcha(event);
+	public Captcha getCaptcha(MessageChannel channel, String content) {
+		captcha = Captcha.getUpdatedCaptcha(user, channel, content);
 		return captcha;
 	}
 

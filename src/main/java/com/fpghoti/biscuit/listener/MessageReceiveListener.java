@@ -2,6 +2,7 @@ package com.fpghoti.biscuit.listener;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.biscuit.BiscuitMessageStore;
+import com.fpghoti.biscuit.captcha.HandleCaptcha;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.ChatFilter;
@@ -26,19 +27,22 @@ public class MessageReceiveListener extends ListenerAdapter{
 			return;
 		}
 		PermUtil.clearUndeservedRoles(event.getMember());
-
 		logUser(event, biscuit);
-
 		if(isNaughty(event)) {
 			return;
 		}
-
 		if(handleSoftmuted(event, biscuit)) {
 			return;
 		}
 		if(!handleSpammer(event, biscuit) && biscuit.getProperties().spamPunishAllow()){
 			checkNewSpammer(event, biscuit);
 		}
+		
+		//Channel is a captcha channel
+		if(HandleCaptcha.isCaptchaChannel(event.getChannel())) {
+			HandleCaptcha.handleCaptcha(event.getAuthor(), event.getChannel(), event.getMessage().getContentDisplay());
+		}
+		
 	}
 
 	private void logBot(GuildMessageReceivedEvent event, Biscuit biscuit) {
