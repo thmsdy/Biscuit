@@ -45,7 +45,7 @@ public class MessageText {
 			return;
 		}
 		final Biscuit b = Biscuit.getBiscuit(c.getGuild());
-		c.sendMessage(message).submit().whenComplete((msg, error) -> {
+		c.sendMessageEmbeds(message).submit().whenComplete((msg, error) -> {
 			if(error != null) {
 				b.warn("Message embed did not send: " + message);
 			}
@@ -80,7 +80,7 @@ public class MessageText {
 			return;
 		}
 		final Biscuit b = Biscuit.getBiscuit(c.getGuild());
-		c.sendMessage(message).submit()
+		c.sendMessageEmbeds(message).submit()
 		.whenComplete((msg, error) -> {
 			if(error != null) {
 				b.warn("Timed message embed did not send - Time: " + seconds + " Text: " + message);

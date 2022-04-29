@@ -7,7 +7,7 @@ import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class VolumeCommand extends MusicClientCommand{
 	
@@ -22,12 +22,12 @@ public class VolumeCommand extends MusicClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		
 		if(args.length < 1) {
 			b.log(event.getAuthor().getName() + " issued a command: -volume");
-			MessageText.send(event.getChannel(), "The current volume is: **" + b.getAudioPlayer().getVolume() + "**.");
+			MessageText.send(event.getTextChannel(), "The current volume is: **" + b.getAudioPlayer().getVolume() + "**.");
 			return;
 		}
 		
@@ -42,7 +42,7 @@ public class VolumeCommand extends MusicClientCommand{
 					vol = 150;
 				}
 				b.getAudioPlayer().setVolume(vol);
-				MessageText.send(event.getChannel(), "The volume was set to **" + b.getAudioPlayer().getVolume() + "**.");
+				MessageText.send(event.getTextChannel(), "The volume was set to **" + b.getAudioPlayer().getVolume() + "**.");
 			}
 		}
 	}

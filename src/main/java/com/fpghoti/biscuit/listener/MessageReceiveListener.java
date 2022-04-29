@@ -9,7 +9,7 @@ import com.fpghoti.biscuit.util.ChatFilter;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 import net.dv8tion.jda.api.entities.Message.Attachment;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageReceiveListener extends ListenerAdapter{
@@ -20,7 +20,10 @@ public class MessageReceiveListener extends ListenerAdapter{
 	 */
 
 	@Override
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event){
+	public void onMessageReceived(MessageReceivedEvent event){
+		if(!event.isFromGuild()) {
+			return;
+		}
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		if(event.getAuthor().isBot()) {
 			logBot(event, biscuit);
@@ -39,14 +42,14 @@ public class MessageReceiveListener extends ListenerAdapter{
 		}
 		
 		//Channel is a captcha channel
-		if(HandleCaptcha.isCaptchaChannel(event.getChannel())) {
+		if(HandleCaptcha.isCaptchaChannel(event.getTextChannel())) {
 			HandleCaptcha.handleCaptcha(event.getAuthor(), event.getChannel(), event.getMessage().getContentDisplay());
 		}
 		
 	}
 
-	private void logBot(GuildMessageReceivedEvent event, Biscuit biscuit) {
-		if(Util.isLoggable(event.getChannel())) {
+	private void logBot(MessageReceivedEvent event, Biscuit biscuit) {
+		if(Util.isLoggable(event.getTextChannel())) {
 			if(biscuit.getProperties().logChat()) {
 				biscuit.log("[" + BColor.BLACK_BOLD + "BOT" + BColor.RESET + "] [" + BColor.RED + "#" + event.getChannel().getName() + BColor.RESET + "] " 
 						+ BColor.RED_BOLD + event.getAuthor().getName() + ": " + BColor.RESET + event.getMessage().getContentDisplay());
@@ -54,8 +57,8 @@ public class MessageReceiveListener extends ListenerAdapter{
 		}
 	}
 
-	private void logUser(GuildMessageReceivedEvent event, Biscuit biscuit) {
-		if(Util.isLoggable(event.getChannel())) {
+	private void logUser(MessageReceivedEvent event, Biscuit biscuit) {
+		if(Util.isLoggable(event.getTextChannel())) {
 			if(biscuit.getProperties().logChat()) {
 				biscuit.log("[" + BColor.CYAN_BOLD + "MSG" + BColor.RESET + "] " + BColor.GREEN + "ID: " + BColor.RESET +
 						event.getMessageId() + BColor.GREEN + " Sender: " + BColor.RESET +  event.getAuthor().getAsMention());
@@ -77,17 +80,17 @@ public class MessageReceiveListener extends ListenerAdapter{
 		}
 	}
 
-	private boolean isNaughty(GuildMessageReceivedEvent event) {
+	private boolean isNaughty(MessageReceivedEvent event) {
 		// TODO make staff filter configurable
 		if(!event.getChannel().getName().toLowerCase().contains("staff") && ChatFilter.filter(event, false)){
-			MessageText.sendTimed(event.getChannel(), event.getAuthor().getAsMention() + " This message contains words not appropriate for this channel.", 3);
+			MessageText.sendTimed(event.getTextChannel(), event.getAuthor().getAsMention() + " This message contains words not appropriate for this channel.", 3);
 			event.getMessage().delete().submit();
 			return true;
 		}
 		return false;
 	}
 
-	private boolean handleSpammer(GuildMessageReceivedEvent event, Biscuit biscuit) {
+	private boolean handleSpammer(MessageReceivedEvent event, Biscuit biscuit) {
 		//TODO make numbers configurable
 		BiscuitMessageStore store = biscuit.getMessageStore();
 		String mention = event.getAuthor().getAsMention();
@@ -109,7 +112,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 		return false;
 	}
 
-	private boolean handleSoftmuted(GuildMessageReceivedEvent event, Biscuit biscuit) {
+	private boolean handleSoftmuted(MessageReceivedEvent event, Biscuit biscuit) {
 		//TODO make numbers configurable
 		BiscuitMessageStore store = biscuit.getMessageStore();
 		String mention = event.getAuthor().getAsMention();
@@ -131,7 +134,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 		return false;
 	}
 
-	private void checkNewSpammer(GuildMessageReceivedEvent event, Biscuit biscuit) {
+	private void checkNewSpammer(MessageReceivedEvent event, Biscuit biscuit) {
 		BiscuitMessageStore store = biscuit.getMessageStore();
 		String mention = event.getAuthor().getAsMention();
 
@@ -148,14 +151,14 @@ public class MessageReceiveListener extends ListenerAdapter{
 				store.addSpammer(event.getAuthor());
 				store.removeSpamWarned(event.getAuthor());
 				event.getMessage().delete().submit();
-				MessageText.sendTimed(event.getChannel(), "*Flagging " + mention + " as spam!*", 3);
+				MessageText.sendTimed(event.getTextChannel(), "*Flagging " + mention + " as spam!*", 3);
 				biscuit.log(BColor.MAGENTA_BOLD + "User " + event.getAuthor().getName() + " has been flagged as spam!");
 				event.getMessage().delete().reason("Spam removal activated for " + mention).submit();
 				//User is spamming and has not been warned. Apply warning.
 			}else if(!store.isSpammer(event.getAuthor()) && !store.isSpamWarned(event.getAuthor())){
 				store.removeMessageCount(event.getAuthor());
 				store.addSpamWarned(event.getAuthor());
-				MessageText.sendTimed(event.getChannel(), "**STOP spamming, " + mention + "! You have been warned!**", 3);
+				MessageText.sendTimed(event.getTextChannel(), "**STOP spamming, " + mention + "! You have been warned!**", 3);
 				biscuit.log(BColor.MAGENTA_BOLD + "User " + event.getAuthor().getName() + " has been warned for spam!");
 			}
 		}

@@ -6,7 +6,7 @@ import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class WikiCommand extends ClientCommand{
 
@@ -20,11 +20,11 @@ public class WikiCommand extends ClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -wiki");
 		if(PermUtil.isMod(event.getMember())) {
-			MessageText.send(event.getChannel(), "https://git.fpghoti.com/thmsdy/Biscuit/wiki");
+			MessageText.send(event.getTextChannel(), "https://git.fpghoti.com/thmsdy/Biscuit/wiki");
 		}
 	}
 

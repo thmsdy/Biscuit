@@ -13,7 +13,7 @@ import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class HelpCommand extends ClientCommand {
 
@@ -27,7 +27,7 @@ public class HelpCommand extends ClientCommand {
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 
@@ -36,7 +36,7 @@ public class HelpCommand extends ClientCommand {
 			if(Util.isDigit(args[0])) {
 				pg = Integer.parseInt(args[0]);
 			}else {
-				MessageText.send(event.getChannel(), "Usage: ``" + usage + "``");
+				MessageText.send(event.getTextChannel(), "Usage: ``" + usage + "``");
 			}
 		}
 		List<BaseCommand> commands = new ArrayList<BaseCommand>();
@@ -66,8 +66,8 @@ public class HelpCommand extends ClientCommand {
 			pg = pageCount;
 		}
 
-		MessageText.send(event.getChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "help [Page #] to navigate the different pages.**");
-		MessageText.send(event.getChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] **Bot Commands:**");
+		MessageText.send(event.getTextChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "help [Page #] to navigate the different pages.**");
+		MessageText.send(event.getTextChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] **Bot Commands:**");
 		String msg = "";
 		for (int i = 0; i < 8; i++) {
 			int index = (pg - 1) * 8 + i;
@@ -82,7 +82,7 @@ public class HelpCommand extends ClientCommand {
 				msg = msg + line;
 			}
 		}
-		MessageText.send(event.getChannel(), msg);
+		MessageText.send(event.getTextChannel(), msg);
 	}
 
 }

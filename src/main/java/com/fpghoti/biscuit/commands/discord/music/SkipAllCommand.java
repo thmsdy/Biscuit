@@ -6,7 +6,7 @@ import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SkipAllCommand extends MusicClientCommand{
 
@@ -20,13 +20,13 @@ public class SkipAllCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -skipall");
 		if(PermUtil.hasMusicControl(event.getMember())) {
-			MessageText.send(event.getChannel(), "Force skipping all songs.");
+			MessageText.send(event.getTextChannel(), "Force skipping all songs.");
 			b.getAudioScheduler().getQueue().clear();
-			b.getAudioScheduler().skip(event.getChannel());
+			b.getAudioScheduler().skip(event.getTextChannel());
 		}
 	}
 

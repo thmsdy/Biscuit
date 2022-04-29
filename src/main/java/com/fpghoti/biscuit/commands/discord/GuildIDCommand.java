@@ -6,7 +6,7 @@ import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class GuildIDCommand extends ClientCommand{
 
@@ -21,11 +21,11 @@ public class GuildIDCommand extends ClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -guildid");
 		if(PermUtil.isMod(event.getMember())) {
-			MessageText.send(event.getChannel(), event.getGuild().getId());
+			MessageText.send(event.getTextChannel(), event.getGuild().getId());
 		}
 	}
 

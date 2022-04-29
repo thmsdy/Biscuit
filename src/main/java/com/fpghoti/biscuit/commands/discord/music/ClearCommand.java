@@ -6,7 +6,7 @@ import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ClearCommand extends MusicClientCommand{
 
@@ -20,11 +20,11 @@ public class ClearCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -clear");
 		if(PermUtil.hasMusicControl(event.getMember())) {
-			MessageText.send(event.getChannel(), "Cleared all upcoming songs from the queue.");
+			MessageText.send(event.getTextChannel(), "Cleared all upcoming songs from the queue.");
 			b.getAudioScheduler().getQueue().clear();
 		}
 	}

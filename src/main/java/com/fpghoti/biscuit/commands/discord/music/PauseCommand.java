@@ -6,7 +6,7 @@ import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class PauseCommand extends MusicClientCommand{
 	
@@ -20,15 +20,15 @@ public class PauseCommand extends MusicClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -pause");
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(!b.getAudioPlayer().isPaused()) {
 				b.getAudioPlayer().setPaused(true);
-				MessageText.send(event.getChannel(), "Paused the current track.");
+				MessageText.send(event.getTextChannel(), "Paused the current track.");
 			}else {
-				MessageText.send(event.getChannel(), "The music player is already paused.");
+				MessageText.send(event.getTextChannel(), "The music player is already paused.");
 			}
 		}
 	}

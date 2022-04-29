@@ -5,17 +5,20 @@ import com.fpghoti.biscuit.logging.BColor;
 import com.vdurmont.emoji.EmojiParser;
 
 import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ChatFilter {
 
 	public static String[] suffixes = {"ing","s","ed","er","es","y","ers","ier","iest","ies","ys"};
 
-	public static boolean filter(GuildMessageReceivedEvent event) {
+	public static boolean filter(MessageReceivedEvent event) {
 		return filter(event, true);
 	}
 	
-	public static boolean filter(GuildMessageReceivedEvent event, boolean silent) {
+	public static boolean filter(MessageReceivedEvent event, boolean silent) {
+		if(!event.isFromGuild()) {
+			return false;
+		}
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		String msg = event.getMessage().getContentDisplay();
 		

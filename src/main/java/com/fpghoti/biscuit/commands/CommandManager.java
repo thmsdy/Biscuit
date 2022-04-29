@@ -13,13 +13,13 @@ import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class CommandManager {
 
 	private static List<BaseCommand> commands = new ArrayList<BaseCommand>();
 
-	public static void parse(String message, GuildMessageReceivedEvent event){
+	public static void parse(String message, MessageReceivedEvent event){
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		ArrayList<String> split = new ArrayList<String>();
 		String fixed = message.replaceFirst(b.getProperties().getCommandSignifier(), "");
@@ -39,7 +39,7 @@ public class CommandManager {
 		return dispatch(null,label,args);
 	}
 
-	public static boolean dispatch(GuildMessageReceivedEvent event, String label, String[] args) {
+	public static boolean dispatch(MessageReceivedEvent event, String label, String[] args) {
 		Biscuit b = Main.getMainBiscuit();
 		boolean isMain = true;
 		if(event != null) {
@@ -118,9 +118,9 @@ public class CommandManager {
 		return true;
 	}
 
-	public static void commandReply(GuildMessageReceivedEvent event, String msg) {
+	public static void commandReply(MessageReceivedEvent event, String msg) {
 		if(event != null) {
-			MessageText.send(event.getChannel(), msg);
+			MessageText.send(event.getTextChannel(), msg);
 		}else {
 			Main.getLogger().info(msg);
 		}

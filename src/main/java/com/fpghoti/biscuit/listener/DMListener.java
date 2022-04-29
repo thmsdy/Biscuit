@@ -1,22 +1,20 @@
 package com.fpghoti.biscuit.listener;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.captcha.Captcha;
 import com.fpghoti.biscuit.captcha.HandleCaptcha;
 import com.fpghoti.biscuit.logging.BColor;
-import com.fpghoti.biscuit.user.CaptchaUser;
-import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class DMListener extends ListenerAdapter{
 
 	@Override
-	public void onPrivateMessageReceived(PrivateMessageReceivedEvent event){
+	public void onMessageReceived(MessageReceivedEvent event){
+		if(event.getChannelType() != ChannelType.PRIVATE) {
+			return;
+		}
 		if (!event.getAuthor().isBot()) {
 
 			//Log DM content to console

@@ -8,7 +8,7 @@ import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ToggleRoleCommand extends ClientCommand{
 
@@ -23,7 +23,7 @@ public class ToggleRoleCommand extends ClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		if(!event.getAuthor().isBot()) {
 			b.log(event.getAuthor().getName() + " issued a command: -togglerole " + args[0]);
@@ -38,7 +38,7 @@ public class ToggleRoleCommand extends ClientCommand{
 			}
 
 			if(rolename.equals("")) {
-				MessageText.send(event.getChannel(), "Sorry! This role either cannot be toggled or does not exist!");
+				MessageText.send(event.getTextChannel(), "Sorry! This role either cannot be toggled or does not exist!");
 				return;
 			}
 

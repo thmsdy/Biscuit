@@ -8,27 +8,30 @@ import com.fpghoti.biscuit.logging.BiscuitLog;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandListener extends ListenerAdapter implements Runnable {
 
 	private Scanner sc;
 	private BiscuitLog log;
-	
+
 	public CommandListener(Scanner sc, BiscuitLog log) {
 		this.sc = sc;
 		this.log = log;
 	}
 
 	@Override
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event){
-			Biscuit b = Biscuit.getBiscuit(event.getGuild());
-			if(PermUtil.isAdmin(event.getMember()) || !b.getProperties().restrictCmdChannels() || (b.getProperties().restrictCmdChannels() && isBotChannel(event.getChannel()))) {
-				if(!event.getAuthor().isBot() && event.getMessage().getContentDisplay().startsWith(b.getProperties().getCommandSignifier()) && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()){
-					CommandManager.parse(event.getMessage().getContentRaw().toLowerCase(), event);
-				}
+	public void onMessageReceived(MessageReceivedEvent event){
+		if(!event.isFromGuild()) {
+			return;
+		}
+		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		if(PermUtil.isAdmin(event.getMember()) || !b.getProperties().restrictCmdChannels() || (b.getProperties().restrictCmdChannels() && isBotChannel(event.getTextChannel()))) {
+			if(!event.getAuthor().isBot() && event.getMessage().getContentDisplay().startsWith(b.getProperties().getCommandSignifier()) && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()){
+				CommandManager.parse(event.getMessage().getContentRaw().toLowerCase(), event);
 			}
+		}
 	}
 
 	private boolean isBotChannel(TextChannel c) {

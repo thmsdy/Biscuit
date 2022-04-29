@@ -16,7 +16,7 @@ import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class PlayFirstCommand extends MusicClientCommand{
 
@@ -30,10 +30,10 @@ public class PlayFirstCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Guild guild = event.getGuild();
 		Biscuit b = Biscuit.getBiscuit(guild);
-		TextChannel tchannel = event.getChannel();
+		TextChannel tchannel = event.getTextChannel();
 
 		int searchArg = 0;
 		boolean scSearch = false;

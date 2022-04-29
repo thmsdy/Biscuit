@@ -7,7 +7,7 @@ import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class RemoveCommand extends MusicClientCommand{
 
@@ -21,13 +21,13 @@ public class RemoveCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -remove " + args[0]);
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(Util.isDigit(args[0])) {
 				int place = Integer.parseInt(args[0]);
-				MessageText.send(event.getChannel(), "Removing track at position **" + place + "**.");
+				MessageText.send(event.getTextChannel(), "Removing track at position **" + place + "**.");
 				b.getAudioScheduler().getQueue().removeTrack(place);
 			}
 		}

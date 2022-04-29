@@ -8,7 +8,7 @@ import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class NotSpammerCommand extends ClientCommand{
 
@@ -22,7 +22,7 @@ public class NotSpammerCommand extends ClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -notspammer " + args[0]);
 		for(Member m : event.getMessage().getMentionedMembers()){
@@ -30,7 +30,7 @@ public class NotSpammerCommand extends ClientCommand{
 			String s = u.getAsMention();
 			if(event.getChannel().getName().equals("public-spam-test") || (PermUtil.isMod(event.getMember()))) {
 				b.getMessageStore().removeSpammer(u);
-				MessageText.send(event.getChannel(), s + " is no longer flagged as spam.");
+				MessageText.send(event.getTextChannel(), s + " is no longer flagged as spam.");
 			}
 		}
 	}

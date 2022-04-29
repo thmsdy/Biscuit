@@ -7,7 +7,7 @@ import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ForceSkipToCommand extends MusicClientCommand{
 
@@ -22,15 +22,15 @@ public class ForceSkipToCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -forceskipto " + args[0]);
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(Util.isDigit(args[0])) {
 				int place = Integer.parseInt(args[0]);
-				MessageText.send(event.getChannel(), "Force skipping to queue position **" + place + "**.");
+				MessageText.send(event.getTextChannel(), "Force skipping to queue position **" + place + "**.");
 				b.getAudioScheduler().getQueue().removeTracksBefore(place);
-				b.getAudioScheduler().skip(event.getChannel());
+				b.getAudioScheduler().skip(event.getTextChannel());
 			}
 		}
 	}

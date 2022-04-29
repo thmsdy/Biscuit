@@ -6,18 +6,21 @@ import com.fpghoti.biscuit.rest.MessageText;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 public class PlayCommandUtil {
 	
-	public static boolean connectToChannel(GuildMessageReceivedEvent event) {
+	public static boolean connectToChannel(MessageReceivedEvent event) {
+		if(!event.isFromGuild()) {
+			return false;
+		}
 		Guild guild = event.getGuild();
 		Biscuit biscuit = Biscuit.getBiscuit(guild);
-		TextChannel textChannel = event.getChannel();
+		TextChannel textChannel = event.getTextChannel();
 		
 		String vcname = "";
-		if(!event.getMember().getVoiceState().inVoiceChannel()) {
+		if(!event.getMember().getVoiceState().inAudioChannel()) {
 			MessageText.send(textChannel, "You must be in a voice channel to do this!");
 			return false;
 		}
@@ -68,7 +71,7 @@ public class PlayCommandUtil {
 		return searchPhrase;
 	}
 	
-	public static String getID(GuildMessageReceivedEvent event) {
+	public static String getID(MessageReceivedEvent event) {
 		return getID(event.getMessage().getContentRaw().split(" ")[1]);
 	}
 	

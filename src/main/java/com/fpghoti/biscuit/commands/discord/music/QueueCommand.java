@@ -10,7 +10,7 @@ import com.fpghoti.biscuit.util.Util;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class QueueCommand extends MusicClientCommand{
 
@@ -24,7 +24,7 @@ public class QueueCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
 		biscuit.log(event.getAuthor().getName() + " issued a command: -queue");
@@ -33,7 +33,7 @@ public class QueueCommand extends MusicClientCommand{
 			if(Util.isDigit(args[0])) {
 				pg = Integer.parseInt(args[0]);
 			}else {
-				MessageText.send(event.getChannel(), "Usage: ``" + usage + "``");
+				MessageText.send(event.getTextChannel(), "Usage: ``" + usage + "``");
 			}
 		}
 
@@ -46,15 +46,15 @@ public class QueueCommand extends MusicClientCommand{
 		
 		if(queue.size() == 0) {
 			if(biscuit.getAudioPlayer().getPlayingTrack() == null) {
-				MessageText.send(event.getChannel(), "There is currently no song playing.");
+				MessageText.send(event.getTextChannel(), "There is currently no song playing.");
 			}else {
-				MessageText.send(event.getChannel(), "Nothing is queued to play after the current track.");
+				MessageText.send(event.getTextChannel(), "Nothing is queued to play after the current track.");
 			}
 			return;
 		}
 
-		MessageText.send(event.getChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "queue [Page #] to navigate the different pages.**");
-		MessageText.send(event.getChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] ** Upcoming Music Tracks:**");
+		MessageText.send(event.getTextChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "queue [Page #] to navigate the different pages.**");
+		MessageText.send(event.getTextChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] ** Upcoming Music Tracks:**");
 		String msg = "";
 		for (int i = 0; i < 8; i++) {
 			int index = (pg - 1) * 8 + i;
@@ -76,7 +76,7 @@ public class QueueCommand extends MusicClientCommand{
 				msg = msg + line;
 			}
 		}
-		MessageText.send(event.getChannel(), msg);
+		MessageText.send(event.getTextChannel(), msg);
 
 	}
 

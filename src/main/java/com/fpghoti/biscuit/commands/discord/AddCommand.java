@@ -6,7 +6,7 @@ import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class AddCommand extends ClientCommand{
 	
@@ -20,7 +20,7 @@ public class AddCommand extends ClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -add");
 		if(args[0] != null && Util.isDeciDigit(args[0]) && args[1] != null && Util.isDeciDigit(args[1])) {
@@ -31,7 +31,7 @@ public class AddCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				sum = sum.replace(".0","");
 			}
-			MessageText.send(event.getChannel(), args[0] + " + " + args[1] + " is **" + sum + "**.");
+			MessageText.send(event.getTextChannel(), args[0] + " + " + args[1] + " is **" + sum + "**.");
 		}
 	}
 

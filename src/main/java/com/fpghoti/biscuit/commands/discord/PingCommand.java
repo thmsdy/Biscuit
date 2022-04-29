@@ -5,7 +5,7 @@ import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class PingCommand extends ClientCommand{
 	
@@ -19,10 +19,10 @@ public class PingCommand extends ClientCommand{
     }
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -ping");
-		MessageText.send(event.getChannel(), "Pong!");	
+		MessageText.send(event.getTextChannel(), "Pong!");	
 	}
 
 }

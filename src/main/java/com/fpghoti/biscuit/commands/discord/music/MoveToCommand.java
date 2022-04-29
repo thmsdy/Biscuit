@@ -7,7 +7,7 @@ import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class MoveToCommand extends MusicClientCommand{
 
@@ -21,14 +21,14 @@ public class MoveToCommand extends MusicClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -moveto " + args[0] + " " + args[1]);
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(Util.isDigit(args[0]) && Util.isDigit(args[1])) {
 				int oldPlace = Integer.parseInt(args[0]);
 				int newPlace = Integer.parseInt(args[1]);
-				MessageText.send(event.getChannel(), "The specified track was moved." );
+				MessageText.send(event.getTextChannel(), "The specified track was moved." );
 				b.getAudioScheduler().getQueue().moveToPlace(oldPlace, newPlace);
 			}
 		}

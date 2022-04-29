@@ -127,7 +127,7 @@ public class PreUser {
 
 	public void kick() {
 		remove();
-		biscuit.getGuild().kick(user.getId()).submit();
+		biscuit.getGuild().getMemberById(user.getId()).kick().submit();
 	}
 
 	public boolean equals(User u) {

@@ -5,7 +5,7 @@ import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class RecentSpammersCommand extends ClientCommand{
 
@@ -19,11 +19,11 @@ public class RecentSpammersCommand extends ClientCommand{
 	}
 
 	@Override
-	public void execute(String[] args, GuildMessageReceivedEvent event) {
+	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -recentspammers");
 		String msg = b.getMessageStore().getSpammerList();
-		MessageText.send(event.getChannel(), msg);
+		MessageText.send(event.getTextChannel(), msg);
 
 	}
 
