@@ -27,10 +27,10 @@ public class TogglePauseCommand extends MusicClientCommand{
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(b.getAudioPlayer().isPaused()) {
 				b.getAudioPlayer().setPaused(false);
-				MessageText.send(event.getTextChannel(), "Unpaused the current track.");
+				MessageText.send(event.getChannel().asTextChannel(), "Unpaused the current track.");
 			}else {
 				b.getAudioPlayer().setPaused(true);
-				MessageText.send(event.getTextChannel(), "Paused the current track.");
+				MessageText.send(event.getChannel().asTextChannel(), "Paused the current track.");
 			}
 		}
 	}

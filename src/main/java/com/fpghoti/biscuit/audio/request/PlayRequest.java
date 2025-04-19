@@ -8,7 +8,7 @@ import com.fpghoti.biscuit.audio.request.youtube.YTRequest;
 import com.fpghoti.biscuit.biscuit.Biscuit;
 
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public abstract class PlayRequest {
 	
@@ -42,7 +42,7 @@ public abstract class PlayRequest {
 			case YOUTUBE_PRIORITY:
 				return new YTPriorityRequest(message, searchPhrase, insertSlot);
 			case YOUTUBE_IMMEDIATE:
-				return new YTImmediateRequest(message.getTextChannel(), message.getAuthor().getId(), searchPhrase);
+				return new YTImmediateRequest(message.getChannel().asTextChannel(), message.getAuthor().getId(), searchPhrase);
 			case SOUNDCLOUD:
 				return new SCRequest(message, searchPhrase);
 			case SOUNDCLOUD_PRIORITY:
@@ -58,7 +58,7 @@ public abstract class PlayRequest {
 	private String identifier;
 	
 	public PlayRequest(Message message, String identifier) {
-		this(message.getTextChannel(), message.getAuthor().getId(), identifier);
+		this(message.getChannel().asTextChannel(), message.getAuthor().getId(), identifier);
 	}
 	
 	public PlayRequest(TextChannel channel, String authorId, String identifier) {

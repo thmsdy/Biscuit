@@ -8,7 +8,8 @@ import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+//import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class MakeInviteCommand extends ClientCommand{
@@ -40,7 +41,7 @@ public class MakeInviteCommand extends ClientCommand{
 				}
 			}
 			if(doubAge > 86400) {
-				MessageText.send(event.getTextChannel(), "That length is longer than what Discord allows. Please try again. (Max 24 hours)");
+				MessageText.send(event.getChannel().asTextChannel(), "That length is longer than what Discord allows. Please try again. (Max 24 hours)");
 				return;
 			}
 			final double db = doubAge;
@@ -50,7 +51,7 @@ public class MakeInviteCommand extends ClientCommand{
 					if(db > 0) {
 						exp = args[1] + " hour(s)";
 					}
-					MessageText.send(event.getTextChannel(), "Created invite **" + i.getCode() + "** Expiration: **" + exp + "**.");
+					MessageText.send(event.getChannel().asTextChannel(), "Created invite **" + i.getCode() + "** Expiration: **" + exp + "**.");
 				});
 			}
 		}

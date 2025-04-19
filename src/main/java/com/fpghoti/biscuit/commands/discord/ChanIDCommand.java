@@ -23,7 +23,7 @@ public class ChanIDCommand extends ClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -chanid");
 		String id = event.getChannel().getId();
-		MessageText.send(event.getTextChannel(), id);
+		MessageText.send(event.getChannel().asTextChannel(), id);
 	}
 
 }

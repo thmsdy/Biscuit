@@ -32,7 +32,7 @@ public class PowerCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				pow = pow.replace(".0","");
 			}
-			MessageText.send(event.getTextChannel(), args[0] + "^" + args[1] + " is **" + pow + "**.");
+			MessageText.send(event.getChannel().asTextChannel(), args[0] + "^" + args[1] + " is **" + pow + "**.");
 		}
 	}
 

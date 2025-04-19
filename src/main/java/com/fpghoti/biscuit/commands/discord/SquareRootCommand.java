@@ -31,7 +31,7 @@ public class SquareRootCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				root = root.replace(".0","");
 			}
-			MessageText.send(event.getTextChannel(), "The sqaure root of " + args[0] + " is **" + root + "**.");
+			MessageText.send(event.getChannel().asTextChannel(), "The sqaure root of " + args[0] + " is **" + root + "**.");
 		}
 	}
 

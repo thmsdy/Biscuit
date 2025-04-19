@@ -25,10 +25,10 @@ public class UIDCommand extends ClientCommand{
 	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -uid " + args[0]);
-		for(Member m : event.getMessage().getMentionedMembers()){
+		for(Member m : event.getMessage().getMentions().getMembers()){
 			User u = m.getUser();
 			if(PermUtil.isMod(event.getMember())) {
-				MessageText.send(event.getTextChannel(), u.getId());
+				MessageText.send(event.getChannel().asTextChannel(), u.getId());
 			}
 		}
 	}

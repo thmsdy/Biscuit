@@ -25,7 +25,7 @@ public class GuildIDCommand extends ClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -guildid");
 		if(PermUtil.isMod(event.getMember())) {
-			MessageText.send(event.getTextChannel(), event.getGuild().getId());
+			MessageText.send(event.getChannel().asTextChannel(), event.getGuild().getId());
 		}
 	}
 

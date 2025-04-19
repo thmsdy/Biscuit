@@ -25,17 +25,17 @@ public class SoftMuteCommand extends ClientCommand{
 	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -softmute " + args[0]);
-		for(Member m : event.getMessage().getMentionedMembers()){
+		for(Member m : event.getMessage().getMentions().getMembers()){
 			User u = m.getUser();
 			String s = u.getAsMention();
 			if(b.getMessageStore().isSoftmuted(u)) {
-				MessageText.sendTimed(event.getTextChannel(), s + " is already softmuted.", 3);
+				MessageText.sendTimed(event.getChannel().asTextChannel(), s + " is already softmuted.", 3);
 				return;
 			}
 			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()))) {
 				b.getMessageStore().addSoftmuted(u);
 				u.openPrivateChannel().queue();
-				MessageText.send(event.getTextChannel(), s + " is now soft-muted. They will now be only able to send one message every two minutes.");
+				MessageText.send(event.getChannel().asTextChannel(), s + " is now soft-muted. They will now be only able to send one message every two minutes.");
 			}
 		}
 	}

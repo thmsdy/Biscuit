@@ -24,7 +24,7 @@ public class ClearCommand extends MusicClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -clear");
 		if(PermUtil.hasMusicControl(event.getMember())) {
-			MessageText.send(event.getTextChannel(), "Cleared all upcoming songs from the queue.");
+			MessageText.send(event.getChannel().asTextChannel(), "Cleared all upcoming songs from the queue.");
 			b.getAudioScheduler().getQueue().clear();
 		}
 	}

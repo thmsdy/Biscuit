@@ -8,10 +8,10 @@ import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 
-import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SkipCommand extends MusicClientCommand{
@@ -32,11 +32,11 @@ public class SkipCommand extends MusicClientCommand{
 		Biscuit biscuit = Biscuit.getBiscuit(guild);
 		biscuit.log(event.getAuthor().getName() + " issued a command: -skip");
 
-		TextChannel cmdChannel = event.getTextChannel();
+		TextChannel cmdChannel = event.getChannel().asTextChannel();
 
 		//Bot is not connected to voice channel. Do nothing.
 		if(!guild.getAudioManager().isConnected()) {
-			MessageText.send(event.getTextChannel(), "The music player is not connected to a voice channel!");
+			MessageText.send(event.getChannel().asTextChannel(), "The music player is not connected to a voice channel!");
 			return;
 		}
 

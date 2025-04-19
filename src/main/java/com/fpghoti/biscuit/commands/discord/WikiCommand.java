@@ -24,7 +24,7 @@ public class WikiCommand extends ClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -wiki");
 		if(PermUtil.isMod(event.getMember())) {
-			MessageText.send(event.getTextChannel(), "https://git.fpghoti.com/thmsdy/Biscuit/wiki");
+			MessageText.send(event.getChannel().asTextChannel(), "https://git.fpghoti.com/thmsdy/Biscuit/wiki");
 		}
 	}
 

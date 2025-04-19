@@ -24,9 +24,9 @@ public class SkipAllCommand extends MusicClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -skipall");
 		if(PermUtil.hasMusicControl(event.getMember())) {
-			MessageText.send(event.getTextChannel(), "Force skipping all songs.");
+			MessageText.send(event.getChannel().asTextChannel(), "Force skipping all songs.");
 			b.getAudioScheduler().getQueue().clear();
-			b.getAudioScheduler().skip(event.getTextChannel());
+			b.getAudioScheduler().skip(event.getChannel().asTextChannel());
 		}
 	}
 

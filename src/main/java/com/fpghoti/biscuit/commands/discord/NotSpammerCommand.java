@@ -25,12 +25,12 @@ public class NotSpammerCommand extends ClientCommand{
 	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -notspammer " + args[0]);
-		for(Member m : event.getMessage().getMentionedMembers()){
+		for(Member m : event.getMessage().getMentions().getMembers()){
 			User u = m.getUser();
 			String s = u.getAsMention();
 			if(event.getChannel().getName().equals("public-spam-test") || (PermUtil.isMod(event.getMember()))) {
 				b.getMessageStore().removeSpammer(u);
-				MessageText.send(event.getTextChannel(), s + " is no longer flagged as spam.");
+				MessageText.send(event.getChannel().asTextChannel(), s + " is no longer flagged as spam.");
 			}
 		}
 	}

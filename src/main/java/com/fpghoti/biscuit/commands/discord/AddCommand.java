@@ -6,6 +6,7 @@ import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.Util;
 
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class AddCommand extends ClientCommand{
@@ -31,7 +32,7 @@ public class AddCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				sum = sum.replace(".0","");
 			}
-			MessageText.send(event.getTextChannel(), args[0] + " + " + args[1] + " is **" + sum + "**.");
+			MessageText.send(event.getChannel().asTextChannel(), args[0] + " + " + args[1] + " is **" + sum + "**.");
 		}
 	}
 

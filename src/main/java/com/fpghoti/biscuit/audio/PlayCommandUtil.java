@@ -4,8 +4,8 @@ import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.rest.MessageText;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -17,7 +17,7 @@ public class PlayCommandUtil {
 		}
 		Guild guild = event.getGuild();
 		Biscuit biscuit = Biscuit.getBiscuit(guild);
-		TextChannel textChannel = event.getTextChannel();
+		TextChannel textChannel = event.getChannel().asTextChannel();
 		
 		String vcname = "";
 		if(!event.getMember().getVoiceState().inAudioChannel()) {

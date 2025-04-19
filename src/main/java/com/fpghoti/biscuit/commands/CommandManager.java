@@ -120,7 +120,7 @@ public class CommandManager {
 
 	public static void commandReply(MessageReceivedEvent event, String msg) {
 		if(event != null) {
-			MessageText.send(event.getTextChannel(), msg);
+			MessageText.send(event.getChannel().asTextChannel(), msg);
 		}else {
 			Main.getLogger().info(msg);
 		}

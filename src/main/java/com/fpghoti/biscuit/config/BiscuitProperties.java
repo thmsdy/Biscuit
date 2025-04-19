@@ -32,6 +32,11 @@ public class BiscuitProperties {
         return Main.getMainBiscuit().getConfig().getFromConfig(key).equalsIgnoreCase("true");
     }
     
+    public boolean isPowerShell(){
+        String key = "Powershell-Display-Mode";
+        return Main.getMainBiscuit().getConfig().getFromConfig(key).equalsIgnoreCase("true");
+    }
+    
     public boolean allowMusicBot(){
         if(!musicBotEnabled()) {
             return false;

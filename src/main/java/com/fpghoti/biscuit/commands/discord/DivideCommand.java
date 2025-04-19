@@ -32,7 +32,7 @@ public class DivideCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				divide = divide.replace(".0","");
 			}
-			MessageText.send(event.getTextChannel(), args[0] + " / " + args[1] + " is **" + divide + "**.");
+			MessageText.send(event.getChannel().asTextChannel(), args[0] + " / " + args[1] + " is **" + divide + "**.");
 		}
 	}
 

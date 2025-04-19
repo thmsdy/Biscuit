@@ -28,9 +28,9 @@ public class ForceSkipToCommand extends MusicClientCommand{
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(Util.isDigit(args[0])) {
 				int place = Integer.parseInt(args[0]);
-				MessageText.send(event.getTextChannel(), "Force skipping to queue position **" + place + "**.");
+				MessageText.send(event.getChannel().asTextChannel(), "Force skipping to queue position **" + place + "**.");
 				b.getAudioScheduler().getQueue().removeTracksBefore(place);
-				b.getAudioScheduler().skip(event.getTextChannel());
+				b.getAudioScheduler().skip(event.getChannel().asTextChannel());
 			}
 		}
 	}

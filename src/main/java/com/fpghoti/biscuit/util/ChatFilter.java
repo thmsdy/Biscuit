@@ -4,7 +4,7 @@ import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.logging.BColor;
 import com.vdurmont.emoji.EmojiParser;
 
-import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ChatFilter {
@@ -36,7 +36,7 @@ public class ChatFilter {
 		}
 
 		//Custom emote check
-		for(Emote e : event.getMessage().getEmotes()) {
+		for(Emoji e : event.getMessage().getMentions().getCustomEmojis()) {
 			String name = e.getName();
 
 			for(String s : biscuit.getProperties().blockedCustomEmotes()) {

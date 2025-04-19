@@ -65,7 +65,7 @@ import com.fpghoti.biscuit.listener.NicknameListener;
 import com.fpghoti.biscuit.listener.ReactionListener;
 import com.fpghoti.biscuit.listener.RoleListener;
 import com.fpghoti.biscuit.logging.BColor;
-import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.fpghoti.biscuit.logging.BiscuitLogger;
 import com.fpghoti.biscuit.plugin.PluginController;
 import com.github.cage.Cage;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -90,7 +90,7 @@ public class Main {
 	public RollingFileAppender<String> we;
 	public SizeAndTimeBasedRollingPolicy<String> wes;
 
-	private static final BiscuitLog log = new BiscuitLog();
+	private static final BiscuitLogger log = new BiscuitLogger();
 
 	private static ArrayList<Biscuit> biscuits;
 	private static Biscuit mainBiscuit;
@@ -224,8 +224,7 @@ public class Main {
 			shardm = DefaultShardManagerBuilder.createDefault(token)
 					.setChunkingFilter(ChunkingFilter.ALL)
 					.setMemberCachePolicy(MemberCachePolicy.ALL)
-					.enableIntents(GatewayIntent.getIntents(GatewayIntent.DEFAULT))
-					.enableIntents(GatewayIntent.GUILD_MEMBERS)
+					.enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
 					.build();
 			jda = shardm.getShardById(0);
 			try {
@@ -297,7 +296,7 @@ public class Main {
 		return cage;
 	}
 
-	public static BiscuitLog getLogger() {
+	public static BiscuitLogger getLogger() {
 		return log;
 	}
 	

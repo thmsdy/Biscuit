@@ -32,7 +32,7 @@ public class SubtractCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				sub = sub.replace(".0","");
 			}
-			MessageText.send(event.getTextChannel(), args[0] + " - " + args[1] + " is **" + sub + "**.");
+			MessageText.send(event.getChannel().asTextChannel(), args[0] + " - " + args[1] + " is **" + sub + "**.");
 		}
 	}
 

@@ -33,7 +33,7 @@ public class QueueCommand extends MusicClientCommand{
 			if(Util.isDigit(args[0])) {
 				pg = Integer.parseInt(args[0]);
 			}else {
-				MessageText.send(event.getTextChannel(), "Usage: ``" + usage + "``");
+				MessageText.send(event.getChannel().asTextChannel(), "Usage: ``" + usage + "``");
 			}
 		}
 
@@ -46,15 +46,15 @@ public class QueueCommand extends MusicClientCommand{
 		
 		if(queue.size() == 0) {
 			if(biscuit.getAudioPlayer().getPlayingTrack() == null) {
-				MessageText.send(event.getTextChannel(), "There is currently no song playing.");
+				MessageText.send(event.getChannel().asTextChannel(), "There is currently no song playing.");
 			}else {
-				MessageText.send(event.getTextChannel(), "Nothing is queued to play after the current track.");
+				MessageText.send(event.getChannel().asTextChannel(), "Nothing is queued to play after the current track.");
 			}
 			return;
 		}
 
-		MessageText.send(event.getTextChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "queue [Page #] to navigate the different pages.**");
-		MessageText.send(event.getTextChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] ** Upcoming Music Tracks:**");
+		MessageText.send(event.getChannel().asTextChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "queue [Page #] to navigate the different pages.**");
+		MessageText.send(event.getChannel().asTextChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] ** Upcoming Music Tracks:**");
 		String msg = "";
 		for (int i = 0; i < 8; i++) {
 			int index = (pg - 1) * 8 + i;
@@ -76,7 +76,7 @@ public class QueueCommand extends MusicClientCommand{
 				msg = msg + line;
 			}
 		}
-		MessageText.send(event.getTextChannel(), msg);
+		MessageText.send(event.getChannel().asTextChannel(), msg);
 
 	}
 

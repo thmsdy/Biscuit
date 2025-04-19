@@ -32,7 +32,7 @@ public class MultiplyCommand extends ClientCommand{
 			if(end.equals(".0")) {
 				prod = prod.replace(".0","");
 			}
-			MessageText.send(event.getTextChannel(), args[0] + " x " + args[1] + " is **" + prod + "**.");
+			MessageText.send(event.getChannel().asTextChannel(), args[0] + " x " + args[1] + " is **" + prod + "**.");
 		}
 	}
 

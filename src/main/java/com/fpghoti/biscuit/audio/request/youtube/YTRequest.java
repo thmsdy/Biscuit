@@ -4,14 +4,15 @@ import com.fpghoti.biscuit.audio.request.PlayRequest;
 import com.fpghoti.biscuit.audio.request.RequestType;
 
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+//import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class YTRequest extends PlayRequest{
 	
 	private boolean searchMode;
 	
 	public YTRequest(Message message, String identifier) {
-		this(message.getTextChannel(), message.getAuthor().getId(), identifier);
+		this(message.getChannel().asTextChannel(), message.getAuthor().getId(), identifier);
 	}
 
 	public YTRequest(TextChannel channel, String authorId, String identifier) {

@@ -21,7 +21,7 @@ public class ReactionListener extends ListenerAdapter{
 		if(event.getGuild() == null) {
 			return;
 		}
-		if(Util.contains(biscuit.getProperties().getToggleChannels(),event.getTextChannel().getName())) {
+		if(Util.contains(biscuit.getProperties().getToggleChannels(),event.getChannel().asTextChannel().getName())) {
 			handleMessageRole(event, false);
 		}
 	}
@@ -32,14 +32,14 @@ public class ReactionListener extends ListenerAdapter{
 		if(event.getGuild() == null) {
 			return;
 		}
-		if(Util.contains(biscuit.getProperties().getToggleChannels(),event.getTextChannel().getName())) {
+		if(Util.contains(biscuit.getProperties().getToggleChannels(),event.getChannel().asTextChannel().getName())) {
 			handleMessageRole(event, true);
 		}
 	}
 
 	private void handleMessageRole(GenericMessageReactionEvent event, boolean remove) {
 		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
-		event.getTextChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
+		event.getChannel().asTextChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
 			String msg = message.getContentDisplay();
 			for(String rolename : biscuit.getProperties().getToggleRoles()) {
 				for(Role r : event.getGuild().getRoles()) {
@@ -65,7 +65,7 @@ public class ReactionListener extends ListenerAdapter{
 		Member m = event.getMember();
 		if(remove) {
 			if(PermUtil.hasRole(m, role)) {
-				biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - " + BColor.RESET + "Removing role " + role.getName() + " from " + m.getUser().getName() + "(" + m.getId() + ")");
+				biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getChannel().asTextChannel().getName() + ") - " + BColor.RESET + "Removing role " + role.getName() + " from " + m.getUser().getName() + "(" + m.getId() + ")");
 				guild.removeRoleFromMember(m, role).queue();
 			}
 		}else {
@@ -80,7 +80,7 @@ public class ReactionListener extends ListenerAdapter{
 					canAdd = true;
 				}
 				if(canAdd) {
-					biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getTextChannel().getName() + ") - " + BColor.RESET + " Adding role " + role.getName() + " to " + m.getUser().getName() + "(" + m.getId() + ")");
+					biscuit.log(BColor.MAGENTA_BOLD + "REACTION TOGGLE (#" + event.getChannel().asTextChannel().getName() + ") - " + BColor.RESET + " Adding role " + role.getName() + " to " + m.getUser().getName() + "(" + m.getId() + ")");
 					guild.addRoleToMember(m, role).queue();
 				}
 			}

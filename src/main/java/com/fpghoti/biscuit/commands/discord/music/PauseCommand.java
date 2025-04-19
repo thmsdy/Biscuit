@@ -26,9 +26,9 @@ public class PauseCommand extends MusicClientCommand{
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(!b.getAudioPlayer().isPaused()) {
 				b.getAudioPlayer().setPaused(true);
-				MessageText.send(event.getTextChannel(), "Paused the current track.");
+				MessageText.send(event.getChannel().asTextChannel(), "Paused the current track.");
 			}else {
-				MessageText.send(event.getTextChannel(), "The music player is already paused.");
+				MessageText.send(event.getChannel().asTextChannel(), "The music player is already paused.");
 			}
 		}
 	}

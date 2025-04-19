@@ -26,8 +26,8 @@ public class ClearUserSongsCommand extends MusicClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -clearusersongs " + args[0]);
 		if(PermUtil.hasMusicControl(event.getMember())) {
-			for(Member m : event.getMessage().getMentionedMembers()) {
-				MessageText.send(event.getTextChannel(), "Clearing all upcoming tracks added by **" + m.getEffectiveName() + "**.");
+			for(Member m : event.getMessage().getMentions().getMembers()) {
+				MessageText.send(event.getChannel().asTextChannel(), "Clearing all upcoming tracks added by **" + m.getEffectiveName() + "**.");
 				b.getAudioScheduler().getQueue().removeUserTracks(m.getId());
 			}
 		}

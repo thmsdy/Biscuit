@@ -25,12 +25,12 @@ public class UnSoftMuteCommand extends ClientCommand{
 	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -unsoftmute " + args[0]);
-		for(Member m : event.getMessage().getMentionedMembers()){
+		for(Member m : event.getMessage().getMentions().getMembers()){
 			User u = m.getUser();
 			String s = u.getAsMention();
 			if(event.getChannel().getName().equals("public-softmute-test") || (PermUtil.isMod(event.getMember()))) { 
 				b.getMessageStore().removeSoftmuted(u);
-				MessageText.send(event.getTextChannel(), s + " is no longer soft-muted.");
+				MessageText.send(event.getChannel().asTextChannel(), s + " is no longer soft-muted.");
 			}
 		}
 	}

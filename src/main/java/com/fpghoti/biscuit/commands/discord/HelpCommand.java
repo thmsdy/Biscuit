@@ -36,7 +36,7 @@ public class HelpCommand extends ClientCommand {
 			if(Util.isDigit(args[0])) {
 				pg = Integer.parseInt(args[0]);
 			}else {
-				MessageText.send(event.getTextChannel(), "Usage: ``" + usage + "``");
+				MessageText.send(event.getChannel().asTextChannel(), "Usage: ``" + usage + "``");
 			}
 		}
 		List<BaseCommand> commands = new ArrayList<BaseCommand>();
@@ -66,8 +66,8 @@ public class HelpCommand extends ClientCommand {
 			pg = pageCount;
 		}
 
-		MessageText.send(event.getTextChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "help [Page #] to navigate the different pages.**");
-		MessageText.send(event.getTextChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] **Bot Commands:**");
+		MessageText.send(event.getChannel().asTextChannel(), "**Use " + Main.getMainBiscuit().getProperties().getCommandSignifier() + "help [Page #] to navigate the different pages.**");
+		MessageText.send(event.getChannel().asTextChannel(), "[" + Integer.toString(pg) + "/" + Integer.toString(pageCount) + "] **Bot Commands:**");
 		String msg = "";
 		for (int i = 0; i < 8; i++) {
 			int index = (pg - 1) * 8 + i;
@@ -82,7 +82,7 @@ public class HelpCommand extends ClientCommand {
 				msg = msg + line;
 			}
 		}
-		MessageText.send(event.getTextChannel(), msg);
+		MessageText.send(event.getChannel().asTextChannel(), msg);
 	}
 
 }

@@ -27,7 +27,7 @@ public class RemoveCommand extends MusicClientCommand{
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(Util.isDigit(args[0])) {
 				int place = Integer.parseInt(args[0]);
-				MessageText.send(event.getTextChannel(), "Removing track at position **" + place + "**.");
+				MessageText.send(event.getChannel().asTextChannel(), "Removing track at position **" + place + "**.");
 				b.getAudioScheduler().getQueue().removeTrack(place);
 			}
 		}

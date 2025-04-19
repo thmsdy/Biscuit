@@ -23,7 +23,7 @@ public class RecentSpammersCommand extends ClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -recentspammers");
 		String msg = b.getMessageStore().getSpammerList();
-		MessageText.send(event.getTextChannel(), msg);
+		MessageText.send(event.getChannel().asTextChannel(), msg);
 
 	}
 

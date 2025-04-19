@@ -7,7 +7,7 @@ import org.pf4j.PluginWrapper;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.biscuit.Biscuit;
-import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.fpghoti.biscuit.logging.BiscuitLogger;
 import com.github.cage.Cage;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
@@ -59,7 +59,7 @@ public abstract class BiscuitPlugin extends Plugin {
     	return Main.getPlayerManager();
     }
     
-    public BiscuitLog getLogger() {
+    public BiscuitLogger getLogger() {
     	return Main.getLogger();
     }
 

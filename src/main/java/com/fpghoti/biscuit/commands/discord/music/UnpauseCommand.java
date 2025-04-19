@@ -27,9 +27,9 @@ public class UnpauseCommand extends MusicClientCommand{
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(b.getAudioPlayer().isPaused()) {
 				b.getAudioPlayer().setPaused(false);
-				MessageText.send(event.getTextChannel(), "Unpaused the current track.");
+				MessageText.send(event.getChannel().asTextChannel(), "Unpaused the current track.");
 			}else {
-				MessageText.send(event.getTextChannel(), "The music player is not paused.");
+				MessageText.send(event.getChannel().asTextChannel(), "The music player is not paused.");
 			}
 		}
 	}

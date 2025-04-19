@@ -24,9 +24,9 @@ public class ShuffleCommand extends MusicClientCommand{
 		b.log(event.getAuthor().getName() + " issued a command: -shuffle");
 		if(b.getAudioScheduler().getQueue().getLastTrack() != null ) {
 			b.getAudioScheduler().getQueue().shuffleUserTracks(event.getAuthor().getId());
-			MessageText.send(event.getTextChannel(), "All songs that you have added to the queue have been shuffled.");
+			MessageText.send(event.getChannel().asTextChannel(), "All songs that you have added to the queue have been shuffled.");
 		}else {
-			MessageText.send(event.getTextChannel(), "No song is currently playing.");
+			MessageText.send(event.getChannel().asTextChannel(), "No song is currently playing.");
 		}
 	}
 

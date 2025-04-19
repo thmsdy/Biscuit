@@ -25,9 +25,9 @@ public class NowPlayingCommand extends MusicClientCommand{
 		b.log(event.getAuthor().getName() + " issued a command: -nowplaying");
 		if(b.getAudioScheduler().getQueue().getLastTrack() != null ) {
 			MessageEmbed next = b.getAudioScheduler().getQueue().getLastTrack().getEmbedMessage("Now Playing:", true);
-			MessageText.send(event.getTextChannel(), next);
+			MessageText.send(event.getChannel().asTextChannel(), next);
 		}else {
-			MessageText.send(event.getTextChannel(), "No song is currently playing.");
+			MessageText.send(event.getChannel().asTextChannel(), "No song is currently playing.");
 		}
 	}
 

@@ -3,7 +3,8 @@ package com.fpghoti.biscuit.audio.request.youtube;
 import com.fpghoti.biscuit.audio.request.RequestType;
 
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+//import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class YTImmediateRequest extends YTRequest{
 	

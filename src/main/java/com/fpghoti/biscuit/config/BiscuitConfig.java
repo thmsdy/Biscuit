@@ -20,7 +20,7 @@ import com.jcabi.aspects.Async;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message.Attachment;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class BiscuitConfig {
 
@@ -74,7 +74,7 @@ public class BiscuitConfig {
             return;
         }
         File config = new File(biscuit.getConfigDir(), name);
-        a.downloadToFile(config).thenAccept(file -> {
+        a.getProxy().downloadToFile(config).thenAccept(file -> {
             updateConfig(file, true, code);
             MessageText.send(c, "**The config was successfully updated.**");
         }).exceptionally(t -> { 
@@ -82,6 +82,7 @@ public class BiscuitConfig {
             MessageText.send(c, "**An Exception occurred while trying to read the file.**");
             return null;
         });
+        
 
         return;
     }
@@ -135,6 +136,7 @@ public class BiscuitConfig {
 			added = addProperty("Bot-Token", "", prop,  added, silent);
 			added = addProperty("Enable-Music-Bot", "true", prop,  added, silent);
 			added = addProperty("Log-Music-Player", "true", prop,  added, silent);
+			added = addProperty("Powershell-Display-Mode", "false", prop,  added, silent);
 		}
 
 		added = addProperty("Guild-Identifier", name, prop, added, silent);

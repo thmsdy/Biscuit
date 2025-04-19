@@ -28,7 +28,7 @@ public class MoveToCommand extends MusicClientCommand{
 			if(Util.isDigit(args[0]) && Util.isDigit(args[1])) {
 				int oldPlace = Integer.parseInt(args[0]);
 				int newPlace = Integer.parseInt(args[1]);
-				MessageText.send(event.getTextChannel(), "The specified track was moved." );
+				MessageText.send(event.getChannel().asTextChannel(), "The specified track was moved." );
 				b.getAudioScheduler().getQueue().moveToPlace(oldPlace, newPlace);
 			}
 		}

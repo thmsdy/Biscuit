@@ -27,7 +27,7 @@ public class VolumeCommand extends MusicClientCommand{
 		
 		if(args.length < 1) {
 			b.log(event.getAuthor().getName() + " issued a command: -volume");
-			MessageText.send(event.getTextChannel(), "The current volume is: **" + b.getAudioPlayer().getVolume() + "**.");
+			MessageText.send(event.getChannel().asTextChannel(), "The current volume is: **" + b.getAudioPlayer().getVolume() + "**.");
 			return;
 		}
 		
@@ -42,7 +42,7 @@ public class VolumeCommand extends MusicClientCommand{
 					vol = 150;
 				}
 				b.getAudioPlayer().setVolume(vol);
-				MessageText.send(event.getTextChannel(), "The volume was set to **" + b.getAudioPlayer().getVolume() + "**.");
+				MessageText.send(event.getChannel().asTextChannel(), "The volume was set to **" + b.getAudioPlayer().getVolume() + "**.");
 			}
 		}
 	}

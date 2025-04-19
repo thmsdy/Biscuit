@@ -4,7 +4,7 @@ import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.captcha.HandleCaptcha;
 import com.fpghoti.biscuit.logging.BColor;
 
-import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

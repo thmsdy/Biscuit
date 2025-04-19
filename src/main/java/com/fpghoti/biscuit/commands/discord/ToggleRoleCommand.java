@@ -6,8 +6,9 @@ import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ToggleRoleCommand extends ClientCommand{
@@ -38,7 +39,7 @@ public class ToggleRoleCommand extends ClientCommand{
 			}
 
 			if(rolename.equals("")) {
-				MessageText.send(event.getTextChannel(), "Sorry! This role either cannot be toggled or does not exist!");
+				MessageText.send(event.getChannel().asTextChannel(), "Sorry! This role either cannot be toggled or does not exist!");
 				return;
 			}
 
@@ -53,8 +54,8 @@ public class ToggleRoleCommand extends ClientCommand{
 				return;
 			}
 
-			Emote done = null;
-			for(Emote e : event.getGuild().getEmotes()) {
+			Emoji done = null;
+			for(Emoji e : event.getMessage().getMentions().getCustomEmojis()) {
 				if(e.getName().contains(b.getProperties().getDoneEmote())) {
 					done = e;
 				}
@@ -80,7 +81,8 @@ public class ToggleRoleCommand extends ClientCommand{
 					if(foundEmote) {
 						event.getMessage().addReaction(done).queue();
 					}else {
-						event.getMessage().addReaction("✔").queue();
+						//event.getMessage().addReaction("✔").queue();
+						event.getMessage().addReaction(Emoji.fromFormatted("U+2714")).queue();
 					}
 				}
 			}

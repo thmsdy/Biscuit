@@ -32,21 +32,21 @@ public class SaveConfigCommand extends ClientCommand{
 			if(!attch.isEmpty()) {
 				if(attch.size() == 1) {
 					for(Attachment a : attch) {
-						b.getConfig().replaceConfig(a, event.getTextChannel());
+						b.getConfig().replaceConfig(a, event.getChannel().asTextChannel());
 						b.remove();
 						b = Biscuit.loadGuild(event.getGuild());
 					}
 				}else {
-					MessageText.sendTimed(event.getTextChannel(), event.getAuthor().getAsMention() + " Too many attachments added! "
+					MessageText.sendTimed(event.getChannel().asTextChannel(), event.getAuthor().getAsMention() + " Too many attachments added! "
 							+ "Please only include the config file you want to save.", 5);
 				}
 			}else {
-				MessageText.sendTimed(event.getTextChannel(), event.getAuthor().getAsMention() + " You need to send "
+				MessageText.sendTimed(event.getChannel().asTextChannel(), event.getAuthor().getAsMention() + " You need to send "
 						+ "a file in order to save the config.", 5);
 			}
 		}else {
 			b.log(BColor.MAGENTA_BOLD + event.getAuthor().getName() + " lacks permission to save the config!");
-			MessageText.sendTimed(event.getTextChannel(), event.getAuthor().getAsMention() + " You do not have "
+			MessageText.sendTimed(event.getChannel().asTextChannel(), event.getAuthor().getAsMention() + " You do not have "
 					+ "permission to save the config.", 5);
 		}
 	}

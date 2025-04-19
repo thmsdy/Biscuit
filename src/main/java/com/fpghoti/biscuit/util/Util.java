@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class Util {
 	public static int randInt(int min, int max) {

@@ -22,7 +22,7 @@ public class PingCommand extends ClientCommand{
 	public void execute(String[] args, MessageReceivedEvent event) {
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -ping");
-		MessageText.send(event.getTextChannel(), "Pong!");	
+		MessageText.send(event.getChannel().asTextChannel(), "Pong!");	
 	}
 
 }

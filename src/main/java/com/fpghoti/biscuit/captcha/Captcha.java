@@ -17,10 +17,11 @@ import com.github.cage.Cage;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.entities.User;
 
 public class Captcha {
@@ -102,10 +103,11 @@ public class Captcha {
 			genToken();
 			generateImage();
 			File captcha = getImageFile();
+			FileUpload capUpload = FileUpload.fromData(captcha);
 
 			respond("Respond with the exact text in this image.");
-			channel.sendFile(captcha).submit();
-
+			//channel.sendFile(captcha).submit();
+			channel.sendFiles(capUpload);
 		}else {
 			boolean disable = false;
 			if(captchaUser.inTestMode()) {

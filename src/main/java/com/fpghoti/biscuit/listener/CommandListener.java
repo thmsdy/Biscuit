@@ -4,19 +4,19 @@ import java.util.Scanner;
 
 import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.CommandManager;
-import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.fpghoti.biscuit.logging.BiscuitLogger;
 import com.fpghoti.biscuit.util.PermUtil;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class CommandListener extends ListenerAdapter implements Runnable {
 
 	private Scanner sc;
-	private BiscuitLog log;
+	private BiscuitLogger log;
 
-	public CommandListener(Scanner sc, BiscuitLog log) {
+	public CommandListener(Scanner sc, BiscuitLogger log) {
 		this.sc = sc;
 		this.log = log;
 	}
@@ -27,7 +27,7 @@ public class CommandListener extends ListenerAdapter implements Runnable {
 			return;
 		}
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
-		if(PermUtil.isAdmin(event.getMember()) || !b.getProperties().restrictCmdChannels() || (b.getProperties().restrictCmdChannels() && isBotChannel(event.getTextChannel()))) {
+		if(PermUtil.isAdmin(event.getMember()) || !b.getProperties().restrictCmdChannels() || (b.getProperties().restrictCmdChannels() && isBotChannel(event.getChannel().asTextChannel()))) {
 			if(!event.getAuthor().isBot() && event.getMessage().getContentDisplay().startsWith(b.getProperties().getCommandSignifier()) && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()){
 				CommandManager.parse(event.getMessage().getContentRaw().toLowerCase(), event);
 			}

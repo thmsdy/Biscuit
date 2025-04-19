@@ -24,8 +24,8 @@ public class ForceSkipCommand extends MusicClientCommand{
 		Biscuit b = Biscuit.getBiscuit(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -forceskip");
 		if(PermUtil.hasMusicControl(event.getMember())) {
-			MessageText.send(event.getTextChannel(), "Force skipping current song.");
-			b.getAudioScheduler().skip(event.getTextChannel());
+			MessageText.send(event.getChannel().asTextChannel(), "Force skipping current song.");
+			b.getAudioScheduler().skip(event.getChannel().asTextChannel());
 		}
 	}
 

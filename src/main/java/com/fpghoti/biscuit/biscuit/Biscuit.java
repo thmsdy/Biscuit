@@ -13,7 +13,7 @@ import com.fpghoti.biscuit.audio.AudioScheduler;
 import com.fpghoti.biscuit.config.BiscuitConfig;
 import com.fpghoti.biscuit.config.BiscuitProperties;
 import com.fpghoti.biscuit.logging.BColor;
-import com.fpghoti.biscuit.logging.BiscuitLog;
+import com.fpghoti.biscuit.logging.BiscuitLogger;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.timer.BiscuitTimer;
 import com.fpghoti.biscuit.timer.task.ChatCountTimer;
@@ -29,8 +29,10 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+//import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+
 
 public class Biscuit {
 
@@ -77,7 +79,7 @@ public class Biscuit {
 
 	private boolean isMain;
 	private JDA jda;
-	private BiscuitLog logger;
+	private BiscuitLogger logger;
 	private Timer timer;
 	private List<BiscuitTimer> timers;
 	private File captchaDir;
@@ -93,7 +95,7 @@ public class Biscuit {
 	private CopyOnWriteArrayList<PreUser> users = new CopyOnWriteArrayList<PreUser>();
 	private HashMap<Member, Role> rolequeue;
 
-	public Biscuit(JDA jda, Guild guild, BiscuitLog log) {
+	public Biscuit(JDA jda, Guild guild, BiscuitLogger log) {
 		this.jda = jda;
 		this.guild = guild;
 		this.logger = log;

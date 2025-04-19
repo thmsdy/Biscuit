@@ -25,10 +25,10 @@ public class LoopMusicCommand extends MusicClientCommand{
 		b.log(event.getAuthor().getName() + " issued a command: -loopmusic");
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(!b.getAudioScheduler().isLooping()) {
-				MessageText.send(event.getTextChannel(), "Setting all music to loop.");
+				MessageText.send(event.getChannel().asTextChannel(), "Setting all music to loop.");
 				b.getAudioScheduler().setLooping(true);
 			}else {
-				MessageText.send(event.getTextChannel(), "Disabling music looping.");
+				MessageText.send(event.getChannel().asTextChannel(), "Disabling music looping.");
 				b.getAudioScheduler().setLooping(false);
 			}
 
