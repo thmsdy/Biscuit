@@ -32,7 +32,7 @@ public class GetConfigCommand extends ClientCommand{
 			FileUpload confUpload = FileUpload.fromData(config);
 			confUpload.setName("config-" + b.getProperties().getGuildCode() + ".properties");
 			//event.getChannel().sendFile(config, "config-" + b.getProperties().getGuildCode() + ".properties").queue();
-			event.getChannel().asTextChannel().sendFiles(confUpload);
+			event.getChannel().asTextChannel().sendFiles(confUpload).queue();
 		}else {
 			b.log(BColor.MAGENTA_BOLD + event.getAuthor().getName() + " lacks permission to view the config!");
 			MessageText.sendTimed(event.getChannel().asTextChannel(), event.getAuthor().getAsMention() + " You do not have "

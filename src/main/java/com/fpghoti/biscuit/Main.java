@@ -74,6 +74,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
 import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -104,6 +105,7 @@ public class Main {
 
 	private static AudioPlayerManager playerManager;
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args){
 		if(!isPlugin) {
 			pluginsDir = new File("plugins");
@@ -125,7 +127,10 @@ public class Main {
 		log.info("Running version: " + BColor.MAGENTA_BOLD + version);
 
 		playerManager = new DefaultAudioPlayerManager();
-		AudioSourceManagers.registerRemoteSources(playerManager);
+		YoutubeAudioSourceManager ytSourceManager = new dev.lavalink.youtube.YoutubeAudioSourceManager();
+		playerManager.registerSourceManager(ytSourceManager);
+		AudioSourceManagers.registerRemoteSources(playerManager,
+                com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager.class);
 
 		mainBiscuit = new Biscuit(null, null, log);
 		startJDA();
