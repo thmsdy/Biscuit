@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.AudioScheduler;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -29,7 +29,7 @@ public class SkipCommand extends MusicClientCommand{
 	public void execute(String[] args, MessageReceivedEvent event) {
 
 		Guild guild = event.getGuild();
-		Biscuit biscuit = Biscuit.getBiscuit(guild);
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(guild);
 		biscuit.log(event.getAuthor().getName() + " issued a command: -skip");
 
 		TextChannel cmdChannel = event.getChannel().asTextChannel();

@@ -1,6 +1,6 @@
 package com.fpghoti.biscuit.util;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 import com.vdurmont.emoji.EmojiParser;
 
@@ -19,7 +19,7 @@ public class ChatFilter {
 		if(!event.isFromGuild()) {
 			return false;
 		}
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		String msg = event.getMessage().getContentDisplay();
 		
 		//Message removal priority occurs in this order
@@ -73,7 +73,7 @@ public class ChatFilter {
 		return false;
 	}
 
-	public static boolean filter(Biscuit biscuit, String sentence){
+	public static boolean filter(BiscuitGuild biscuit, String sentence){
 		for(String s : sentence.split(" ")){
 			if(filterWord(biscuit, s)){
 				return true;
@@ -82,7 +82,7 @@ public class ChatFilter {
 		return false;
 	}
 
-	public static boolean filterWord(Biscuit biscuit, String word) {
+	public static boolean filterWord(BiscuitGuild biscuit, String word) {
 		String[] match = findMatchPair(biscuit, word);
 		if(match != null) {
 			return true;
@@ -90,7 +90,7 @@ public class ChatFilter {
 		return false;
 	}
 
-	public static String findMatch(Biscuit biscuit, String word) {
+	public static String findMatch(BiscuitGuild biscuit, String word) {
 		String[] match = findMatchPair(biscuit, word);
 		if(match == null || match[0] == null) {
 			return null;
@@ -98,7 +98,7 @@ public class ChatFilter {
 		return match[0];
 	}
 
-	public static String[] findMatchPair(Biscuit biscuit, String word) {
+	public static String[] findMatchPair(BiscuitGuild biscuit, String word) {
 		String cleaned = "";
 		word = word.toLowerCase();
 		if(word.length() >= 2 && word.charAt(word.length() -1) == '!'){

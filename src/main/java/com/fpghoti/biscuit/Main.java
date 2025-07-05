@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import org.fusesource.jansi.AnsiConsole;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.captcha.BCage;
 import com.fpghoti.biscuit.commands.CommandManager;
 import com.fpghoti.biscuit.commands.console.GuildSayCommand;
@@ -43,7 +42,6 @@ import com.fpghoti.biscuit.commands.discord.music.MoveToCommand;
 import com.fpghoti.biscuit.commands.discord.music.NowPlayingCommand;
 import com.fpghoti.biscuit.commands.discord.music.PauseCommand;
 import com.fpghoti.biscuit.commands.discord.music.PlayCommand;
-import com.fpghoti.biscuit.commands.discord.music.PlayFirstCommand;
 import com.fpghoti.biscuit.commands.discord.music.QueueCommand;
 import com.fpghoti.biscuit.commands.discord.music.RemoveCommand;
 import com.fpghoti.biscuit.commands.discord.music.ShuffleCommand;
@@ -52,6 +50,7 @@ import com.fpghoti.biscuit.commands.discord.music.SkipCommand;
 import com.fpghoti.biscuit.commands.discord.music.TogglePauseCommand;
 import com.fpghoti.biscuit.commands.discord.music.UnpauseCommand;
 import com.fpghoti.biscuit.commands.discord.music.VolumeCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.listener.CommandListener;
 import com.fpghoti.biscuit.listener.DMListener;
 import com.fpghoti.biscuit.listener.GuildListener;
@@ -71,7 +70,6 @@ import com.github.cage.Cage;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-
 import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
@@ -93,14 +91,15 @@ public class Main {
 
 	private static final BiscuitLogger log = new BiscuitLogger();
 
-	private static ArrayList<Biscuit> biscuits;
-	private static Biscuit mainBiscuit;
+	private static ArrayList<BiscuitGuild> biscuits;
+	private static BiscuitGuild mainBiscuit;
 	public static Scanner sc;
 	public static boolean ready = false;
 	public static boolean isPlugin =  false;
 	public static boolean shutdownStarted = false;
 	private static Cage cage;
 	private static File pluginsDir;
+	public static File audioDir;
 	private static PluginController pluginController;
 
 	private static AudioPlayerManager playerManager;
@@ -109,11 +108,14 @@ public class Main {
 	public static void main(String[] args){
 		if(!isPlugin) {
 			pluginsDir = new File("plugins");
+			audioDir = new File("audio");
 		}else {
 			pluginsDir = new File(PluginCore.plugin.getDataFolder(), "plugins");
+			audioDir = new File(PluginCore.plugin.getDataFolder(), "audio");
 		}
 		pluginsDir.mkdir();
-		
+		audioDir.mkdir();
+
 		final Properties properties = new Properties();
 		try {
 			properties.load(Main.class.getClassLoader().getResourceAsStream("info.properties"));
@@ -127,14 +129,18 @@ public class Main {
 		log.info("Running version: " + BColor.MAGENTA_BOLD + version);
 
 		playerManager = new DefaultAudioPlayerManager();
+		AudioSourceManagers.registerLocalSource(playerManager);
 		YoutubeAudioSourceManager ytSourceManager = new dev.lavalink.youtube.YoutubeAudioSourceManager();
+		//LocalAudioSourceManager localSourceManager = new LocalAudioSourceManager();
 		playerManager.registerSourceManager(ytSourceManager);
+		//playerManager.registerSourceManager(localSourceManager);
 		AudioSourceManagers.registerRemoteSources(playerManager,
-                com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager.class);
-
-		mainBiscuit = new Biscuit(null, null, log);
-		startJDA();
+				com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager.class);
 		
+
+		mainBiscuit = new BiscuitGuild(null, null, log);
+		startJDA();
+
 		cage = new BCage();
 
 		jda.addEventListener(new GuildListener());
@@ -148,9 +154,9 @@ public class Main {
 		jda.addEventListener(new RoleListener());
 		jda.addEventListener(new NicknameListener());
 		jda.addEventListener(new NameListener());
-		biscuits = new ArrayList<Biscuit>();
+		biscuits = new ArrayList<BiscuitGuild>();
 		for(Guild g : jda.getGuilds()) {
-			Biscuit.loadGuild(g);
+			BiscuitGuild.loadGuild(g);
 		}
 		startCommandListener();
 
@@ -178,11 +184,10 @@ public class Main {
 		CommandManager.addCommand(new SaveConfigCommand());
 		CommandManager.addCommand(new GuildIDCommand());
 		CommandManager.addCommand(new WikiCommand());
-		
+
 		//Music Client
-		
+
 		CommandManager.addCommand(new PlayCommand());
-		CommandManager.addCommand(new PlayFirstCommand());
 		CommandManager.addCommand(new ForceSkipCommand());
 		CommandManager.addCommand(new PauseCommand());
 		CommandManager.addCommand(new UnpauseCommand());
@@ -207,11 +212,11 @@ public class Main {
 		CommandManager.addCommand(new ShutdownConsoleCommand());
 
 		//Plugins
-		
+
 		pluginController = new PluginController();
-	    pluginController.loadPlugins();
-	    pluginController.startPlugins();
-		
+		pluginController.loadPlugins();
+		pluginController.startPlugins();
+
 		link = "https://discord.com/oauth2/authorize?&client_id=" + jda.getSelfUser().getId() + "&permissions=8&scope=bot";
 		log.info("Connection successful!");
 		log.info("Startup successful!");
@@ -245,7 +250,7 @@ public class Main {
 		}
 	}
 
-	public static Biscuit getMainBiscuit() {
+	public static BiscuitGuild getMainBiscuit() {
 		return mainBiscuit;
 	}
 
@@ -261,25 +266,27 @@ public class Main {
 		}
 	}
 
-	public static ArrayList<Biscuit> getBiscuits() {
+	public static ArrayList<BiscuitGuild> getBiscuits() {
 		return biscuits;
 	}
 
 	public static AudioPlayerManager getPlayerManager() {
 		return playerManager;
 	}
-	
+
 	public static File getPluginDirectory() {
 		return pluginsDir;
 	}
+
+	
 
 	public static void shutdown() {
 		if(!shutdownStarted) {
 			shutdownStarted = true;
 			mainBiscuit.log("Shutting down...");
 			pluginController.shutdownPlugins();
-			ArrayList<Biscuit> list = new ArrayList<Biscuit>(biscuits);
-			for(Biscuit b : list) {
+			ArrayList<BiscuitGuild> list = new ArrayList<BiscuitGuild>(biscuits);
+			for(BiscuitGuild b : list) {
 				b.remove();
 			}
 			mainBiscuit.wipeCaptchaDir();
@@ -296,7 +303,7 @@ public class Main {
 	public static JDA getJDA() {
 		return jda;
 	}
-	
+
 	public static Cage getCage() {
 		return cage;
 	}
@@ -304,16 +311,16 @@ public class Main {
 	public static BiscuitLogger getLogger() {
 		return log;
 	}
-	
+
 	public static PluginController getPluginController() {
 		return pluginController;
 	}
 
-	public static void registerBiscuit(Biscuit b) {
+	public static void registerBiscuit(BiscuitGuild b) {
 		biscuits.add(b);
 	}
 
-	public static void unregisterBiscuit(Biscuit b) {
+	public static void unregisterBiscuit(BiscuitGuild b) {
 		biscuits.remove(b);
 	}
 

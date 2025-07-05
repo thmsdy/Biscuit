@@ -3,8 +3,8 @@ package com.fpghoti.biscuit.commands.discord;
 import java.io.File;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
@@ -25,7 +25,7 @@ public class GetConfigCommand extends ClientCommand{
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -getconfig");
 		if(PermUtil.isAdmin(event.getMember())) {
 			File config = b.getConfig().getFile();

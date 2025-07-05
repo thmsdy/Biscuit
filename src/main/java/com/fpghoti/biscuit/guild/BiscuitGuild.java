@@ -1,4 +1,4 @@
-package com.fpghoti.biscuit.biscuit;
+package com.fpghoti.biscuit.guild;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,10 +34,10 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
 
-public class Biscuit {
+public class BiscuitGuild {
 
-	public static Biscuit getBiscuit(Guild g) {
-		for(Biscuit b : Main.getBiscuits()) {
+	public static BiscuitGuild getBiscuitGuild(Guild g) {
+		for(BiscuitGuild b : Main.getBiscuits()) {
 			if(b.getGuild().getId().equals(g.getId())) {
 				return b;
 			}
@@ -45,8 +45,8 @@ public class Biscuit {
 		return null;
 	}
 
-	public static Biscuit getBiscuit(String guildcode) {
-		for(Biscuit b : Main.getBiscuits()) {
+	public static BiscuitGuild getBiscuitGuild(String guildcode) {
+		for(BiscuitGuild b : Main.getBiscuits()) {
 			if(b.getProperties().getGuildCode().equalsIgnoreCase(guildcode)) {
 				return b;
 			}
@@ -58,7 +58,7 @@ public class Biscuit {
 		ArrayList<PreUser> pres = new ArrayList<PreUser>();
 		for(Guild g : Main.getJDA().getGuilds()) {
 			if(g.isMember(u)){
-				Biscuit b = getBiscuit(g);
+				BiscuitGuild b = getBiscuitGuild(g);
 				if(b.preUserExists(u)) {
 					pres.add(b.getPreUser(u));
 				}
@@ -67,8 +67,8 @@ public class Biscuit {
 		return pres;
 	}
 
-	public static Biscuit loadGuild(Guild g) {
-		Biscuit biscuit = new Biscuit(Main.getJDA(), g, Main.getLogger());
+	public static BiscuitGuild loadGuild(Guild g) {
+		BiscuitGuild biscuit = new BiscuitGuild(Main.getJDA(), g, Main.getLogger());
 		biscuit.addTimer(new ChatCountTimer(biscuit));
 		biscuit.addTimer(new SoftMuteTimer(biscuit));
 		biscuit.addTimer(new DecrementTimer(biscuit));
@@ -88,19 +88,19 @@ public class Biscuit {
 	private HashMap<String, Integer> inviteUses;
 	private BiscuitConfig config;
 	private BiscuitProperties properties;
-	private BiscuitMessageStore messageStore;
+	private GuildMessageStore messageStore;
 	private AudioPlayer player;
 	private AudioScheduler scheduler;
 
 	private CopyOnWriteArrayList<PreUser> users = new CopyOnWriteArrayList<PreUser>();
 	private HashMap<Member, Role> rolequeue;
 
-	public Biscuit(JDA jda, Guild guild, BiscuitLogger log) {
+	public BiscuitGuild(JDA jda, Guild guild, BiscuitLogger log) {
 		this.jda = jda;
 		this.guild = guild;
 		this.logger = log;
 		this.isMain = guild == null;
-		this.messageStore = new BiscuitMessageStore(this);
+		this.messageStore = new GuildMessageStore(this);
 		this.config = new BiscuitConfig(this);
 		config.generateConfig();
 		this.properties = new BiscuitProperties(this);
@@ -141,7 +141,7 @@ public class Biscuit {
 		return properties;
 	}
 
-	public BiscuitMessageStore getMessageStore() {
+	public GuildMessageStore getMessageStore() {
 		return messageStore;
 	}
 

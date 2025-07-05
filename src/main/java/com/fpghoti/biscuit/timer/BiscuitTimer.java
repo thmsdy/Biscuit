@@ -2,14 +2,14 @@ package com.fpghoti.biscuit.timer;
 
 import java.util.TimerTask;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 
 public abstract class BiscuitTimer extends TimerTask{
 	
 	protected Long delay;
 	protected Long period;
 	
-	protected Biscuit biscuit;
+	protected BiscuitGuild biscuit;
 	
 	public long getDelay() {
 		if(delay != null) {

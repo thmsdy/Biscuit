@@ -1,6 +1,6 @@
 package com.fpghoti.biscuit.listener;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 
 import net.dv8tion.jda.api.entities.User;
@@ -11,7 +11,7 @@ public class NicknameListener extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberUpdateNickname(GuildMemberUpdateNicknameEvent event) {
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		User user = event.getMember().getUser();
 		String oldNick = "None";
 		String newNick = "None";

@@ -1,7 +1,7 @@
 package com.fpghoti.biscuit.audio.result;
 
 import com.fpghoti.biscuit.audio.request.PlayRequest;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -10,7 +10,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 public abstract class ResultHandler implements AudioLoadResultHandler {
 
-	private Biscuit biscuit;
+	private BiscuitGuild biscuit;
 	private PlayRequest request;
 
 	public PlayRequest getRequest() {
@@ -36,7 +36,7 @@ public abstract class ResultHandler implements AudioLoadResultHandler {
 		MessageText.send(request.getRequestChannel(), "An error was encountered while attempting to load audio.");
 	}
 	
-	public Biscuit getBiscuit() {
+	public BiscuitGuild getBiscuitGuild() {
 		return biscuit;
 	}
 

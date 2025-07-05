@@ -1,6 +1,6 @@
 package com.fpghoti.biscuit.util;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.jcabi.aspects.Async;
 
 import net.dv8tion.jda.api.Permission;
@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Role;
 public class PermUtil {
 
 	public static boolean isAdmin(Member member){
-		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(member.getGuild());
 		if(member.hasPermission(Permission.ADMINISTRATOR)){
 			return true;
 		}else{
@@ -24,7 +24,7 @@ public class PermUtil {
 	}
 
 	public static boolean isMod(Member member){
-		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(member.getGuild());
 		if(isAdmin(member)){
 			return true;
 		}else{
@@ -39,7 +39,7 @@ public class PermUtil {
 	}
 	
 	public static boolean hasMusicControl(Member member){
-		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(member.getGuild());
 		if(isAdmin(member) || isMod(member)){
 			return true;
 		}else{
@@ -74,7 +74,7 @@ public class PermUtil {
 	}
 	
 	public static boolean isBooster(Member member) {
-		Biscuit biscuit = Biscuit.getBiscuit(member.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(member.getGuild());
 		if(isAdmin(member)) {
 			return true;
 		}
@@ -87,12 +87,12 @@ public class PermUtil {
 	}
 	
 	public static boolean isBoosterExclusive(Role r) {
-		Biscuit biscuit = Biscuit.getBiscuit(r.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(r.getGuild());
 		return Util.containsIgnoreCase(biscuit.getProperties().getBoostExclusiveRoles(),r.getName());
 	}
 	
 	public static boolean hasDefaultRole(Member m) {
-		Biscuit biscuit = Biscuit.getBiscuit(m.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(m.getGuild());
 		for(Role r : biscuit.getGuild().getRoles()) {
 			if(r.getName().equalsIgnoreCase(biscuit.getProperties().getDefaultRole())){
 				return hasRole(m,r);
@@ -102,7 +102,7 @@ public class PermUtil {
 	}
 	
 	public static boolean hasRewardRole(Member m) {
-		Biscuit biscuit = Biscuit.getBiscuit(m.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(m.getGuild());
 		for(Role r : biscuit.getGuild().getRoles()) {
 			if(r.getName().equalsIgnoreCase(biscuit.getProperties().getCaptchaReward())){
 				return hasRole(m,r);
@@ -114,7 +114,7 @@ public class PermUtil {
 	@Async
 	public static void clearUndeservedRoles(Member m) {
 		boolean booster = isBooster(m);
-		Biscuit b = Biscuit.getBiscuit(m.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(m.getGuild());
 		for(Role r : m.getRoles()) {
 			if(!booster && isBoosterExclusive(r)) {
 				m.getGuild().removeRoleFromMember(m,r).queue();

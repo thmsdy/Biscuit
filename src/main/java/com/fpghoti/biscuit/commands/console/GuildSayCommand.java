@@ -1,8 +1,8 @@
 package com.fpghoti.biscuit.commands.console;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ConsoleCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -24,7 +24,7 @@ public class GuildSayCommand extends ConsoleCommand{
 	public void execute(String[] args) {
 		if(args.length > 0) {
 			String guildcode = args[0];
-			Biscuit b = Biscuit.getBiscuit(guildcode);
+			BiscuitGuild b = BiscuitGuild.getBiscuitGuild(guildcode);
 			if(b == null) {
 				Main.getMainBiscuit().log("INVALID GUILD! TRY: guildsay <guild-code> <channel-name> <message>");
 				return;

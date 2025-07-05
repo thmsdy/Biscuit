@@ -1,14 +1,14 @@
 package com.fpghoti.biscuit.config;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.util.Util;
 
 public class BiscuitProperties {
     
-    Biscuit biscuit;
+    BiscuitGuild biscuit;
     
-    public BiscuitProperties(Biscuit b) {
+    public BiscuitProperties(BiscuitGuild b) {
         this.biscuit = b;
     }
 

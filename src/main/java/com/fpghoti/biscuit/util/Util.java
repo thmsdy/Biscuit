@@ -2,7 +2,7 @@ package com.fpghoti.biscuit.util;
 
 import java.util.Random;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
@@ -16,7 +16,7 @@ public class Util {
 	}
 
 	public static Boolean isLoggable(TextChannel c) {
-		Biscuit biscuit = Biscuit.getBiscuit(c.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(c.getGuild());
 		Boolean a = true;
 		for(String s: biscuit.getProperties().getDontLogChannels()) {
 			if(c.getName().equalsIgnoreCase(s)) {
@@ -76,6 +76,12 @@ public class Util {
 			second = 2;
 		}
 		return String.format("%02d:%02d:%02d", hour, minute, second - 1);
+	}
+	
+	public static String getLast(String toSplit, String splitBy) {
+		String[] s = toSplit.split(splitBy);
+		String last = s[s.length - 1];
+		return last;
 	}
 
 }

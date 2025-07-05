@@ -1,7 +1,7 @@
 package com.fpghoti.biscuit.user;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.util.PermUtil;
 
 import net.dv8tion.jda.api.entities.Member;
@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.User;
 
 public class PreUser {
 
-	public static PreUser getPreUser(CaptchaUser capUser, Biscuit biscuit) {
+	public static PreUser getPreUser(CaptchaUser capUser, BiscuitGuild biscuit) {
 		if(capUser == null) {
 			Main.getMainBiscuit().error("Cannot get PreUser (Invalid Captcha User).");
 			return null;
@@ -31,9 +31,9 @@ public class PreUser {
 	private int timeLeft;
 	private boolean done;
 	private boolean test;
-	private Biscuit biscuit;
+	private BiscuitGuild biscuit;
 
-	private PreUser(CaptchaUser capUser, Biscuit biscuit, boolean test) {
+	private PreUser(CaptchaUser capUser, BiscuitGuild biscuit, boolean test) {
 		this.test = test;
 		this.capUser = capUser;
 		this.user = capUser.getUser();
@@ -45,7 +45,7 @@ public class PreUser {
 		}
 	}
 
-	public Biscuit getBiscuit() {
+	public BiscuitGuild getBiscuitGuild() {
 		return biscuit;
 	}
 

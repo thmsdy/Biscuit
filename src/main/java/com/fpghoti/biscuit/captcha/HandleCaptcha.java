@@ -1,7 +1,7 @@
 package com.fpghoti.biscuit.captcha;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.user.CaptchaUser;
 import com.fpghoti.biscuit.util.PermUtil;
 
@@ -35,7 +35,7 @@ public class HandleCaptcha {
 	}
 	
 	public static Boolean isCaptchaChannel(TextChannel c) {
-		Biscuit biscuit = Biscuit.getBiscuit(c.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(c.getGuild());
 		Boolean a = true;
 		for(String s: biscuit.getProperties().getCaptchaChannels()) {
 			if(c.getName().equalsIgnoreCase(s)) {

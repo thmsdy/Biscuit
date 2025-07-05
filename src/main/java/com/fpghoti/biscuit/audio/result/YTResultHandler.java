@@ -5,7 +5,7 @@ import com.fpghoti.biscuit.audio.AudioScheduler;
 import com.fpghoti.biscuit.audio.request.PlayRequest;
 import com.fpghoti.biscuit.audio.request.youtube.YTPriorityRequest;
 import com.fpghoti.biscuit.audio.request.youtube.YTRequest;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -13,12 +13,12 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 public class YTResultHandler extends ResultHandler {
 
-	private Biscuit biscuit;
+	private BiscuitGuild biscuit;
 	private YTRequest request;
 
 	public YTResultHandler(YTRequest request) {
 		this.request = request;
-		this.biscuit = request.getBiscuit();
+		this.biscuit = request.getBiscuitGuild();
 	}
 
 	public PlayRequest getRequest() {

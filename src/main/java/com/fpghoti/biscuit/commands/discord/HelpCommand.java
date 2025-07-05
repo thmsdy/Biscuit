@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.BaseCommand;
 import com.fpghoti.biscuit.commands.CommandManager;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.commands.base.CustomCommand;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.Util;
 
@@ -29,7 +29,7 @@ public class HelpCommand extends ClientCommand {
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
 
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 
 		int pg = 1;
 		if (args.length > 0) {

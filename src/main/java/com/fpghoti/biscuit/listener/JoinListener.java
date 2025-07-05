@@ -2,7 +2,7 @@ package com.fpghoti.biscuit.listener;
 
 import java.util.HashMap;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.user.CaptchaUser;
 import com.fpghoti.biscuit.user.PreUser;
@@ -19,7 +19,7 @@ public class JoinListener extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		User user = event.getMember().getUser();
 		biscuit.log(BColor.YELLOW_BOLD + "USER JOINED: " + user.getName() + " " + user.getAsMention());
 		biscuit.eventLog("**User Joined:** ``" + user.getName() + "`` " + user.getAsMention());
@@ -54,7 +54,7 @@ public class JoinListener extends ListenerAdapter {
 	}
 
 	@Async
-	private void logUserInvite(final User user, final Biscuit b){
+	private void logUserInvite(final User user, final BiscuitGuild b){
 		Guild g = b.getGuild();
 		g.retrieveInvites().queue(invs -> {
 			String usedInv = "Other";

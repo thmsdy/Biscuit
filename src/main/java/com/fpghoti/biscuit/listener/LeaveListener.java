@@ -1,6 +1,6 @@
 package com.fpghoti.biscuit.listener;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.user.PreUser;
 
@@ -12,7 +12,7 @@ public class LeaveListener extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		User user = event.getMember().getUser();
 		PreUser u = biscuit.getPreUser(user);
 		int time = 1;

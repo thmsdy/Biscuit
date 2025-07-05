@@ -1,8 +1,8 @@
 package com.fpghoti.biscuit.commands.discord.music;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -20,7 +20,7 @@ public class ShuffleCommand extends MusicClientCommand{
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -shuffle");
 		if(b.getAudioScheduler().getQueue().getLastTrack() != null ) {
 			b.getAudioScheduler().getQueue().shuffleUserTracks(event.getAuthor().getId());

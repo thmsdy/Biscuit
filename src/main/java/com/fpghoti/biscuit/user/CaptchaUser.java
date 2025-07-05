@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.captcha.Captcha;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -118,14 +118,14 @@ public class CaptchaUser implements Iterable<PreUser>{
 			return false;
 		}
 		for(PreUser u : preUsers) {
-			if(u.getBiscuit().getGuild().getId().equals(g.getId())) {
+			if(u.getBiscuitGuild().getGuild().getId().equals(g.getId())) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public boolean contains(Biscuit b) {
+	public boolean contains(BiscuitGuild b) {
 		return contains(b.getGuild());
 	}
 	
@@ -167,10 +167,10 @@ public class CaptchaUser implements Iterable<PreUser>{
 	}
 
 	public void add(PreUser u) {
-		if(u.getBiscuit() == null || u.getBiscuit().getGuild() == null) {
+		if(u.getBiscuitGuild() == null || u.getBiscuitGuild().getGuild() == null) {
 			return;
 		}
-		if(contains(u.getBiscuit())) {
+		if(contains(u.getBiscuitGuild())) {
 			return;
 		}
 		preUsers.add(u);
@@ -190,14 +190,14 @@ public class CaptchaUser implements Iterable<PreUser>{
 			return null;
 		}
 		for(PreUser u : preUsers) {
-			if(u.getBiscuit().getGuild().getId().equals(g.getId())) {
+			if(u.getBiscuitGuild().getGuild().getId().equals(g.getId())) {
 				return u;
 			}
 		}
 		return null;
 	}
 
-	public PreUser get(Biscuit b) {
+	public PreUser get(BiscuitGuild b) {
 		return get(b.getGuild());
 	}
 

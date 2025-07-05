@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
 import com.fpghoti.biscuit.commands.base.ConsoleCommand;
 import com.fpghoti.biscuit.commands.base.CustomCommand;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
@@ -20,7 +20,7 @@ public class CommandManager {
 	private static List<BaseCommand> commands = new ArrayList<BaseCommand>();
 
 	public static void parse(String message, MessageReceivedEvent event){
-		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		ArrayList<String> split = new ArrayList<String>();
 		String fixed = message.replaceFirst(b.getProperties().getCommandSignifier(), "");
 		String[] splitMsg = fixed.split(" ");
@@ -40,10 +40,10 @@ public class CommandManager {
 	}
 
 	public static boolean dispatch(MessageReceivedEvent event, String label, String[] args) {
-		Biscuit b = Main.getMainBiscuit();
+		BiscuitGuild b = Main.getMainBiscuit();
 		boolean isMain = true;
 		if(event != null) {
-			b = Biscuit.getBiscuit(event.getGuild());
+			b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 			isMain = false;
 			if(Util.contains(b.getProperties().disabledCommands(), label)) {
 				return false;

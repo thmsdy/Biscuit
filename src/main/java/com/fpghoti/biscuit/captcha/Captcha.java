@@ -8,7 +8,7 @@ import java.io.OutputStream;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.PluginCore;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.user.CaptchaUser;
@@ -170,7 +170,7 @@ public class Captcha {
 			//mark the PreUser as "done"
 			p.setDone();			
 
-			Biscuit biscuit = p.getBiscuit();
+			BiscuitGuild biscuit = p.getBiscuitGuild();
 
 			if(biscuit == null) {
 				Main.getMainBiscuit().error("CAPTCHA ERROR: Null Biscuit");

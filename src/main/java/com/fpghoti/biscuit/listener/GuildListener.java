@@ -1,6 +1,6 @@
 package com.fpghoti.biscuit.listener;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -35,7 +35,7 @@ public class GuildListener extends ListenerAdapter {
 
 	private void loadGuild(GenericGuildEvent event) {
 		Guild g = event.getGuild();
-		Biscuit biscuit = Biscuit.loadGuild(g);
+		BiscuitGuild biscuit = BiscuitGuild.loadGuild(g);
 		biscuit.log(BColor.CYAN_BOLD + "---- Joined new Guild! ----");
 		biscuit.log(BColor.CYAN_BOLD + "Name: " + BColor.WHITE + g.getName());
 		biscuit.log(BColor.CYAN_BOLD + "Id: "  + BColor.WHITE +  g.getId());
@@ -44,7 +44,7 @@ public class GuildListener extends ListenerAdapter {
 	
 	private void unloadGuild(GenericGuildEvent event) {
 		Guild g = event.getGuild();
-		Biscuit biscuit = Biscuit.getBiscuit(g);
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(g);
 		biscuit.remove();
 	}
 	

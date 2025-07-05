@@ -3,7 +3,7 @@ package com.fpghoti.biscuit.rest;
 import java.util.concurrent.TimeUnit;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
@@ -17,7 +17,7 @@ public class MessageText {
 			Main.getMainBiscuit().error("Message could not be sent to null channel: " + message);
 			return;
 		}
-		final Biscuit b = Biscuit.getBiscuit(c.getGuild());
+		final BiscuitGuild b = BiscuitGuild.getBiscuitGuild(c.getGuild());
 		c.sendMessage(message).submit().whenComplete((msg, error) -> {
 			if(error != null) {
 				b.warn("Message did not send: " + message);
@@ -44,7 +44,7 @@ public class MessageText {
 			Main.getMainBiscuit().error("Message embed could not be sent to null channel: " + message);
 			return;
 		}
-		final Biscuit b = Biscuit.getBiscuit(c.getGuild());
+		final BiscuitGuild b = BiscuitGuild.getBiscuitGuild(c.getGuild());
 		c.sendMessageEmbeds(message).submit().whenComplete((msg, error) -> {
 			if(error != null) {
 				b.warn("Message embed did not send: " + message);
@@ -58,7 +58,7 @@ public class MessageText {
 			Main.getMainBiscuit().error("Timed message could not be sent to null channel - Time: " + seconds + " Text: " + message);
 			return;
 		}
-		final Biscuit b = Biscuit.getBiscuit(c.getGuild());
+		final BiscuitGuild b = BiscuitGuild.getBiscuitGuild(c.getGuild());
 		c.sendMessage(message).submit()
 		.whenComplete((msg, error) -> {
 			if(error != null) {
@@ -79,7 +79,7 @@ public class MessageText {
 			Main.getMainBiscuit().error("Timed message embed could not be sent to null channel - Time: " + seconds + " Text: " + message);
 			return;
 		}
-		final Biscuit b = Biscuit.getBiscuit(c.getGuild());
+		final BiscuitGuild b = BiscuitGuild.getBiscuitGuild(c.getGuild());
 		c.sendMessageEmbeds(message).submit()
 		.whenComplete((msg, error) -> {
 			if(error != null) {

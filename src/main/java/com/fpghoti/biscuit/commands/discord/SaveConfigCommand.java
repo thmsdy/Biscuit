@@ -3,8 +3,8 @@ package com.fpghoti.biscuit.commands.discord;
 import java.util.List;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
@@ -25,7 +25,7 @@ public class SaveConfigCommand extends ClientCommand{
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -saveconfig");
 		List<Attachment> attch = event.getMessage().getAttachments();
 		if(PermUtil.isAdmin(event.getMember())) {
@@ -34,7 +34,7 @@ public class SaveConfigCommand extends ClientCommand{
 					for(Attachment a : attch) {
 						b.getConfig().replaceConfig(a, event.getChannel().asTextChannel());
 						b.remove();
-						b = Biscuit.loadGuild(event.getGuild());
+						b = BiscuitGuild.loadGuild(event.getGuild());
 					}
 				}else {
 					MessageText.sendTimed(event.getChannel().asTextChannel(), event.getAuthor().getAsMention() + " Too many attachments added! "

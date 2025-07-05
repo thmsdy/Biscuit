@@ -1,7 +1,7 @@
 package com.fpghoti.biscuit.listener;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -17,7 +17,7 @@ public class NameListener extends ListenerAdapter {
 		Main.getMainBiscuit().log(BColor.CYAN_BOLD + "User " + user.getName() + " " + user.getAsMention() + " changed username from " +
 				event.getOldName() + " to " + event.getNewName() + ".");
 		for(Guild guild : user.getMutualGuilds()) {
-			Biscuit biscuit = Biscuit.getBiscuit(guild);
+			BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(guild);
 			biscuit.eventLog("**Username changed:** ``" + user.getName() + "`` " + user.getAsMention() + " - From ``" + 
 			event.getOldName() + "`` to ``" + event.getNewName() + "``");
 		}

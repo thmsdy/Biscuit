@@ -1,8 +1,8 @@
 package com.fpghoti.biscuit.commands.discord;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
@@ -30,7 +30,7 @@ public class MakeInviteCommand extends ClientCommand{
 			doubAge = Double.parseDouble(args[1]) * 3600;
 		}
 		int maxAge = (int)Math.round(doubAge);
-		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -makeinvite " + args[0]);
 		if((PermUtil.isAdmin(event.getMember()))) {
 			Guild g = event.getGuild();

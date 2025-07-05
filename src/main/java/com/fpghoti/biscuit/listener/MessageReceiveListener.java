@@ -1,8 +1,8 @@
 package com.fpghoti.biscuit.listener;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
-import com.fpghoti.biscuit.biscuit.BiscuitMessageStore;
 import com.fpghoti.biscuit.captcha.HandleCaptcha;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
+import com.fpghoti.biscuit.guild.GuildMessageStore;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.ChatFilter;
@@ -24,7 +24,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 		if(!event.isFromGuild()) {
 			return;
 		}
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		if(event.getAuthor().isBot()) {
 			logBot(event, biscuit);
 			return;
@@ -48,7 +48,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 		
 	}
 
-	private void logBot(MessageReceivedEvent event, Biscuit biscuit) {
+	private void logBot(MessageReceivedEvent event, BiscuitGuild biscuit) {
 		if(Util.isLoggable(event.getChannel().asTextChannel())) {
 			if(biscuit.getProperties().logChat()) {
 				biscuit.log("[" + BColor.BLACK_BOLD + "BOT" + BColor.RESET + "] [" + BColor.RED + "#" + event.getChannel().getName() + BColor.RESET + "] " 
@@ -57,7 +57,7 @@ public class MessageReceiveListener extends ListenerAdapter{
 		}
 	}
 
-	private void logUser(MessageReceivedEvent event, Biscuit biscuit) {
+	private void logUser(MessageReceivedEvent event, BiscuitGuild biscuit) {
 		if(Util.isLoggable(event.getChannel().asTextChannel())) {
 			if(biscuit.getProperties().logChat()) {
 				biscuit.log("[" + BColor.CYAN_BOLD + "MSG" + BColor.RESET + "] " + BColor.GREEN + "ID: " + BColor.RESET +
@@ -90,9 +90,9 @@ public class MessageReceiveListener extends ListenerAdapter{
 		return false;
 	}
 
-	private boolean handleSpammer(MessageReceivedEvent event, Biscuit biscuit) {
+	private boolean handleSpammer(MessageReceivedEvent event, BiscuitGuild biscuit) {
 		//TODO make numbers configurable
-		BiscuitMessageStore store = biscuit.getMessageStore();
+		GuildMessageStore store = biscuit.getMessageStore();
 		String mention = event.getAuthor().getAsMention();
 		if(store.isSpammer(event.getAuthor())){
 			//User is a spammer but has not sent a message during
@@ -112,9 +112,9 @@ public class MessageReceiveListener extends ListenerAdapter{
 		return false;
 	}
 
-	private boolean handleSoftmuted(MessageReceivedEvent event, Biscuit biscuit) {
+	private boolean handleSoftmuted(MessageReceivedEvent event, BiscuitGuild biscuit) {
 		//TODO make numbers configurable
-		BiscuitMessageStore store = biscuit.getMessageStore();
+		GuildMessageStore store = biscuit.getMessageStore();
 		String mention = event.getAuthor().getAsMention();
 		if(store.isSoftmuted(event.getAuthor())){
 			//User is softmuted but has not sent a message during
@@ -134,8 +134,8 @@ public class MessageReceiveListener extends ListenerAdapter{
 		return false;
 	}
 
-	private void checkNewSpammer(MessageReceivedEvent event, Biscuit biscuit) {
-		BiscuitMessageStore store = biscuit.getMessageStore();
+	private void checkNewSpammer(MessageReceivedEvent event, BiscuitGuild biscuit) {
+		GuildMessageStore store = biscuit.getMessageStore();
 		String mention = event.getAuthor().getAsMention();
 
 		if(!store.hasMessageCount(event.getAuthor())) {

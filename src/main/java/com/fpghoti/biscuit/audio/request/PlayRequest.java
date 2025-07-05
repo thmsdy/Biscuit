@@ -1,11 +1,13 @@
 package com.fpghoti.biscuit.audio.request;
 
+import com.fpghoti.biscuit.audio.request.file.FilePriorityRequest;
+import com.fpghoti.biscuit.audio.request.file.FileRequest;
 import com.fpghoti.biscuit.audio.request.soundcloud.SCPriorityRequest;
 import com.fpghoti.biscuit.audio.request.soundcloud.SCRequest;
 import com.fpghoti.biscuit.audio.request.youtube.YTImmediateRequest;
 import com.fpghoti.biscuit.audio.request.youtube.YTPriorityRequest;
 import com.fpghoti.biscuit.audio.request.youtube.YTRequest;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -47,13 +49,17 @@ public abstract class PlayRequest {
 				return new SCRequest(message, searchPhrase);
 			case SOUNDCLOUD_PRIORITY:
 				return new SCPriorityRequest(message, searchPhrase, insertSlot);
+			case FILE:
+				return new FileRequest(message, searchPhrase);
+			case FILE_PRIORITY:
+				return new FilePriorityRequest(message, searchPhrase, insertSlot);
 			default:
 				return null;
 		}	
 	}
 	
 	private TextChannel channel;
-	private Biscuit biscuit;
+	private BiscuitGuild biscuit;
 	private String authorId;
 	private String identifier;
 	
@@ -65,14 +71,14 @@ public abstract class PlayRequest {
 		this.channel = channel;
 		this.authorId = authorId;
 		this.identifier = identifier;
-		this.biscuit = Biscuit.getBiscuit(channel.getGuild());
+		this.biscuit = BiscuitGuild.getBiscuitGuild(channel.getGuild());
 	}
 	
 	public TextChannel getRequestChannel() {
 		return channel;
 	}
 	
-	public Biscuit getBiscuit() {
+	public BiscuitGuild getBiscuitGuild() {
 		return biscuit;
 	}
 	

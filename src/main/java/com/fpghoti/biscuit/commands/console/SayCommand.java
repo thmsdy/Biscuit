@@ -1,8 +1,8 @@
 package com.fpghoti.biscuit.commands.console;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.ConsoleCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 
 import net.dv8tion.jda.api.entities.Guild;
@@ -24,7 +24,7 @@ public class SayCommand extends ConsoleCommand{
 	}
 
 	public void execute(String[] args) {
-		Biscuit b = Main.getMainBiscuit();
+		BiscuitGuild b = Main.getMainBiscuit();
 		if(args.length > 0) {
 			String target = args[0];
 			String message = "";

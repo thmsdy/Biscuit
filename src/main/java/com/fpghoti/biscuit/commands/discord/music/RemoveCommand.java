@@ -1,8 +1,8 @@
 package com.fpghoti.biscuit.commands.discord.music;
 
 import com.fpghoti.biscuit.Main;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
@@ -22,7 +22,7 @@ public class RemoveCommand extends MusicClientCommand{
 
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
-		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		b.log(event.getAuthor().getName() + " issued a command: -remove " + args[0]);
 		if(PermUtil.hasMusicControl(event.getMember())) {
 			if(Util.isDigit(args[0])) {

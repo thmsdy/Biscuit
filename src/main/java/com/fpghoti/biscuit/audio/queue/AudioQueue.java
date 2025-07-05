@@ -53,7 +53,7 @@ public class AudioQueue {
 		QueuedTrack next = tracks.iterator().next();
 		tracks.remove(next);
 		addPreviousTrack(next);
-		next.getBiscuit().getAudioPlayer().playTrack(next.getTrack());
+		next.getBiscuitGuild().getAudioPlayer().playTrack(next.getTrack());
 	}
 
 	public QueuedTrack getTrack(int index){

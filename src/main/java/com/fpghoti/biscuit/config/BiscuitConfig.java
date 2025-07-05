@@ -14,7 +14,7 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.PropertiesConfigurationLayout;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.jcabi.aspects.Async;
 
@@ -24,9 +24,9 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class BiscuitConfig {
 
-	private Biscuit biscuit;
+	private BiscuitGuild biscuit;
 
-	public BiscuitConfig(Biscuit b) {
+	public BiscuitConfig(BiscuitGuild b) {
 		this.biscuit = b;
 	}
 

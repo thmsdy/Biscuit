@@ -3,8 +3,8 @@ package com.fpghoti.biscuit.commands.discord.music;
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.audio.queue.AudioQueue;
 import com.fpghoti.biscuit.audio.queue.QueuedTrack;
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.base.MusicClientCommand;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.fpghoti.biscuit.util.Util;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -26,7 +26,7 @@ public class QueueCommand extends MusicClientCommand{
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event) {
 
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		biscuit.log(event.getAuthor().getName() + " issued a command: -queue");
 		int pg = 1;
 		if (args.length > 0) {

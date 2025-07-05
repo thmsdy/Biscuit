@@ -9,7 +9,7 @@ import com.fpghoti.biscuit.audio.request.RequestType;
 import com.fpghoti.biscuit.audio.request.youtube.YTImmediateRequest;
 import com.fpghoti.biscuit.audio.request.youtube.YTRequest;
 import com.fpghoti.biscuit.audio.result.YTResultHandler;
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.rest.MessageText;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -22,12 +22,12 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class AudioScheduler extends AudioEventAdapter {
 
-	private Biscuit biscuit;
+	private BiscuitGuild biscuit;
 	private AudioQueue queue;
 	private ArrayList<String> skips;
 	private boolean loop;
 
-	public AudioScheduler(Biscuit biscuit) {
+	public AudioScheduler(BiscuitGuild biscuit) {
 		this.biscuit = biscuit;
 		this.queue = new AudioQueue();
 		this.skips = new ArrayList<String>();
@@ -119,6 +119,9 @@ public class AudioScheduler extends AudioEventAdapter {
 
 	public void queue(RequestType type, AudioTrack track, String uid, TextChannel channel, Integer place) {
 		if(queue.isEmpty() && biscuit.getAudioPlayer().getPlayingTrack() == null) {
+			if(place == null) {
+				place = 0;
+			}
 			QueuedTrack qt = new QueuedTrack(biscuit, track, uid, channel, type);
 			queue.sendQueueMessage(qt);
 			queue.addPreviousTrack(qt);
@@ -191,7 +194,7 @@ public class AudioScheduler extends AudioEventAdapter {
 		queue.clear();
 	}
 
-	public Biscuit getBiscuit() {
+	public BiscuitGuild getBiscuitGuild() {
 		return biscuit;
 	}
 

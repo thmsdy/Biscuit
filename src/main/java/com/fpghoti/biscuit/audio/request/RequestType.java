@@ -31,6 +31,18 @@ public enum RequestType {
         public String toString() {
             return "Soundcloud - Priority";
         }
+    },
+	FILE{
+        @Override
+        public String toString() {
+            return "File";
+        }
+    },
+	FILE_PRIORITY{
+        @Override
+        public String toString() {
+            return "File - Priority";
+        }
     };
 
 }

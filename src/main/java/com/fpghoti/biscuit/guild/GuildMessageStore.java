@@ -1,13 +1,13 @@
-package com.fpghoti.biscuit.biscuit;
+package com.fpghoti.biscuit.guild;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.dv8tion.jda.api.entities.User;
 
-public class BiscuitMessageStore {
+public class GuildMessageStore {
 
-	Biscuit biscuit;
+	BiscuitGuild biscuit;
 	private HashMap<User, Integer> messageCounts = new HashMap<>();
 	private HashMap<User, Integer> messagesTenSeconds = new HashMap<>();
 	private HashMap<User, Integer> messagesTwoMin = new HashMap<>();
@@ -16,7 +16,7 @@ public class BiscuitMessageStore {
 	private ArrayList<User> spamWarned = new ArrayList<User>();
 	private ArrayList<User> softmuted = new ArrayList<User>();
 	
-	public BiscuitMessageStore(Biscuit b) {
+	public GuildMessageStore(BiscuitGuild b) {
 		this.biscuit = b;
 	}
 	

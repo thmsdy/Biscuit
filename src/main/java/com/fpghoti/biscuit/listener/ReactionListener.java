@@ -1,6 +1,6 @@
 package com.fpghoti.biscuit.listener;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.util.PermUtil;
 import com.fpghoti.biscuit.util.Util;
@@ -17,7 +17,7 @@ public class ReactionListener extends ListenerAdapter{
 
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event){
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		if(event.getGuild() == null) {
 			return;
 		}
@@ -28,7 +28,7 @@ public class ReactionListener extends ListenerAdapter{
 
 	@Override
 	public void onMessageReactionRemove(MessageReactionRemoveEvent event){
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		if(event.getGuild() == null) {
 			return;
 		}
@@ -38,7 +38,7 @@ public class ReactionListener extends ListenerAdapter{
 	}
 
 	private void handleMessageRole(GenericMessageReactionEvent event, boolean remove) {
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		event.getChannel().asTextChannel().retrieveMessageById(event.getMessageId()).queue((message) -> {
 			String msg = message.getContentDisplay();
 			for(String rolename : biscuit.getProperties().getToggleRoles()) {
@@ -57,7 +57,7 @@ public class ReactionListener extends ListenerAdapter{
 	}
 
 	private void toggleRole(Role role, GenericMessageReactionEvent event, boolean remove) {
-		Biscuit biscuit = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild biscuit = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		Guild guild = event.getGuild();
 		if(role == null) {
 			return;

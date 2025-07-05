@@ -2,8 +2,8 @@ package com.fpghoti.biscuit.listener;
 
 import java.util.Scanner;
 
-import com.fpghoti.biscuit.biscuit.Biscuit;
 import com.fpghoti.biscuit.commands.CommandManager;
+import com.fpghoti.biscuit.guild.BiscuitGuild;
 import com.fpghoti.biscuit.logging.BiscuitLogger;
 import com.fpghoti.biscuit.util.PermUtil;
 
@@ -26,7 +26,7 @@ public class CommandListener extends ListenerAdapter implements Runnable {
 		if(!event.isFromGuild()) {
 			return;
 		}
-		Biscuit b = Biscuit.getBiscuit(event.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(event.getGuild());
 		if(PermUtil.isAdmin(event.getMember()) || !b.getProperties().restrictCmdChannels() || (b.getProperties().restrictCmdChannels() && isBotChannel(event.getChannel().asTextChannel()))) {
 			if(!event.getAuthor().isBot() && event.getMessage().getContentDisplay().startsWith(b.getProperties().getCommandSignifier()) && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()){
 				CommandManager.parse(event.getMessage().getContentRaw().toLowerCase(), event);
@@ -35,7 +35,7 @@ public class CommandListener extends ListenerAdapter implements Runnable {
 	}
 
 	private boolean isBotChannel(TextChannel c) {
-		Biscuit b = Biscuit.getBiscuit(c.getGuild());
+		BiscuitGuild b = BiscuitGuild.getBiscuitGuild(c.getGuild());
 		for(String s : b.getProperties().getCmdChannels()) {
 			if(s.equals(c.getName())) {
 				return true;
