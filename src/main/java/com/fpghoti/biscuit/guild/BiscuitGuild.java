@@ -164,7 +164,7 @@ public class BiscuitGuild {
 				}
 			};
 			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-			scheduler.scheduleAtFixedRate(post, 0, 1, TimeUnit.MINUTES);
+			scheduler.scheduleAtFixedRate(post, 0, 10, TimeUnit.MINUTES);
 		}
 	}
 
