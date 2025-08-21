@@ -152,7 +152,7 @@ public class BiscuitConfig {
 
 		//Add properties to appear in both types of configs here
 		added = addProperty("ChatLog", "true", prop, added, silent);
-		added = addProperty("AllowSpamPunish", "true", prop,  added, silent);
+		added = addProperty("AllowSpamPunish", "false", prop,  added, silent);
 		added = addProperty("Channels-To-Not-Chatlog", "ignore_me,ignore_me2,ignore_me3", prop,  added, silent);
 		added = addProperty("NaughtyList", "piff,word123,another1", prop,  added, silent);
 		added = addProperty("Restrict-Cmd-Channels", "false", prop,  added, silent);

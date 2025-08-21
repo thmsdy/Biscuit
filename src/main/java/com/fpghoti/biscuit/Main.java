@@ -14,6 +14,7 @@ import com.fpghoti.biscuit.commands.console.GuildSayCommand;
 import com.fpghoti.biscuit.commands.console.SayCommand;
 import com.fpghoti.biscuit.commands.console.ShutdownConsoleCommand;
 import com.fpghoti.biscuit.commands.discord.AddCommand;
+import com.fpghoti.biscuit.commands.discord.AddYTFeedCommand;
 import com.fpghoti.biscuit.commands.discord.ChanIDCommand;
 import com.fpghoti.biscuit.commands.discord.DivideCommand;
 import com.fpghoti.biscuit.commands.discord.GetConfigCommand;
@@ -100,6 +101,7 @@ public class Main {
 	private static Cage cage;
 	private static File pluginsDir;
 	public static File audioDir;
+	//public static File ytFeedDir;
 	private static PluginController pluginController;
 
 	private static AudioPlayerManager playerManager;
@@ -131,9 +133,7 @@ public class Main {
 		playerManager = new DefaultAudioPlayerManager();
 		AudioSourceManagers.registerLocalSource(playerManager);
 		YoutubeAudioSourceManager ytSourceManager = new dev.lavalink.youtube.YoutubeAudioSourceManager();
-		//LocalAudioSourceManager localSourceManager = new LocalAudioSourceManager();
 		playerManager.registerSourceManager(ytSourceManager);
-		//playerManager.registerSourceManager(localSourceManager);
 		AudioSourceManagers.registerRemoteSources(playerManager,
 				com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager.class);
 		
@@ -175,6 +175,7 @@ public class Main {
 		CommandManager.addCommand(new ToggleRoleCommand());
 		CommandManager.addCommand(new SquareRootCommand());
 		CommandManager.addCommand(new AddCommand());
+		CommandManager.addCommand(new AddYTFeedCommand());
 		CommandManager.addCommand(new SubtractCommand());
 		CommandManager.addCommand(new MultiplyCommand());
 		CommandManager.addCommand(new DivideCommand());

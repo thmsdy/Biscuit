@@ -1,11 +1,18 @@
 package com.fpghoti.biscuit.guild;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.fpghoti.biscuit.Main;
 import com.fpghoti.biscuit.PluginCore;
@@ -15,6 +22,8 @@ import com.fpghoti.biscuit.config.BiscuitProperties;
 import com.fpghoti.biscuit.logging.BColor;
 import com.fpghoti.biscuit.logging.BiscuitLogger;
 import com.fpghoti.biscuit.rest.MessageText;
+import com.fpghoti.biscuit.rss.YTFeed;
+import com.fpghoti.biscuit.rss.YTFeedConfig;
 import com.fpghoti.biscuit.timer.BiscuitTimer;
 import com.fpghoti.biscuit.timer.task.ChatCountTimer;
 import com.fpghoti.biscuit.timer.task.DecrementTimer;
@@ -29,7 +38,6 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-//import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
@@ -83,9 +91,11 @@ public class BiscuitGuild {
 	private Timer timer;
 	private List<BiscuitTimer> timers;
 	private File captchaDir;
+	private File ytFeedDir;
 	//private Cage cage;
 	private Guild guild;
 	private HashMap<String, Integer> inviteUses;
+	private HashMap<String, YTFeedConfig> ytfeeds;
 	private BiscuitConfig config;
 	private BiscuitProperties properties;
 	private GuildMessageStore messageStore;
@@ -106,6 +116,7 @@ public class BiscuitGuild {
 		this.properties = new BiscuitProperties(this);
 		this.rolequeue = new HashMap<Member, Role>();
 		this.player = Main.getPlayerManager().createPlayer();
+		this.ytfeeds = new HashMap<String, YTFeedConfig>();
 
 		scheduler = new AudioScheduler(this);
 		player.addListener(scheduler);
@@ -115,9 +126,19 @@ public class BiscuitGuild {
 		if(!Main.isPlugin) {
 			captchaDir = new File("captcha");
 			captchaDir.mkdir();
+			if(guild != null) {
+				File f = new File("ytchannels");
+				f.mkdir();
+				ytFeedDir = new File(f, guild.getId());
+				ytFeedDir.mkdir();
+			}
 		}else {
 			captchaDir = new File(PluginCore.plugin.getDataFolder(), "captcha");
 			captchaDir.mkdir();
+			if(guild != null) {
+				ytFeedDir = new File(PluginCore.plugin.getDataFolder(), "ytchannels\\" + guild.getId());
+				ytFeedDir.mkdirs();
+			}
 		}	
 		if(isMain) {
 			wipeCaptchaDir();
@@ -130,6 +151,20 @@ public class BiscuitGuild {
 					indexInvites(invs);
 				});
 			}
+		}
+
+		if(guild != null) {
+			loadYoutubeFeeds();
+			Runnable post = () -> {
+				try {
+					log("Updating Youtube feeds...");
+					postYoutubeFeeds();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			};
+			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+			scheduler.scheduleAtFixedRate(post, 0, 1, TimeUnit.MINUTES);
 		}
 	}
 
@@ -159,6 +194,87 @@ public class BiscuitGuild {
 
 	public AudioScheduler getAudioScheduler() {
 		return scheduler;
+	}
+
+	public YTFeedConfig loadYouTubeFeedConfig(String alias) {
+		alias = alias.toLowerCase();
+		String channelID = "null";
+		String youTubeChannelURL = "null";
+		String message = "null";
+		String lastVideo = "null";
+
+		Properties prop = new Properties();
+		InputStream input = null;
+
+		File config = new File(ytFeedDir, alias);
+
+		if(!config.exists()) {
+			logger.error("Could not locate YouTube feed config.");
+			return null;
+		}
+
+		try {
+			input = new FileInputStream(config);
+			prop.load(input);
+			channelID = prop.getProperty("TextChannelID");
+			youTubeChannelURL = prop.getProperty("YouTubeChannelURL");
+			message = prop.getProperty("Message");
+			lastVideo = prop.getProperty("LastVideo");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		TextChannel textChannel = jda.getTextChannelById(channelID);
+		if(textChannel == null) {
+			logger.error("Error retrieving Text Channel from YouTube feed file.");
+			return null;
+		}
+		YTFeed feed = new YTFeed(alias, textChannel, youTubeChannelURL, message);
+		feed.setLastVideo(lastVideo);
+		return new YTFeedConfig(this, feed);
+	}
+
+	public void loadYoutubeFeeds() {
+		ytfeeds.clear();
+		File[] files = ytFeedDir.listFiles();
+		for(File f : files) {
+			String alias = f.getName().toLowerCase();
+			ytfeeds.put(alias, loadYouTubeFeedConfig(alias));
+		}
+	}
+
+	public boolean addYoutubeFeed(String alias, TextChannel channel, String channelURL, String message) {
+		alias = alias.toLowerCase();
+		if(guild == null || ytfeeds.containsKey(alias)) {
+			return false;
+		}
+		YTFeed feed = new YTFeed(alias, channel, channelURL, message);
+		//Generate a file for the feed
+		new YTFeedConfig(this, feed);
+		//Loads all feeds from files into hash map
+		loadYoutubeFeeds();
+		return true;
+	}
+
+	public void postYoutubeFeeds() throws IOException  {
+		for(String s : ytfeeds.keySet()) {
+			YTFeedConfig config = ytfeeds.get(s);
+			YTFeed feed = config.getFeed();
+			feed.post();
+			config.setLastPosted(feed.getLastVideo());
+		}
+	}
+
+	public File getYTFeedDir() {
+		return ytFeedDir;
 	}
 
 	public void log(String message) {

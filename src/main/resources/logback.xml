@@ -38,4 +38,6 @@
 		<appender-ref ref="FILE-AUDIT" />
 	</logger>
 	
+	<logger name="dev.lavalink.youtube.http.YoutubeOauth2Handler" level="INFO" />
+	
 </configuration> 

@@ -83,5 +83,16 @@ public class Util {
 		String last = s[s.length - 1];
 		return last;
 	}
+	
+	public static String getArgsMessage(int startAt, String[] args) {
+		String message = "";
+		for(int i = startAt; i < args.length; i++) {
+			message = message + args[i] + " ";
+		}
+		if (message.length() > 0) {
+	        message = message.substring(0, message.length() - 1);
+	    }
+		return message;
+	}
 
 }
