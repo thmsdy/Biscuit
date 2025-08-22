@@ -257,6 +257,9 @@ public class BiscuitGuild {
 			return false;
 		}
 		YTFeed feed = new YTFeed(alias, channel, channelURL, message);
+		
+		String lastURL =feed.getEntries().getLast().getURL();
+		feed.setLastVideo(lastURL);
 		//Generate a file for the feed
 		new YTFeedConfig(this, feed);
 		//Loads all feeds from files into hash map
