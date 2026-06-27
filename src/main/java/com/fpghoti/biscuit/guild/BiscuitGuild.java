@@ -275,7 +275,7 @@ public class BiscuitGuild {
 		for(String s : ytfeeds.keySet()) {
 			YTFeedConfig config = ytfeeds.get(s);
 			YTFeed feed = config.getFeed();
-			feed.post();
+			feed.post(config);
 			config.setLastPosted(feed.getLastVideo(), feed.getLastVideoTimestamp());
 		}
 	}

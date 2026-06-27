@@ -74,38 +74,98 @@ public class YTFeed {
 		lastVideoTimestamp = link;
 	}
 	
-	public void post(){
-		List<YTEntry> ytentries = getEntries();
-		int index = 0;
-		int lastVidIndex = -1;
-		for(YTEntry entry : ytentries) {
-			String link = entry.getURL();
-			if(link.equals(lastVideo)) {
-				lastVidIndex = index;
-			}
-			index++;
-		}
-		index = 0;
-		for(YTEntry entry : ytentries) {
-			String timestamp = entry.getTimestamp();
-			Instant entryTimestamp = parseTimestamp(timestamp);
-			if(entryTimestamp == null) {
-				guild.error("Could not retrieve YouTube feed entry timestamp!");
-				return;
-			}
-			if(getLastInstant() == null) {
-				guild.error("Could not retrieve YouTube feed last timestamp!");
-				return;
-			}
-			if(index > lastVidIndex && entryTimestamp.isAfter(getLastInstant())) {
-				String link = entry.getURL();
-				lastVideo = link;
-				lastVideoTimestamp = timestamp;
-				MessageText.send(channel, message);
-				MessageText.send(channel, entry.getEmbedMessage());
-			}
-			index++;
-		}
+	public void post(YTFeedConfig config) {
+	    List<YTEntry> ytentries = getEntries();
+
+	    if (ytentries == null || ytentries.isEmpty()) {
+	        return;
+	    }
+
+	    YTEntry newestEntry = ytentries.getLast();
+
+	    if (newestEntry.getTimestamp() == null || newestEntry.getTimestamp().trim().isEmpty()) {
+	        guild.error("Could not retrieve YouTube feed newest timestamp for " + alias + "!");
+	        return;
+	    }
+
+	    Instant lastInstant = getLastInstant();
+
+	    if (lastInstant == null) {
+	        guild.log("Recovering missing YouTube feed last timestamp for " + alias + ".");
+
+	        if (lastVideo != null && !lastVideo.trim().isEmpty()) {
+	            for (YTEntry entry : ytentries) {
+	                if (entry.getURL().equals(lastVideo)) {
+	                    String recoveredTimestamp = entry.getTimestamp();
+
+	                    if (recoveredTimestamp == null || recoveredTimestamp.trim().isEmpty()) {
+	                        guild.error("Could not recover timestamp for saved YouTube video for " + alias + ".");
+	                        return;
+	                    }
+
+	                    lastVideoTimestamp = recoveredTimestamp;
+	                    config.setLastPosted(lastVideo, recoveredTimestamp);
+	                    lastInstant = parseTimestamp(recoveredTimestamp);
+
+	                    guild.log("Recovered YouTube feed last timestamp for " + alias + ".");
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (lastInstant == null) {
+	            guild.log("Could not recover saved YouTube video timestamp for " + alias
+	                    + ". Initializing to newest entry without posting backlog.");
+
+	            lastVideo = newestEntry.getURL();
+	            lastVideoTimestamp = newestEntry.getTimestamp();
+
+	            config.setLastPosted(lastVideo, lastVideoTimestamp);
+
+	            return;
+	        }
+	    }
+
+	    int index = 0;
+	    int lastVidIndex = -1;
+
+	    for (YTEntry entry : ytentries) {
+	        String link = entry.getURL();
+
+	        if (link.equals(lastVideo)) {
+	            lastVidIndex = index;
+	            break;
+	        }
+
+	        index++;
+	    }
+
+	    index = 0;
+
+	    for (YTEntry entry : ytentries) {
+	        String timestamp = entry.getTimestamp();
+	        Instant entryTimestamp = parseTimestamp(timestamp);
+
+	        if (entryTimestamp == null) {
+	            guild.error("Could not retrieve YouTube feed entry timestamp for " + alias + "!");
+	            return;
+	        }
+
+	        if (index > lastVidIndex && entryTimestamp.isAfter(lastInstant)) {
+	            String link = entry.getURL();
+
+	            MessageText.send(channel, message);
+	            MessageText.send(channel, entry.getEmbedMessage());
+
+	            lastVideo = link;
+	            lastVideoTimestamp = timestamp;
+	            config.setLastPosted(link, timestamp);
+
+	            lastInstant = entryTimestamp;
+	        }
+
+	        index++;
+	    }
 	}
 
 	public List<YTEntry> getEntries() {
