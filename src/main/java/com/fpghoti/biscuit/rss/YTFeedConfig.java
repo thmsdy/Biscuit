@@ -54,15 +54,17 @@ public class YTFeedConfig {
 	}
 	
 
-	public void setLastPosted(String link) {
+	public void setLastPosted(String link, String timestamp) {
 		PropertiesConfiguration prop = new PropertiesConfiguration();
 		PropertiesConfigurationLayout layout = new PropertiesConfigurationLayout();
 		prop.setLayout(layout);
 		try {
 			layout.load(prop, new FileReader(config));
 			FileWriter fw = new FileWriter(config);
-			prop.setProperty("LastVideo", link);	
+			prop.setProperty("LastVideo", link);
+			prop.setProperty("LastVideoTimestamp", timestamp);
 			feed.setLastVideo(link);
+			feed.setLastVideoTimestamp(timestamp);
 			layout.save(prop, fw);
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
@@ -105,6 +107,7 @@ public class YTFeedConfig {
 		addProperty("YouTubeChannelURL", feed.getChannelURL(), prop);
 		addProperty("Message", feed.getMesage(), prop);
 		addProperty("LastVideo", "", prop);
+		addProperty("LastVideoTimestamp", "", prop);
 	}
 
 	private void addProperty(String key, String value, PropertiesConfiguration prop) {

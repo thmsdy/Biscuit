@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fpghoti</groupId>
 	<artifactId>Biscuit</artifactId>
-	<version>2.0 Beta</version>
+	<version>2.1</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,10 +64,10 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</repository>
 		<repository>
-            <id>arbjergDev-releases</id>
-            <name>Lavalink Repository</name>
-            <url>https://maven.lavalink.dev/releases</url>
-        </repository>
+			<id>arbjergDev-releases</id>
+			<name>Lavalink Repository</name>
+			<url>https://maven.lavalink.dev/releases</url>
+		</repository>
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>org.fusesource.jansi</groupId>
 			<artifactId>jansi</artifactId>
-			<version>2.4.1</version>
+			<version>2.4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.GhotiMayo</groupId>
@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-configuration2</artifactId>
-			<version>2.11.0</version>
+			<version>2.15.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.spigotmc</groupId>
@@ -104,7 +104,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.5.17</version>
+			<version>1.5.37</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jcabi</groupId>
@@ -114,12 +114,12 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.13.1</version>
+			<version>2.14.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>6.4.1</version>
+			<version>6.4.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.cage</groupId>
@@ -127,34 +127,34 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.activation</groupId>
-			<artifactId>activation</artifactId>
-			<version>1.1.1</version>
+			<groupId>com.sun.activation</groupId>
+			<artifactId>javax.activation</artifactId>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>dev.arbjerg</groupId>
 			<artifactId>lavaplayer</artifactId>
-			<version>2.2.4</version>
+			<version>2.2.6</version>
 		</dependency>
 		<dependency>
-            <groupId>dev.lavalink.youtube</groupId>
-            <artifactId>v2</artifactId>
-            <version>1.13.3</version>
-        </dependency>
+			<groupId>dev.lavalink.youtube</groupId>
+			<artifactId>v2</artifactId>
+			<version>1.18.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.pf4j</groupId>
 			<artifactId>pf4j</artifactId>
-			<version>3.13.0</version>
+			<version>3.15.0</version>
 		</dependency>
-        <dependency>
-  			<groupId>xom</groupId>
-  			<artifactId>xom</artifactId>
-  			<version>1.3.9</version>
+		<dependency>
+			<groupId>xom</groupId>
+			<artifactId>xom</artifactId>
+			<version>1.4.6</version>
 		</dependency>
 	</dependencies>
 </project>

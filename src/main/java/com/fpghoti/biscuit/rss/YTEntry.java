@@ -13,10 +13,11 @@ public class YTEntry {
 	private String id;
 	private String title;
 	private String author;
+	private String timestamp;
 	private String description;
 	private String thumbnail;
 	
-	public YTEntry(String id, String title, String author, String description, String thumbnail) {
+	public YTEntry(String id, String title, String author, String timestamp, String description, String thumbnail) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
@@ -34,6 +35,10 @@ public class YTEntry {
 	
 	public String getAuthor() {
 		return author;
+	}
+	
+	public String getTimestamp() {
+		return timestamp;
 	}
 	
 	public String getDescription() {

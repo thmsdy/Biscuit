@@ -2,6 +2,9 @@ package com.fpghoti.biscuit.rss;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class YTFeed {
 	private String channelURL;
 	private String message;
 	private String lastVideo;
+	private String lastVideoTimestamp;
 
 	public YTFeed(String alias, TextChannel channel, String channelURL, String message) {
 		this.guild = BiscuitGuild.getBiscuitGuild(channel.getGuild());
@@ -31,6 +35,7 @@ public class YTFeed {
 		this.channelURL = channelURL;
 		this.message = message;
 		lastVideo = "";
+		lastVideoTimestamp = "";
 	}
 
 	public String getAlias() {
@@ -52,11 +57,23 @@ public class YTFeed {
 	public String getLastVideo() {
 		return lastVideo;
 	}
-
+	
+	public String getLastVideoTimestamp() {
+		return lastVideoTimestamp;
+	}
+	
+	public Instant getLastInstant() {
+		return parseTimestamp(lastVideoTimestamp);
+	}
+	
 	public void setLastVideo(String link) {
 		lastVideo = link;
 	}
 
+	public void setLastVideoTimestamp(String link) {
+		lastVideoTimestamp = link;
+	}
+	
 	public void post(){
 		List<YTEntry> ytentries = getEntries();
 		int index = 0;
@@ -70,9 +87,20 @@ public class YTFeed {
 		}
 		index = 0;
 		for(YTEntry entry : ytentries) {
-			if(index > lastVidIndex) {
+			String timestamp = entry.getTimestamp();
+			Instant entryTimestamp = parseTimestamp(timestamp);
+			if(entryTimestamp == null) {
+				guild.error("Could not retrieve YouTube feed entry timestamp!");
+				return;
+			}
+			if(getLastInstant() == null) {
+				guild.error("Could not retrieve YouTube feed last timestamp!");
+				return;
+			}
+			if(index > lastVidIndex && entryTimestamp.isAfter(getLastInstant())) {
 				String link = entry.getURL();
 				lastVideo = link;
+				lastVideoTimestamp = timestamp;
 				MessageText.send(channel, message);
 				MessageText.send(channel, entry.getEmbedMessage());
 			}
@@ -100,6 +128,7 @@ public class YTFeed {
 				String id = "";
 				String title = "";
 				String author = "";
+				String timestamp = "";
 				String description = "";
 				String thumbnail = "";
 				
@@ -119,6 +148,9 @@ public class YTFeed {
 							}
 						}
 					}
+					if(value.getLocalName().equals("published")) {
+						timestamp = value.getValue();
+					}
 					if(value.getLocalName().equals("group")) {
 						Elements subvalues = value.getChildElements();
 						for(Element subvalue : subvalues) {
@@ -132,12 +164,24 @@ public class YTFeed {
 					}
 				}
 				
-				ytentries.add(new YTEntry(id, title, author, description, thumbnail));
+				ytentries.add(new YTEntry(id, title, author, timestamp, description, thumbnail));
 			}
 		}
 		
 		return ytentries.reversed();
 
+	}
+	
+	private Instant parseTimestamp(String timestamp) {
+	    if (timestamp == null || timestamp.trim().isEmpty()) {
+	        return null;
+	    }
+
+	    try {
+	        return OffsetDateTime.parse(timestamp.trim()).toInstant();
+	    } catch (DateTimeParseException e) {
+	        throw new IllegalArgumentException("Invalid YouTube timestamp: " + timestamp, e);
+	    }
 	}
 
 }

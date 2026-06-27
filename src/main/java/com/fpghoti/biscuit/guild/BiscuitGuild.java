@@ -203,6 +203,7 @@ public class BiscuitGuild {
 		String youTubeChannelURL = "null";
 		String message = "null";
 		String lastVideo = "null";
+		String lastVideoTimestamp = "null";
 
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -221,6 +222,7 @@ public class BiscuitGuild {
 			youTubeChannelURL = prop.getProperty("YouTubeChannelURL");
 			message = prop.getProperty("Message");
 			lastVideo = prop.getProperty("LastVideo");
+			lastVideoTimestamp = prop.getProperty("LastVideoTimestamp");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -240,6 +242,7 @@ public class BiscuitGuild {
 		}
 		YTFeed feed = new YTFeed(alias, textChannel, youTubeChannelURL, message);
 		feed.setLastVideo(lastVideo);
+		feed.setLastVideoTimestamp(lastVideoTimestamp);
 		return new YTFeedConfig(this, feed);
 	}
 
@@ -273,7 +276,7 @@ public class BiscuitGuild {
 			YTFeedConfig config = ytfeeds.get(s);
 			YTFeed feed = config.getFeed();
 			feed.post();
-			config.setLastPosted(feed.getLastVideo());
+			config.setLastPosted(feed.getLastVideo(), feed.getLastVideoTimestamp());
 		}
 	}
 
