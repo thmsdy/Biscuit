@@ -21,6 +21,7 @@ public class YTEntry {
 		this.id = id;
 		this.title = title;
 		this.author = author;
+		this.timestamp = timestamp;
 		this.description = description;
 		this.thumbnail = thumbnail;
 	}

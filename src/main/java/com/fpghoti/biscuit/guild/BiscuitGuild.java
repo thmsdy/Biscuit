@@ -240,7 +240,7 @@ public class BiscuitGuild {
 			logger.error("Error retrieving Text Channel from YouTube feed file.");
 			return null;
 		}
-		YTFeed feed = new YTFeed(alias, textChannel, youTubeChannelURL, message);
+		YTFeed feed = new YTFeed(this, alias, textChannel, youTubeChannelURL, message);
 		feed.setLastVideo(lastVideo);
 		feed.setLastVideoTimestamp(lastVideoTimestamp);
 		return new YTFeedConfig(this, feed);
@@ -260,7 +260,7 @@ public class BiscuitGuild {
 		if(guild == null || ytfeeds.containsKey(alias)) {
 			return false;
 		}
-		YTFeed feed = new YTFeed(alias, channel, channelURL, message);
+		YTFeed feed = new YTFeed(this, alias, channel, channelURL, message);
 		
 		String lastURL =feed.getEntries().getLast().getURL();
 		feed.setLastVideo(lastURL);

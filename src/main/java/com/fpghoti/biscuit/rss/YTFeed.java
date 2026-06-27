@@ -28,14 +28,14 @@ public class YTFeed {
 	private String lastVideo;
 	private String lastVideoTimestamp;
 
-	public YTFeed(String alias, TextChannel channel, String channelURL, String message) {
-		this.guild = BiscuitGuild.getBiscuitGuild(channel.getGuild());
-		this.alias = alias;
-		this.channel = channel;
-		this.channelURL = channelURL;
-		this.message = message;
-		lastVideo = "";
-		lastVideoTimestamp = "";
+	public YTFeed(BiscuitGuild guild, String alias, TextChannel channel, String channelURL, String message) {
+	    this.guild = guild;
+	    this.alias = alias;
+	    this.channel = channel;
+	    this.channelURL = channelURL;
+	    this.message = message;
+	    lastVideo = "";
+	    lastVideoTimestamp = "";
 	}
 
 	public String getAlias() {
