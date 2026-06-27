@@ -159,8 +159,9 @@ public class BiscuitGuild {
 				try {
 					log("Updating Youtube feeds...");
 					postYoutubeFeeds();
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					error("There was a problem updating the YouTube Feeds.");
+					t.printStackTrace();
 				}
 			};
 			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
