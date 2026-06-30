@@ -177,7 +177,6 @@ public class YTFeed {
 			doc = builder.build(channelURL);
 		} catch (ParsingException | IOException e) {
 			guild.error("Unable to parse feed: " + channelURL);
-			MessageText.send(channel, "Unable to parse feed: " + channelURL);
 		}
 
 		Element rss = doc.getRootElement();
